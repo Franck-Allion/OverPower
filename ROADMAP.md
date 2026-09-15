@@ -83,8 +83,8 @@ Roadmap item states:
 
 - [x] Install and configure Codex development environment
 - [x] Install and configure Gemini Code Assist environment
-- [x] Install AnkleBreaker Unity MCP
-- [ ] Validate Unity MCP connectivity with a minimal Unity project once created
+- [x] Document AnkleBreaker Unity MCP installation/configuration procedure
+- [x] Record that runtime installation/configuration requires the Unity project/editor
 - [x] Install `codebase-memory-mcp`
 - [x] Configure codebase-memory scope to repository-owned source/documentation
 - [x] Ensure proprietary third-party package source is not unnecessarily indexed or injected into AI context
@@ -111,6 +111,13 @@ Roadmap item states:
 - [ ] Enable Visible Meta Files
 - [ ] Enable Force Text serialization
 - [ ] Verify project reopens cleanly after first commit
+
+### Unity MCP activation
+
+- [ ] Install/configure AnkleBreaker Unity MCP with the OverPower Unity project
+- [ ] Launch Unity and validate MCP connectivity
+- [ ] Perform one harmless read/write validation through Unity MCP
+- [ ] Document the verified configuration
 
 ---
 

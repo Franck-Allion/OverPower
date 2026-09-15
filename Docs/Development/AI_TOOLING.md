@@ -12,6 +12,22 @@ By grounding AI agents in identical, authoritative repository contracts (`AGENTS
 
 ---
 
+## Canonical Context
+
+To maintain alignment and ensure zero drift, all AI agents (including Codex, Gemini Code Assist, and Gemini CLI) MUST initialize their session context with the following canonical sources in order of priority:
+
+1.  **[`AGENTS.md`](../../AGENTS.md)** — Master persona, instruction set, and behavior rules.
+2.  **Specialized Project Contracts** — Context-specific architectural boundaries:
+    *   [`ARCHITECTURE.md`](../../ARCHITECTURE.md) — Tech stack, assemblies, decoupled domain, error, and logging rules.
+    *   [`GAME_DESIGN_MVP.md`](../../GAME_DESIGN_MVP.md) — MVP gameplay rules and core loop.
+    *   [`DESIGN_SYSTEM.md`](../../DESIGN_SYSTEM.md) — UI layouts, premium design, and typography.
+    *   [`PROJECT_STRUCTURE.md`](../../PROJECT_STRUCTURE.md) — Naming, folders, and namespaces.
+    *   [`DEVELOPMENT_WORKFLOW.md`](../../DEVELOPMENT_WORKFLOW.md) — Git branching, testing standards, and Definition of Done.
+3.  **[`ROADMAP.md`](../../ROADMAP.md)** — Active milestones, task checklists, and current project progress.
+4.  **Existing Implementation Patterns** — Previously implemented C# scripts, tests, and domain entities that serve as the local standard for clean, idiomatic development.
+
+---
+
 ## Codex Development Environment
 
 ### Prerequisites
