@@ -1,0 +1,86 @@
+# OverPower — MVP Game Design Contract
+
+## High concept
+The player controls a hero tested by the gods. The hero must climb a tower and eventually face a god. The MVP contains **one complete floor** and demonstrates the full roguelite loop.
+
+## MVP loop
+```text
+Start Run -> Explore Floor -> Collect / Recruit / Purchase -> Guardian Battle
+-> Victory OR Hero Death -> End Run Rewards -> Meta-Progression Unlocks -> New Run
+```
+The player earns meta-progression points when the run ends whether through defeat or floor completion. Exact balancing may evolve.
+
+## MVP content target
+Minimum: 3 unit types, 3 spells, 2 artifacts. Artifacts can be unlocked through meta-progression rather than starting unlocked.
+
+## Exploration
+- 2D top-down.
+- HeroEditor4D/Character4D representation.
+- Grid/cell movement.
+- Moving one cell consumes one action point.
+- Possible content: gold, mana-max resource, health-max resource, spells, units/recruits, apothecaries, barracks.
+- Apothecary sells spells for gold.
+- Barracks sells units for gold.
+- When AP is exhausted or the player ends exploration, guardian battle begins.
+
+## Battle board
+Static 2D top-down board. Each side owns 2 rows × 6 columns:
+```text
+Back : 6 cells
+Front: 6 cells
+```
+Board visuals may have multiple skins later without changing rules.
+
+## Front / Back targeting
+For an enemy column: Front first, then Back, then enemy hero if column empty. Future abilities may explicitly override this baseline.
+
+## Unit deployment
+Legal-placement rules belong to Domain, not UI-only validation. Deployment should prioritize opposing relevant unopposed enemy columns according to the agreed deployment rule.
+
+## Turn phases
+```text
+MANA RESET -> DRAW -> BATTLE -> END TURN -> DAMAGE/RESOLUTION -> NEXT PLAYER
+```
+Draw: 1 card by default, no draw if hand full or deck empty. No fatigue required for MVP unless explicitly added later.
+
+Battle actions may deploy units, cast spells, or use supported unit abilities. Costs may include mana, health and/or gold. Targets may be cells, units, groups or another explicit target set.
+
+## Player and guardian
+Guardian follows the same rules as the human player: deck, hand, mana, units, legal deployments, spells/actions. AI gets no rule-breaking privileges. Difficulty changes decision quality.
+
+## Deck and hand
+Reference MVP values:
+- deck size: 20;
+- maximum hand: 4;
+- starting hand: 3;
+- draw per turn: 1;
+- starting hand guarantees at least one unit card if the deck contains one.
+All values configurable, not hardcoded into engine logic.
+
+## Unit cards and stacking
+A deck cannot contain two separate unit cards of the same unit type. Units accumulate into one card/stack per type. Spells do not merge in the same way.
+
+## Unit stacks and HP
+One logical stack represents the squad. Example: Guardian 10 HP ×10 = 100 total HP. At 73 HP, display ×8 with current partial member at 3/10 HP. The stack remains one authoritative gameplay entity.
+
+## Unit statistics
+At least HP, armor, attack and optional abilities. Exact formulas are later balancing concerns but must live in Domain.
+
+## Hero and victory
+Battle ends when a hero reaches defeat condition (baseline: hero HP reaches zero). Hero/run resources include health/max health, mana/max mana and gold.
+
+## XP and progression
+At battle end, player and surviving/in-play units gain XP according to detailed rules to be implemented later. Unit XP can improve attack, defense or abilities; player XP can support a skill tree. Architecture must not block this.
+
+## Meta-progression
+End run -> calculate reward points -> persist -> unlock screen -> spend on content -> unlocked content available to later runs.
+
+## Randomness
+Exploration generation, shuffling and other gameplay randomness must be reproducible through `IRandomService` seed.
+
+## Visual direction
+Directional references, not literal copies:
+- Hades: polish, visual richness, transitions, atmosphere;
+- Magic: The Gathering: card presence and information hierarchy;
+- Slay the Spire / Monster Train: immediate comprehension and interaction simplicity.
+Target: **premium visual impact + clear information hierarchy + simple interaction**.
