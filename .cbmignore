@@ -1,0 +1,35 @@
+# =========================================================================
+# Codebase Memory MCP Ignore (.cbmignore)
+# =========================================================================
+
+# Exclude all proprietary third-party package sources to protect intellectual property,
+# minimize token usage, and ensure AI context focuses strictly on OverPower-owned code.
+# (Note: These directories will be created in future roadmap steps under Assets/ThirdParty/)
+/Assets/ThirdParty/
+/Assets/ThirdParty/HeroEditor4D/
+/Assets/ThirdParty/Demigiant/
+/Assets/ThirdParty/DamageNumbersPro/
+/Assets/ThirdParty/AllIn1SpriteShader/
+/Assets/ThirdParty/HovlStudio/
+/Assets/ThirdParty/JMO/
+
+# Exclude generated/local Unity folders
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Bb]uild/
+/[Bb]uilds/
+/UserSettings/
+/[Mm]emoryCaptures/
+
+# Exclude standard IDE, metadata, and local system folders
+/.git/
+/.idea/
+/.vscode/
+/.vs/
+/ExportedObj/
+.gradle/
+*.suo
+*.user
+*.userprefs

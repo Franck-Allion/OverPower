@@ -54,7 +54,7 @@ Roadmap item states:
 ## 0.0.1 Repository initialization
 
 - [x] Create GitHub repository
-- [x] Set default branch to `main`
+- [~] Set default branch to `main`
 - [x] Add Unity `.gitignore`
 - [x] Configure Git LFS patterns for large binary source assets
 - [x] Add initial `README.md`
@@ -81,20 +81,20 @@ Roadmap item states:
 
 ## 0.0.2 Local AI tooling
 
-- [ ] Install and configure Codex development environment
-- [ ] Install and configure Gemini Code Assist environment
-- [ ] Install AnkleBreaker Unity MCP
+- [x] Install and configure Codex development environment
+- [x] Install and configure Gemini Code Assist environment
+- [x] Install AnkleBreaker Unity MCP
 - [ ] Validate Unity MCP connectivity with a minimal Unity project once created
-- [ ] Install `codebase-memory-mcp`
-- [ ] Configure codebase-memory scope to repository-owned source/documentation
-- [ ] Ensure proprietary third-party package source is not unnecessarily indexed or injected into AI context
-- [ ] Document MCP setup in `Docs/Development/AI_TOOLING.md`
+- [x] Install `codebase-memory-mcp`
+- [x] Configure codebase-memory scope to repository-owned source/documentation
+- [x] Ensure proprietary third-party package source is not unnecessarily indexed or injected into AI context
+- [x] Document MCP setup in `Docs/Development/AI_TOOLING.md`
 
 ### Acceptance gate
 
-- [ ] Both AI development environments can read the repository
-- [ ] MCP setup is documented and reproducible
-- [ ] AI agents receive project contracts before implementation work
+- [x] Both AI development environments can read the repository
+- [x] MCP setup is documented and reproducible
+- [x] AI agents receive project contracts before implementation work
 
 ---
 
