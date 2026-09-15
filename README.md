@@ -54,8 +54,30 @@ The development, design, and architecture of OverPower are governed by the follo
 
 ---
 
+## Canonical Repository Layout
+
+```text
+Repository root/
+├── AGENTS.md
+├── ARCHITECTURE.md
+├── GAME_DESIGN_MVP.md
+├── DESIGN_SYSTEM.md
+├── PROJECT_STRUCTURE.md
+├── DEVELOPMENT_WORKFLOW.md
+├── ROADMAP.md
+├── Docs/
+└── OverPower/        <-- Authoritative Unity Project Root
+    ├── Assets/
+    ├── Packages/
+    └── ProjectSettings/
+```
+
+The repository contains project governance and documentation at the root. The actual Unity project root is `/OverPower/`. Do **not** create another nested `/OverPower/OverPower/` or move the Unity project to the repository root.
+
+---
+
 ## Current State
 
-> ⚠️ **Status: Repository initialization. Unity project not created yet.**
+> **Status: Unity Technical Foundation & Package Baseline Established (Roadmap 0.1.1 & 0.1.2 complete)**
 >
-> This repository currently contains only the project's foundation, licensing structure, Git environment setup, and development contract specifications. Actual Unity implementation and game code will begin in the next roadmap step (0.1).
+> The Unity 6 project baseline has been created under `<repository>/OverPower/`. The URP 2D renderer is fully configured, target platform Windows PC is verified, version control serialization settings are set, AnkleBreaker MCP integration is active, and first-party Unity packages (Input System, Localization, Addressables, TextMeshPro support, Unity Test Framework, 2D/URP packages) are installed and verified compatible.

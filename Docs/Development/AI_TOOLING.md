@@ -111,14 +111,17 @@ AnkleBreaker Unity MCP is the bridge that turns AI assistants into full Unity co
     ```
 
 ### Current Status
-*   **Status: Pending Unity Project Creation.**
-*   The Unity editor bridge requires a functional Unity project instance to start, connect, and receive API calls. 
+*   **Status: Unity Project Created & Integration Verified.**
+*   The Unity editor bridge is active, and AnkleBreaker has been successfully integrated with the project at the Unity project root path: `<repository_root>/OverPower/`.
 
-### Future Unity Validation Step (Deferred to Milestone 0.1)
-Once the Unity project is initialized in Roadmap 0.1.1, the validation process is as follows:
-1.  Launch the Unity Editor and open the OverPower project.
-2.  In the AI assistant terminal, prompt: *"List the active GameObjects in the scene or query the current camera settings."*
-3.  **Expected Outcome:** The AI assistant must successfully invoke the `unity_list_scene_objects` tool via AnkleBreaker, communicate with the editor bridge on port `7890`, and return the hierarchy list.
+### Verified Unity Validation Step (Milestone 0.1.1 & 0.1.2 Complete)
+The validation process has been successfully executed with the running Unity Editor:
+1.  Launch the Unity Editor and open the project at `OverPower/`.
+2.  The AnkleBreaker plugin starts, listening on port `7890`.
+3.  Execute AnkleBreaker commands via Gemini CLI or other MCP clients.
+4.  **Verification Result:** Confirmed that core and advanced tools execute correctly, including:
+    *   Reading project info, packages, and scene hierarchy.
+    *   Successfully executing reversible write operations (e.g., creating and deleting a validation GameObject).
 
 ---
 

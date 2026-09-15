@@ -54,7 +54,7 @@ Roadmap item states:
 ## 0.0.1 Repository initialization
 
 - [x] Create GitHub repository
-- [~] Set default branch to `main`
+- [x] Set default branch to `main`
 - [x] Add Unity `.gitignore`
 - [x] Configure Git LFS patterns for large binary source assets
 - [x] Add initial `README.md`
@@ -102,34 +102,34 @@ Roadmap item states:
 
 ## 0.1.1 Create the Unity project
 
-- [ ] Create Unity 6 project
-- [ ] Select/configure URP
-- [ ] Configure 2D Renderer
-- [ ] Set Windows as primary development target
-- [ ] Configure reference UI resolution to 1920×1080
-- [ ] Configure color space/render settings appropriate for the art direction
-- [ ] Enable Visible Meta Files
-- [ ] Enable Force Text serialization
-- [ ] Verify project reopens cleanly after first commit
+- [x] Create Unity 6 project
+- [x] Select/configure URP
+- [x] Configure 2D Renderer
+- [x] Set Windows as primary development target
+- [x] Configure reference UI resolution to 1920×1080
+- [x] Configure color space/render settings appropriate for the art direction
+- [x] Enable Visible Meta Files
+- [x] Enable Force Text serialization
+- [x] Verify project reopens cleanly after first commit
 
 ### Unity MCP activation
 
-- [ ] Install/configure AnkleBreaker Unity MCP with the OverPower Unity project
-- [ ] Launch Unity and validate MCP connectivity
-- [ ] Perform one harmless read/write validation through Unity MCP
-- [ ] Document the verified configuration
+- [x] Install/configure AnkleBreaker Unity MCP with the OverPower Unity project
+- [x] Launch Unity and validate MCP connectivity
+- [x] Perform one harmless read/write validation through Unity MCP
+- [x] Document the verified configuration
 
 ---
 
 ## 0.1.2 Install required Unity packages
 
-- [ ] Unity Input System
-- [ ] Unity Localization
-- [ ] Addressables
-- [ ] TextMeshPro essentials
-- [ ] Unity Test Framework
-- [ ] Required 2D/URP packages
-- [ ] Verify package versions are compatible with selected Unity 6 version
+- [x] Unity Input System
+- [x] Unity Localization
+- [x] Addressables
+- [x] TextMeshPro essentials
+- [x] Unity Test Framework
+- [x] Required 2D/URP packages
+- [x] Verify package versions are compatible with selected Unity 6 version
 
 Do not introduce optional packages yet unless required by an implemented roadmap item.
 

@@ -1,7 +1,14 @@
 # OverPower — Naming & Folder Structure Contract
 
+## Unity Project Root
+The actual Unity project root is:
+```text
+<repository_root>/OverPower/
+```
+All folders, assets, and Unity settings are relative to this directory. Do **not** create a nested `<repository_root>/OverPower/OverPower/` folder, and do **not** move the Unity project to the repository root.
+
 ## Root structure
-Project-owned content lives under `Assets/OverPower/`. Third-party content should remain in its original structure when practical.
+Within the Unity project root, project-owned content lives under `Assets/OverPower/`. Third-party content should remain in its original structure when practical.
 
 ```text
 Assets/OverPower/
