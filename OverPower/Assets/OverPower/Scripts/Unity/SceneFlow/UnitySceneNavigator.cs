@@ -19,12 +19,13 @@ namespace OverPower.Unity.SceneFlow
             if (_isTransitioning)
             {
                 Debug.LogWarning($"[SceneNavigator] Rejected request to load {sceneId} because a transition is already in progress.");
-                return;
+                throw new InvalidOperationException($"Transition already in progress. Rejected request to load {sceneId}.");
             }
 
             _isTransitioning = true;
             string scenePath = GameSceneCatalog.GetScenePath(sceneId);
 
+            bool cancelled = false;
             try
             {
                 Debug.Log($"[SceneNavigator] Starting transition to {sceneId} ({scenePath})...");
@@ -37,8 +38,17 @@ namespace OverPower.Unity.SceneFlow
 
                 while (!asyncOp.isDone)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    if (!cancelled && cancellationToken.IsCancellationRequested)
+                    {
+                        cancelled = true;
+                        Debug.LogWarning($"[SceneNavigator] Transition to {sceneId} cancellation requested, but waiting for active Unity load to complete...");
+                    }
                     await Task.Yield();
+                }
+
+                if (cancelled)
+                {
+                    throw new OperationCanceledException(cancellationToken);
                 }
 
                 _currentScene = sceneId;
@@ -57,6 +67,7 @@ namespace OverPower.Unity.SceneFlow
             finally
             {
                 _isTransitioning = false;
+                Debug.Log($"[SceneNavigator] Transition guard released. Ready for the next transition.");
             }
         }
     }

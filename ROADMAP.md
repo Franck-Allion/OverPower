@@ -209,18 +209,18 @@ Main Menu can initially contain only polished placeholder actions.
 
 ## 0.1.6 Input foundation
 
-- [ ] Create Input Actions asset
-- [ ] Add semantic actions:
-  - [ ] Navigate
-  - [ ] Point
-  - [ ] Click
-  - [ ] Submit
-  - [ ] Cancel
-  - [ ] EndTurn
-  - [ ] OpenDetails
-- [ ] Create input adapter/service
-- [ ] Prevent gameplay classes from reading keyboard/mouse directly
-- [ ] Ensure action design remains controller-compatible
+- [x] Create Input Actions asset
+- [x] Add semantic actions:
+  - [x] Navigate
+  - [x] Point
+  - [x] Click
+  - [x] Submit
+  - [x] Cancel
+  - [x] EndTurn
+  - [x] OpenDetails
+- [x] Create input adapter/service
+- [x] Prevent gameplay classes from reading keyboard/mouse directly
+- [x] Ensure action design remains controller-compatible
 
 ---
 

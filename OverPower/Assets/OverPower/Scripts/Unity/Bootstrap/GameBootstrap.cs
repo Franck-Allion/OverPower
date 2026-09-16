@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Threading;
 using OverPower.Application;
 using OverPower.Unity.SceneFlow;
+using OverPower.Unity.Input;
 
 namespace OverPower.Unity.Bootstrap
 {
@@ -13,6 +14,7 @@ namespace OverPower.Unity.Bootstrap
         private static GameBootstrap _instance;
         private UnitySceneNavigator _sceneNavigator;
         private GameFlowController _gameFlowController;
+        private GameInputReader _inputReader;
         private CancellationTokenSource _cts;
 
         private void Awake()
@@ -30,17 +32,18 @@ namespace OverPower.Unity.Bootstrap
             // Compose Global Services
             _sceneNavigator = new UnitySceneNavigator();
             _gameFlowController = new GameFlowController(_sceneNavigator);
+            _inputReader = gameObject.AddComponent<GameInputReader>();
             _cts = new CancellationTokenSource();
 
             Debug.Log("[GameBootstrap] Global services composed successfully.");
 
             if (runOnAwake)
             {
-                StartAppFlow();
+                _ = StartAppFlowAsync();
             }
         }
 
-        private async void StartAppFlow()
+        private async System.Threading.Tasks.Task StartAppFlowAsync()
         {
             try
             {
@@ -65,6 +68,7 @@ namespace OverPower.Unity.Bootstrap
         }
 
         public IGameFlowController GameFlow => _gameFlowController;
+        public IGameInput Input => _inputReader;
 
         public static IGameFlowController GetGameFlow()
         {
@@ -74,6 +78,16 @@ namespace OverPower.Unity.Bootstrap
                 return null;
             }
             return _instance.GameFlow;
+        }
+
+        public static IGameInput GetInput()
+        {
+            if (_instance == null)
+            {
+                Debug.LogWarning("[GameBootstrap] No active GameBootstrap instance found! (If testing, load Bootstrap scene first).");
+                return null;
+            }
+            return _instance.Input;
         }
     }
 }
