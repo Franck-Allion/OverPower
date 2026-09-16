@@ -2,16 +2,6 @@
 # Codebase Memory MCP Ignore (.cbmignore)
 # =========================================================================
 
-# Exclude all proprietary third-party package sources to protect intellectual property,
-# minimize token usage, and ensure AI context focuses strictly on OverPower-owned code.
-/OverPower/Assets/HeroEditor4D/
-/OverPower/Assets/DamageNumbersPro/
-/OverPower/Assets/Plugins/AllIn1SpriteShader/
-/OverPower/Assets/Hovl Studio/
-/OverPower/Assets/JMO Assets/
-/OverPower/Assets/Plugins/Demigiant/
-/OverPower/Assets/HealthBar/
-
 # Exclude generated/local Unity folders
 /OverPower/[Ll]ibrary/
 /OverPower/[Tt]emp/
