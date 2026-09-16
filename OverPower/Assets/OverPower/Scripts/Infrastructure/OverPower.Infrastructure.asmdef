@@ -1,0 +1,17 @@
+{
+    "name": "OverPower.Infrastructure",
+    "rootNamespace": "OverPower.Infrastructure",
+    "references": [
+        "OverPower.Domain",
+        "OverPower.Application"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

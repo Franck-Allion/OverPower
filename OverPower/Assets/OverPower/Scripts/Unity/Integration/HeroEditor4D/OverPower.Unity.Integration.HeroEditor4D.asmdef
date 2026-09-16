@@ -1,0 +1,19 @@
+{
+    "name": "OverPower.Unity.Integration.HeroEditor4D",
+    "rootNamespace": "OverPower.Unity.Integration.HeroEditor4D",
+    "references": [
+        "OverPower.Domain",
+        "OverPower.Application",
+        "OverPower.Unity",
+        "HeroEditor4D"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

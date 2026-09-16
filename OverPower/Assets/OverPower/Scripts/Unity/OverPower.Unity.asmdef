@@ -1,0 +1,22 @@
+{
+    "name": "OverPower.Unity",
+    "rootNamespace": "OverPower.Unity",
+    "references": [
+        "OverPower.Domain",
+        "OverPower.Application",
+        "OverPower.Infrastructure",
+        "Unity.InputSystem",
+        "Unity.Localization",
+        "Unity.TextMeshPro",
+        "Unity.Addressables"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -24,6 +24,7 @@ All dependencies should be restored to their exact designated folders under the 
 | **AllIn1SpriteShader** | `Assets/Plugins/AllIn1SpriteShader/` | Ignored | Unity Asset Store / My Assets |
 | **Hovl Studio AAA Projectiles** | `Assets/Hovl Studio/` | Ignored | Unity Asset Store / My Assets |
 | **Cartoon FX Remaster (JMO)** | `Assets/JMO Assets/` | Ignored | Unity Asset Store / My Assets |
+| **16 Health bar high quality** | `Assets/HealthBar/` | Ignored | Unity Asset Store / My Assets |
 
 ---
 
@@ -81,6 +82,13 @@ All dependencies should be restored to their exact designated folders under the 
 - **Verification:**
   - Check the tool `Tools > Cartoon FX Easy Editor` to ensure the menu item is active and launches correctly.
 
+### 7. 16 Health bar high quality
+- **Target Folder:** `OverPower/Assets/HealthBar/`
+- **Import Method:** Search `16 Health bar high quality` in Package Manager under `My Assets` and click **Import**.
+- **Post-Import Setup:** None.
+- **Verification:**
+  - Check `Assets/HealthBar/HealthBar.unity` scene to verify health bar rendering and shader compatibility under URP 2D.
+
 ---
 
 ## Known Constraints & Order of Import
@@ -91,5 +99,6 @@ While assets are largely independent, it is recommended to import them in the fo
 3. **DamageNumbersPro**
 4. **AllIn1SpriteShader**
 5. **Hovl Studio / JMO Assets** (VFX packs)
+6. **16 Health bar high quality** (Presentation-only pack)
 
 If compilation fails during import, verify that the package versions align with Unity 6 (URP).

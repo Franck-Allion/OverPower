@@ -14,6 +14,7 @@ Every asset integrated into this project must be logged here to ensure legal com
 | **AllIn1SpriteShader** | Seaside Studios | Comprehensive suite of 2D shaders and visual effects | `4.68` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/Plugins/AllIn1SpriteShader/` | Sprite-based special effects and outline shaders. |
 | **Hovl Studio assets (AAA Projectiles Vol 1)** | Hovl Studio (Vladyslav Horobets) | High-quality projectile particle effects and textures | `Version not exposed by imported asset` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/Hovl Studio/` | Spell and combat particles/VFX. |
 | **JMO assets (Cartoon FX Remaster)** | Jean Moreno (JMO) | Particle/UI helper tools and visual effect packs (Cartoon FX) | `Version not exposed by imported asset` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/JMO Assets/` | General combat VFX and particle optimization utilities. |
+| **16 Health bar high quality** | FMA (UIHealthAlchemy) | Health-bar visual shaders, materials, and UI prefabs | `Version not exposed by imported asset` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased / owned | `OverPower/Assets/HealthBar/` | Presentation-only asset containing health-bar visual assets. |
 
 ---
 

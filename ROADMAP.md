@@ -147,18 +147,18 @@ Do not introduce optional packages yet unless required by an implemented roadmap
 - [x] Record license/source information
 - [x] Keep vendor folder structures intact where possible
 
-### Technical spike
+### HeroEditor4D compatibility check
 
-- [x] Verify HeroEditor4D renders correctly in URP 2D
-- [x] Verify idle animation
-- [x] Verify four-direction orientation/animation
-- [x] Verify SortingGroup behavior
-- [x] Verify compatibility with target camera/render setup
-- [x] Document integration observations
+- [x] Import HeroEditor4D successfully
+- [x] Verify the package compiles without critical errors in the OverPower Unity 6 / URP 2D project
+- [x] Verify one representative HeroEditor4D character renders correctly
+- [x] Verify no obvious URP/material/shader regression
+- [x] Record OverPower-specific integration constraints if discovered
 
 ### Acceptance gate
 
-- [x] A HeroEditor4D character renders and animates correctly in a simple URP 2D scene
+- [x] HeroEditor4D loads and renders correctly in the OverPower Unity 6 / URP 2D project
+- [x] No critical package/compiler/shader error remains
 - [x] No vendor package is referenced by Domain/Application code
 
 ---
