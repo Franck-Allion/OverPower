@@ -21,5 +21,7 @@ EditorBuildSettings:
     path: Assets/OverPower/Scenes/MetaProgression.unity
     guid: f087e3198c4a05142a65b90d27c887c3
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 8c35cfe200d808b439fe255e1fa6adfa, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: d70577d6104afcd40bf047fc683200cd, type: 2}
   m_UseUCBPForAssetBundles: 0

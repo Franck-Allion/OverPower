@@ -8,6 +8,7 @@ namespace OverPower.Unity.Presentation.MainMenu
     public class MainMenuPresenter : MonoBehaviour
     {
         [SerializeField] private Button playButton;
+        [SerializeField] private Button languageButton;
 
         private void Start()
         {
@@ -19,6 +20,12 @@ namespace OverPower.Unity.Presentation.MainMenu
             else
             {
                 Debug.LogError("[MainMenuPresenter] Play button reference is missing!");
+            }
+
+            if (languageButton != null)
+            {
+                languageButton.onClick.AddListener(OnLanguageClicked);
+                Debug.Log("[MainMenuPresenter] Language button listener attached.");
             }
         }
 
@@ -46,11 +53,43 @@ namespace OverPower.Unity.Presentation.MainMenu
             }
         }
 
+        private async void OnLanguageClicked()
+        {
+            Debug.Log("[MainMenuPresenter] Language button clicked.");
+            var localeService = GameBootstrap.GetLocaleService();
+            if (localeService != null)
+            {
+                string nextLocale = localeService.CurrentLocale.Identifier.Code == "fr" ? "en" : "fr";
+                if (languageButton != null) languageButton.interactable = false;
+
+                try
+                {
+                    await localeService.SetLocaleAsync(nextLocale);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"[MainMenuPresenter] Error switching language: {ex.Message}");
+                }
+                finally
+                {
+                    if (languageButton != null) languageButton.interactable = true;
+                }
+            }
+            else
+            {
+                Debug.LogError("[MainMenuPresenter] LocaleService is not available.");
+            }
+        }
+
         private void OnDestroy()
         {
             if (playButton != null)
             {
                 playButton.onClick.RemoveListener(OnPlayClicked);
+            }
+            if (languageButton != null)
+            {
+                languageButton.onClick.RemoveListener(OnLanguageClicked);
             }
         }
     }

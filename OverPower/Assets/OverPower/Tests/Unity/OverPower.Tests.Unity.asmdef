@@ -6,7 +6,9 @@
         "UnityEditor.TestRunner",
         "OverPower.Domain",
         "OverPower.Application",
-        "OverPower.Unity"
+        "OverPower.Unity",
+        "Unity.Localization",
+        "Unity.Localization.Editor"
     ],
     "includePlatforms": [
         "Editor"

@@ -226,14 +226,14 @@ Main Menu can initially contain only polished placeholder actions.
 
 ## 0.1.7 Localization foundation
 
-- [ ] Configure French locale
-- [ ] Configure English locale
-- [ ] Create core string table structure
-- [ ] Localize Main Menu text
-- [ ] Add locale selector or development switching mechanism
-- [ ] Establish stable localization key naming convention
-- [ ] Add pseudo-localization workflow if practical
-- [ ] Verify no player-facing string is hardcoded in Main Menu scripts
+- [x] Configure French locale
+- [x] Configure English locale
+- [x] Create core string table structure
+- [x] Localize Main Menu text
+- [x] Add locale selector or development switching mechanism
+- [x] Establish stable localization key naming convention
+- [~] Add pseudo-localization workflow if practical (Deferred to Milestone 0.3 visual pass due to package setup complexity)
+- [x] Verify no player-facing string is hardcoded in Main Menu scripts
 
 ---
 

@@ -8,7 +8,8 @@
         "Unity.InputSystem",
         "Unity.Localization",
         "Unity.TextMeshPro",
-        "Unity.Addressables"
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
