@@ -12,6 +12,15 @@
 UserSettings/
 [Mm]emoryCaptures/
 
+# Third-party tools
+OverPower/Assets/HeroEditor4D/
+OverPower/Assets/DamageNumbersPro/
+OverPower/Assets/Plugins/AllIn1SpriteShader/
+OverPower/Assets/Hovl Studio/
+OverPower/Assets/JMO Assets/
+OverPower/Assets/Plugins/Demigiant/
+OverPower/Assets/HealthBar/
+
 # Asset server cache
 [Aa]ssetStoreTools*
 
