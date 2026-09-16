@@ -137,29 +137,29 @@ Do not introduce optional packages yet unless required by an implemented roadmap
 
 ## 0.1.3 Import owned third-party assets
 
-- [ ] Import HeroEditor4D / Character Editor 4D
-- [ ] Import DOTween
-- [ ] Import DamageNumbersPro
-- [ ] Import AllIn1SpriteShader
-- [ ] Import required Hovl Studio package(s)
-- [ ] Import required JMO package(s)
-- [ ] Record exact package versions in `AssetInventory.md`
-- [ ] Record license/source information
-- [ ] Keep vendor folder structures intact where possible
+- [x] Import HeroEditor4D / Character Editor 4D
+- [x] Import DOTween
+- [x] Import DamageNumbersPro
+- [x] Import AllIn1SpriteShader
+- [x] Import required Hovl Studio package(s)
+- [x] Import required JMO package(s)
+- [x] Record exact package versions in `AssetInventory.md`
+- [x] Record license/source information
+- [x] Keep vendor folder structures intact where possible
 
 ### Technical spike
 
-- [ ] Verify HeroEditor4D renders correctly in URP 2D
-- [ ] Verify idle animation
-- [ ] Verify four-direction orientation/animation
-- [ ] Verify SortingGroup behavior
-- [ ] Verify compatibility with target camera/render setup
-- [ ] Document integration observations
+- [x] Verify HeroEditor4D renders correctly in URP 2D
+- [x] Verify idle animation
+- [x] Verify four-direction orientation/animation
+- [x] Verify SortingGroup behavior
+- [x] Verify compatibility with target camera/render setup
+- [x] Document integration observations
 
 ### Acceptance gate
 
-- [ ] A HeroEditor4D character renders and animates correctly in a simple URP 2D scene
-- [ ] No vendor package is referenced by Domain/Application code
+- [x] A HeroEditor4D character renders and animates correctly in a simple URP 2D scene
+- [x] No vendor package is referenced by Domain/Application code
 
 ---
 

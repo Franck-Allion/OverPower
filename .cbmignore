@@ -4,24 +4,23 @@
 
 # Exclude all proprietary third-party package sources to protect intellectual property,
 # minimize token usage, and ensure AI context focuses strictly on OverPower-owned code.
-# (Note: These directories will be created in future roadmap steps under Assets/ThirdParty/)
-/Assets/ThirdParty/
-/Assets/ThirdParty/HeroEditor4D/
-/Assets/ThirdParty/Demigiant/
-/Assets/ThirdParty/DamageNumbersPro/
-/Assets/ThirdParty/AllIn1SpriteShader/
-/Assets/ThirdParty/HovlStudio/
-/Assets/ThirdParty/JMO/
+/OverPower/Assets/HeroEditor4D/
+/OverPower/Assets/DamageNumbersPro/
+/OverPower/Assets/Plugins/AllIn1SpriteShader/
+/OverPower/Assets/Hovl Studio/
+/OverPower/Assets/JMO Assets/
+/OverPower/Assets/Plugins/Demigiant/
+/OverPower/Assets/HealthBar/
 
 # Exclude generated/local Unity folders
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Ll]ogs/
-/[Bb]uild/
-/[Bb]uilds/
-/UserSettings/
-/[Mm]emoryCaptures/
+/OverPower/[Ll]ibrary/
+/OverPower/[Tt]emp/
+/OverPower/[Oo]bj/
+/OverPower/[Ll]ogs/
+/OverPower/[Bb]uild/
+/OverPower/[Bb]uilds/
+/OverPower/UserSettings/
+/OverPower/[Mm]emoryCaptures/
 
 # Exclude standard IDE, metadata, and local system folders
 /.git/

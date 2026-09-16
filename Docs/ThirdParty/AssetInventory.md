@@ -8,12 +8,12 @@ Every asset integrated into this project must be logged here to ensure legal com
 
 | Asset / Library | Publisher | Purpose | Version | Source | License / EULA | Purchase / ownership status | Integration location | Notes |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Character Editor 4D / HeroEditor4D** | Real-Tuts | Modular character sprite generation and animations | TBD at import | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `Assets/ThirdParty/HeroEditor4D/` | Main character and unit sprite/animation foundation. |
-| **DOTween (Digital Octopus Tween)** | Demigiant | High-performance programmatic animation/tweening engine | TBD at import | Demigiant Website / Asset Store | Standard Asset Store EULA / MIT | Free / Pro option TBD | `Assets/ThirdParty/Demigiant/` | Used for UI and juice effects. |
-| **DamageNumbersPro** | Ekincan Tas | High-performance popping combat numbers and text effects | TBD at import | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `Assets/ThirdParty/DamageNumbersPro/` | Handles combat text rendering and visual feedback. |
-| **AllIn1SpriteShader** | Seaside Studios | Comprehensive suite of 2D shaders and visual effects | TBD at import | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `Assets/ThirdParty/AllIn1SpriteShader/` | Sprite-based special effects and outline shaders. |
-| **Hovl Studio assets** | Hovl Studio | High-quality visual effects (VFX) prefabs and textures | TBD at import | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `Assets/ThirdParty/HovlStudio/` | Spell and combat particles/VFX. |
-| **JMO assets** | Jean Moreno (JMO) | Particle/UI helper tools and visual effect packs (e.g., Cartoon FX) | TBD at import | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `Assets/ThirdParty/JMO/` | General combat VFX and particle optimization utilities. |
+| **Character Editor 4D / HeroEditor4D** | Real-Tuts / Hippo Games | Modular character sprite generation and animations | `7.7` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/HeroEditor4D/` | Main character and unit sprite/animation foundation. |
+| **DOTween (Digital Octopus Tween)** | Demigiant (Daniele Giardini) | High-performance programmatic animation/tweening engine | `1.3.030` | Asset Store | Standard Asset Store EULA | Free Edition | `OverPower/Assets/Plugins/Demigiant/` | Used for UI and juice effects. |
+| **DamageNumbersPro** | Ekincan Tas | High-performance popping combat numbers and text effects | `4.56` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/DamageNumbersPro/` | Handles combat text rendering and visual feedback. |
+| **AllIn1SpriteShader** | Seaside Studios | Comprehensive suite of 2D shaders and visual effects | `4.68` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/Plugins/AllIn1SpriteShader/` | Sprite-based special effects and outline shaders. |
+| **Hovl Studio assets (AAA Projectiles Vol 1)** | Hovl Studio (Vladyslav Horobets) | High-quality projectile particle effects and textures | `Version not exposed by imported asset` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/Hovl Studio/` | Spell and combat particles/VFX. |
+| **JMO assets (Cartoon FX Remaster)** | Jean Moreno (JMO) | Particle/UI helper tools and visual effect packs (Cartoon FX) | `Version not exposed by imported asset` | Unity Asset Store | Standard Unity Asset Store EULA | Purchased | `OverPower/Assets/JMO Assets/` | General combat VFX and particle optimization utilities. |
 
 ---
 

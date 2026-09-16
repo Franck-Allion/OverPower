@@ -145,19 +145,19 @@ The validation process has been successfully executed with the running Unity Edi
 ### Exclusions & Privacy Policy for Proprietary Packages
 To protect commercial intellectual property and prevent cognitive pollution of the AI's context window, **proprietary third-party package sources must not be indexed by `codebase-memory-mcp`.**
 
-The committed [`.cbmignore`](../../.cbmignore) explicitly excludes the following directories (to be imported in future roadmap steps):
-*   `/Assets/ThirdParty/`
-*   `/Assets/ThirdParty/HeroEditor4D/`
-*   `/Assets/ThirdParty/Demigiant/`
-*   `/Assets/ThirdParty/DamageNumbersPro/`
-*   `/Assets/ThirdParty/AllIn1SpriteShader/`
-*   `/Assets/ThirdParty/HovlStudio/`
-*   `/Assets/ThirdParty/JMO/`
+The committed [`.cbmignore`](../../.cbmignore) explicitly excludes the following directories:
+*   `/OverPower/Assets/HeroEditor4D/`
+*   `/OverPower/Assets/DamageNumbersPro/`
+*   `/OverPower/Assets/Plugins/AllIn1SpriteShader/`
+*   `/OverPower/Assets/Hovl Studio/`
+*   `/OverPower/Assets/JMO Assets/`
+*   `/OverPower/Assets/Plugins/Demigiant/`
+*   `/OverPower/Assets/HealthBar/`
 
 ### Verification Procedure
 1.  Start the MCP server with the `--ui` flag to visualize the graph.
 2.  In your AI terminal, ask: *"Search for the UnitStack class definition and its fields."*
-3.  **Expected Outcome:** The indexer must query the local SQLite knowledge graph, return the structural definition rapidly (without loading the entire file if it's large), and must confirm that no matches are found inside `Assets/ThirdParty/` folders.
+3.  **Expected Outcome:** The indexer must query the local SQLite knowledge graph, return the structural definition rapidly (without loading the entire file if it's large), and must confirm that no matches are found inside the ignored third-party asset folders.
 
 ---
 
