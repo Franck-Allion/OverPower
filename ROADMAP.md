@@ -165,34 +165,34 @@ Do not introduce optional packages yet unless required by an implemented roadmap
 
 ## 0.1.4 Create project-owned structure
 
-- [ ] Create `Assets/OverPower/`
-- [ ] Create structure defined by `PROJECT_STRUCTURE.md`
-- [ ] Create initial namespaces
-- [ ] Create initial Assembly Definitions:
-  - [ ] `OverPower.Domain`
-  - [ ] `OverPower.Application`
-  - [ ] `OverPower.Infrastructure`
-  - [ ] `OverPower.Unity`
-  - [ ] `OverPower.Unity.Integration.HeroEditor4D`
-  - [ ] Domain test assembly
-  - [ ] Application test assembly
-- [ ] Validate dependency direction
-- [ ] Ensure Domain does not reference `UnityEngine`
+- [x] Create `Assets/OverPower/`
+- [x] Create structure defined by `PROJECT_STRUCTURE.md`
+- [x] Create initial namespaces
+- [x] Create initial Assembly Definitions:
+  - [x] `OverPower.Domain`
+  - [x] `OverPower.Application`
+  - [x] `OverPower.Infrastructure`
+  - [x] `OverPower.Unity`
+  - [x] `OverPower.Unity.Integration.HeroEditor4D`
+  - [x] Domain test assembly
+  - [x] Application test assembly
+- [x] Validate dependency direction
+- [x] Ensure Domain does not reference `UnityEngine`
 
 ---
 
 ## 0.1.5 Create base scene flow
 
-- [ ] `Bootstrap`
-- [ ] `MainMenu`
-- [ ] `Exploration`
-- [ ] `Battle`
-- [ ] `MetaProgression`
-- [ ] Create explicit scene identifiers/configuration
-- [ ] Create minimal Game Flow service
-- [ ] Avoid duplicated persistent service objects
-- [ ] Add clean scene transition abstraction
-- [ ] Support cancellation during async scene transitions
+- [x] `Bootstrap`
+- [x] `MainMenu`
+- [x] `Exploration`
+- [x] `Battle`
+- [x] `MetaProgression`
+- [x] Create explicit scene identifiers/configuration
+- [x] Create minimal Game Flow service
+- [x] Avoid duplicated persistent service objects
+- [x] Add clean scene transition abstraction
+- [x] Support cancellation during async scene transitions
 
 ### Playable checkpoint
 
