@@ -11,6 +11,10 @@
 [Bb]uilds/
 UserSettings/
 [Mm]emoryCaptures/
+DotNet/OverPower.Application/bin/
+DotNet/OverPower.Application.Tests/bin/
+DotNet/OverPower.Domain/bin/
+DotNet/OverPower.Domain.Tests/bin/
 
 # Third-party tools
 OverPower/Assets/HeroEditor4D/
@@ -44,6 +48,7 @@ ExportedObj/
 *.opendb
 *.tlog
 *.dll
+*.exe
 
 # Unity 3D Generated File On Crash Reports
 sysinfo.txt
