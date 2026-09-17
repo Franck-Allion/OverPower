@@ -36,8 +36,8 @@ namespace OverPower.Tests.Application
             await controller.StartupAsync();
 
             // Assert
-            Assert.AreEqual(GameSceneId.MainMenu, navigator.RequestedScene, "Startup must load MainMenu.");
-            Assert.AreEqual(1, navigator.LoadCount, "Load should be called exactly once.");
+            Assert.That(navigator.RequestedScene, Is.EqualTo(GameSceneId.MainMenu), "Startup must load MainMenu.");
+            Assert.That(navigator.LoadCount, Is.EqualTo(1), "Load should be called exactly once.");
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace OverPower.Tests.Application
             await controller.StartNewRunAsync();
 
             // Assert
-            Assert.AreEqual(GameSceneId.Exploration, navigator.RequestedScene, "StartNewRun must load Exploration.");
+            Assert.That(navigator.RequestedScene, Is.EqualTo(GameSceneId.Exploration), "StartNewRun must load Exploration.");
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace OverPower.Tests.Application
             await controller.StartupAsync(cts.Token);
 
             // Assert
-            Assert.AreEqual(cts.Token, navigator.PropagatedToken, "Cancellation token must be propagated to the navigator.");
+            Assert.That(navigator.PropagatedToken, Is.EqualTo(cts.Token), "Cancellation token must be propagated to the navigator.");
         }
     }
 }

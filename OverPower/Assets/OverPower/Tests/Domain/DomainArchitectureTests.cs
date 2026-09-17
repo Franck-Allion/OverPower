@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Reflection;
 using System.Linq;
 
@@ -17,8 +18,10 @@ namespace OverPower.Tests.Domain
             AssemblyName[] referencedAssemblies = domainAssembly.GetReferencedAssemblies();
 
             // Check if any referenced assembly contains UnityEngine or UnityEditor
-            bool referencesUnity = referencedAssemblies.Any(a => 
-                a.Name.StartsWith("UnityEngine") || a.Name.StartsWith("UnityEditor"));
+            bool referencesUnity = referencedAssemblies.Any(a =>
+                a.Name != null &&
+                (a.Name.StartsWith("UnityEngine", StringComparison.Ordinal) ||
+                 a.Name.StartsWith("UnityEditor", StringComparison.Ordinal)));
 
             Assert.IsFalse(referencesUnity, 
                 "Architectural Constraint Violation: OverPower.Domain must not reference UnityEngine or UnityEditor.");
