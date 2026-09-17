@@ -1,5 +1,11 @@
 # OverPower
 
+[![Core CI](https://github.com/Franck-Allion/OverPower/actions/workflows/core-ci.yml/badge.svg)](https://github.com/Franck-Allion/OverPower/actions/workflows/core-ci.yml)
+![Unity](https://img.shields.io/badge/Unity-6.3-black)
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
+![Platform](https://img.shields.io/badge/Platform-Windows-blue)
+![Languages](https://img.shields.io/badge/Localization-EN%20%7C%20FR-informational)
+
 A 2D roguelite tactical RPG developed with Unity 6.
 
 ---
@@ -35,7 +41,7 @@ OverPower is built using the following modern Unity tech stack:
 *   **Language:** Pure/testable C# Domain architecture (independent of Unity's API)
 *   **Target Platform:** Windows PC
 *   **Supported Languages:** French (FR) + English (EN)
-*   **Infrastructure:** GitHub CI / Actions planned for domain compilation, unit tests, and automated releases
+*   **Infrastructure:** GitHub Actions Core CI validates pure C# Domain/Application build and tests automatically on push/PR
 *   **Methodology:** AI-assisted development using Codex/Gemini under strict, versioned project contracts
 
 ---
