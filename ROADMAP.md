@@ -279,19 +279,19 @@ Main Menu can initially contain only polished placeholder actions.
 - [x] Deterministic shuffle
 - [x] Tests verifying identical seed → identical sequence
 - [x] Tests verifying known seed outputs where implementation stability matters
-- [ ] Define seed ownership for a Run
-- [ ] Define derivation/substreams if needed to avoid unrelated systems changing each other's sequence
+- [x] Define seed ownership for a Run
+- [x] Define derivation/substreams if needed to avoid unrelated systems changing each other's sequence
 - [ ] Log Run seed through logging abstraction
 
 ---
 
 ## 0.2.3 Logging abstraction
 
-- [ ] Define `IGameLogger`
-- [ ] Null logger
-- [ ] Test logger
+- [x] Define `IGameLogger`
+- [x] Null logger
+- [x] Test logger
 - [ ] Unity logger adapter
-- [ ] Semantic category conventions
+- [x] Semantic category conventions
 - [ ] Development/release verbosity policy
 
 ---

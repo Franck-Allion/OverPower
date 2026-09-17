@@ -15,6 +15,8 @@ DotNet/OverPower.Application/bin/
 DotNet/OverPower.Application.Tests/bin/
 DotNet/OverPower.Domain/bin/
 DotNet/OverPower.Domain.Tests/bin/
+DotNet/OverPower.Infrastructure/bin/
+DotNet/OverPower.Infrastructure.Tests/bin/
 
 # Third-party tools
 OverPower/Assets/HeroEditor4D/

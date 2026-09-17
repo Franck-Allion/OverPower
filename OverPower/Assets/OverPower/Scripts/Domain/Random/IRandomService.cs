@@ -25,5 +25,13 @@ namespace OverPower.Domain.Random
         /// <typeparam name="T">The type of elements in the list.</typeparam>
         /// <param name="items">The list to shuffle (must not be null).</param>
         void Shuffle<T>(IList<T> items);
+
+        /// <summary>
+        /// Derives a completely independent, deterministic named substream from the current random service
+        /// without consuming any random states of the parent.
+        /// </summary>
+        /// <param name="streamId">The stable, semantic identifier of the substream (must not be null or blank).</param>
+        /// <returns>A new deterministic random service initialized with the derived seed.</returns>
+        IRandomService CreateSubstream(string streamId);
     }
 }

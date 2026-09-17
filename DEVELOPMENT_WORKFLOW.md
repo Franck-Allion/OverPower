@@ -36,6 +36,9 @@ Run applicable checks: `dotnet build`, `dotnet test`. For Unity work also verify
 ## Unity source control
 Visible Meta Files + Force Text. Version `.meta`. Do not regenerate GUIDs without reason. Do not move third-party assets unnecessarily.
 
+### Application versioning
+Unity `PlayerSettings.bundleVersion` is the application-version source of truth. The README version badge must be updated manually whenever `bundleVersion` changes.
+
 ## Git LFS
 Use for large binaries where appropriate, e.g. PSD/PSB, WAV/MP3/OGG, FBX, MP4/MOV, ZIP and large PNGs when justified. Do not force every small PNG into LFS.
 

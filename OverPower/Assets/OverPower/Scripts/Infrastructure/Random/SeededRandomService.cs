@@ -14,10 +14,12 @@ namespace OverPower.Infrastructure.Random
     /// </remarks>
     public sealed class SeededRandomService : IRandomService
     {
+        private readonly ulong _seed;
         private ulong _state;
 
         public SeededRandomService(ulong seed)
         {
+            _seed = seed;
             _state = unchecked(seed + 1442695040888963407UL);
             NextUInt32();
         }
@@ -61,9 +63,16 @@ namespace OverPower.Infrastructure.Random
                 throw new ArgumentOutOfRangeException(nameof(maxExclusive), "Upper bound must be strictly greater than lower bound.");
             }
 
+            // Using wider long arithmetic to safely calculate range size without overflow (e.g. max - min).
+            // range size fits perfectly inside uint.MaxValue when max = int.MaxValue and min = int.MinValue.
             long range = (long)maxExclusive - minInclusive;
             uint bound = (uint)range;
-            return minInclusive + (int)NextUInt32(bound);
+
+            // Unchecked addition and signed casting are intentional here.
+            // Under standard C# unchecked behavior, if (int)NextUInt32(bound) overflows, the subsequent
+            // addition minInclusive + value correctly wraps around, producing an unbiased, mathematically
+            // correct signed integer in the exact requested range [minInclusive, maxExclusive).
+            return unchecked(minInclusive + (int)NextUInt32(bound));
         }
 
         public void Shuffle<T>(IList<T> items)
@@ -81,6 +90,35 @@ namespace OverPower.Infrastructure.Random
                 items[i] = items[j];
                 items[j] = temp;
             }
+        }
+
+        public IRandomService CreateSubstream(string streamId)
+        {
+            if (streamId == null)
+            {
+                throw new ArgumentNullException(nameof(streamId), "Substream identifier cannot be null.");
+            }
+            if (string.IsNullOrWhiteSpace(streamId))
+            {
+                throw new ArgumentException("Substream identifier cannot be empty or whitespace.", nameof(streamId));
+            }
+
+            // Derive seed using FNV-1a 64-bit and SplitMix64 finalization
+            ulong hash = 14695981039346656037UL;
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(streamId);
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                hash = unchecked((hash ^ bytes[i]) * 1099511628211UL);
+            }
+
+            ulong combined = unchecked(hash ^ _seed);
+
+            // SplitMix64 finalization step
+            combined = unchecked((combined ^ (combined >> 30)) * 0xbf58476d1ce4e5b9UL);
+            combined = unchecked((combined ^ (combined >> 27)) * 0x94d049bb133111ebUL);
+            ulong childSeed = unchecked(combined ^ (combined >> 31));
+
+            return new SeededRandomService(childSeed);
         }
     }
 }

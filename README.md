@@ -1,6 +1,7 @@
 # OverPower
 
 [![Core CI](https://github.com/Franck-Allion/OverPower/actions/workflows/core-ci.yml/badge.svg)](https://github.com/Franck-Allion/OverPower/actions/workflows/core-ci.yml)
+![Version](https://img.shields.io/badge/version-0.1.0-blue)
 ![Unity](https://img.shields.io/badge/Unity-6.3-black)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
 ![Platform](https://img.shields.io/badge/Platform-Windows-blue)
