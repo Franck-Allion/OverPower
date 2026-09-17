@@ -78,6 +78,25 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Unity Technical Foundation & Package Baseline Established (Roadmap 0.1.1 & 0.1.2 complete)**
+> **Status: Unity Technical Foundation, Architecture & CI Pipeline Established (Roadmap 0.1.1 to 0.1.8 complete)**
 >
-> The Unity 6 project baseline has been created under `<repository>/OverPower/`. The URP 2D renderer is fully configured, target platform Windows PC is verified, version control serialization settings are set, AnkleBreaker MCP integration is active, and first-party Unity packages (Input System, Localization, Addressables, TextMeshPro support, Unity Test Framework, 2D/URP packages) are installed and verified compatible.
+> The project baseline is fully established. All initial Unity-independent assemblies are created, custom Input System actions and Unity locale switching (French & English) are verified, and an automated .NET 8 CI compilation/test pipeline has been integrated via GitHub Actions to protect the pure C# decoupling of our Domain and Application layers.
+
+---
+
+## Core Build & Tests
+
+OverPower implements a completely decoupled Domain-driven architecture. Developers can restore, build, and test the pure core of the application completely outside of Unity using standard .NET commands:
+
+```powershell
+# 1. Restore lightweight NuGet packages
+dotnet restore OverPower.Core.sln
+
+# 2. Compile the core solution in Release configuration
+dotnet build OverPower.Core.sln --configuration Release --no-restore
+
+# 3. Run all pure C# unit tests
+dotnet test OverPower.Core.sln --configuration Release --no-build
+```
+
+For more details on our CI structure and boundaries, see [`Docs/Development/CI.md`](Docs/Development/CI.md).

@@ -239,21 +239,21 @@ Main Menu can initially contain only polished placeholder actions.
 
 ## 0.1.8 CI foundation
 
-- [ ] Create GitHub Actions workflow
-- [ ] Restore dependencies
-- [ ] Compile Unity-independent C# Domain/Application test solution
-- [ ] Run unit tests
-- [ ] Fail build on test failure
-- [ ] Add CI documentation
-- [ ] Keep full Unity build outside mandatory primary CI
+- [x] Create GitHub Actions workflow
+- [x] Restore dependencies
+- [x] Compile Unity-independent C# Domain/Application test solution
+- [x] Run unit tests
+- [x] Fail build on test failure
+- [x] Add CI documentation
+- [x] Keep full Unity build outside mandatory primary CI
 
 ### Acceptance gate
 
-- [ ] Fresh clone documentation is sufficient to understand setup
-- [ ] `dotnet build` succeeds for testable C# layer
-- [ ] `dotnet test` succeeds
-- [ ] GitHub Actions is green
-- [ ] Unity project opens without compilation errors
+- [x] Fresh clone documentation is sufficient to understand setup
+- [x] `dotnet build` succeeds for testable C# layer
+- [x] `dotnet test` succeeds
+- [~] GitHub Actions is green (Provisional — pending remote push of the newly established core-ci.yml workflow)
+- [x] Unity project opens without compilation errors
 
 ---
 

@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using System.Reflection;
 using System.Linq;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -10,27 +9,19 @@ namespace OverPower.Tests.Unity
     [TestFixture]
     public class UnityLocalizationTests
     {
-        private LocalizationSettings GetActiveSettings()
+        [SetUp]
+        public void SetUp()
         {
-            var settings = UnityEditor.Localization.LocalizationEditorSettings.ActiveLocalizationSettings;
-            Assert.IsNotNull(settings, "ActiveLocalizationSettings must be configured and not null.");
-            return settings;
-        }
-
-        private ILocalesProvider GetLocalesProvider(LocalizationSettings settings)
-        {
-            var field = typeof(LocalizationSettings).GetField("m_AvailableLocales", BindingFlags.NonPublic | BindingFlags.Instance);
-            Assert.IsNotNull(field, "m_AvailableLocales field must exist.");
-            var provider = field.GetValue(settings) as ILocalesProvider;
-            Assert.IsNotNull(provider, "ILocalesProvider must be assigned.");
-            return provider;
+            // Force synchronous initialization of the Unity Localization system
+            var op = LocalizationSettings.InitializationOperation;
+            op.WaitForCompletion();
         }
 
         [Test]
         public void Localization_EnglishAndFrench_LocalesAreConfigured()
         {
-            var settings = GetActiveSettings();
-            var provider = GetLocalesProvider(settings);
+            var provider = LocalizationSettings.AvailableLocales;
+            Assert.IsNotNull(provider, "AvailableLocales provider must be configured.");
 
             var enLocale = provider.Locales.FirstOrDefault(l => l.Identifier.Code == "en");
             var frLocale = provider.Locales.FirstOrDefault(l => l.Identifier.Code == "fr");
@@ -42,11 +33,8 @@ namespace OverPower.Tests.Unity
         [Test]
         public void Localization_CoreKeys_ExistAndAreTranslated()
         {
-            var settings = GetActiveSettings();
-            var provider = GetLocalesProvider(settings);
-
-            var collection = UnityEditor.Localization.LocalizationEditorSettings.GetStringTableCollection("UI.Core");
-            Assert.IsNotNull(collection, "UI.Core string table collection must exist.");
+            var stringDatabase = LocalizationSettings.StringDatabase;
+            Assert.IsNotNull(stringDatabase, "StringDatabase must be configured.");
 
             var requiredKeys = new string[] {
                 "ui.main_menu.title",
@@ -60,18 +48,15 @@ namespace OverPower.Tests.Unity
 
             foreach (var localeCode in localeCodes)
             {
-                var locale = provider.Locales.FirstOrDefault(l => l.Identifier.Code == localeCode);
+                var locale = LocalizationSettings.AvailableLocales.Locales.FirstOrDefault(l => l.Identifier.Code == localeCode);
                 Assert.IsNotNull(locale, $"Locale '{localeCode}' must be available.");
-
-                var table = collection.GetTable(locale.Identifier) as StringTable;
-                Assert.IsNotNull(table, $"StringTable for locale '{localeCode}' must exist in UI.Core collection.");
 
                 foreach (var key in requiredKeys)
                 {
-                    var entry = table.GetEntry(key);
-                    Assert.IsNotNull(entry, $"Key '{key}' must exist in table '{localeCode}'.");
-                    Assert.IsFalse(string.IsNullOrEmpty(entry.LocalizedValue),
-                        $"Key '{key}' in table '{localeCode}' must have a non-empty localized value.");
+                    string value = stringDatabase.GetLocalizedString("UI.Core", key, locale);
+
+                    Assert.IsFalse(string.IsNullOrEmpty(value),
+                        $"Key '{key}' in locale '{localeCode}' must have a non-empty translation.");
                 }
             }
         }
