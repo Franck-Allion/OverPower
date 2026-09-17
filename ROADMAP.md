@@ -273,12 +273,12 @@ Main Menu can initially contain only polished placeholder actions.
 
 ## 0.2.2 Deterministic random service
 
-- [ ] Define `IRandomService`
-- [ ] Seeded implementation
-- [ ] Deterministic integer/range selection
-- [ ] Deterministic shuffle
-- [ ] Tests verifying identical seed → identical sequence
-- [ ] Tests verifying known seed outputs where implementation stability matters
+- [x] Define `IRandomService`
+- [x] Seeded implementation
+- [x] Deterministic integer/range selection
+- [x] Deterministic shuffle
+- [x] Tests verifying identical seed → identical sequence
+- [x] Tests verifying known seed outputs where implementation stability matters
 - [ ] Define seed ownership for a Run
 - [ ] Define derivation/substreams if needed to avoid unrelated systems changing each other's sequence
 - [ ] Log Run seed through logging abstraction
