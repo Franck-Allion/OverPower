@@ -252,7 +252,7 @@ Main Menu can initially contain only polished placeholder actions.
 - [x] Fresh clone documentation is sufficient to understand setup
 - [x] `dotnet build` succeeds for testable C# layer
 - [x] `dotnet test` succeeds
-- [~] GitHub Actions is green (Provisional — pending remote push of the newly established core-ci.yml workflow)
+- [x] GitHub Actions is green (Verified green CI run #2 for commit 7213354)
 - [x] Unity project opens without compilation errors
 
 ---
