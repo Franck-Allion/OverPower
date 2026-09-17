@@ -261,13 +261,13 @@ Main Menu can initially contain only polished placeholder actions.
 
 ## 0.2.1 Shared Domain primitives
 
-- [ ] Stable `ContentId` value object or equivalent validation strategy
-- [ ] Define ID format rules
-- [ ] Detect invalid IDs
-- [ ] Detect duplicate registered content IDs
-- [ ] Add tests
-- [ ] Add result/error primitives without external Result library
-- [ ] Establish invariant/fail-fast helpers where genuinely useful
+- [x] Stable `ContentId` value object or equivalent validation strategy
+- [x] Define ID format rules
+- [x] Detect invalid IDs
+- [x] Detect duplicate registered content IDs
+- [x] Add tests
+- [x] Add result/error primitives without external Result library
+- [x] Establish invariant/fail-fast strategy using standard exceptions where appropriate
 
 ---
 

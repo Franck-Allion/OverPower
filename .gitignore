@@ -43,6 +43,7 @@ ExportedObj/
 *.pdb
 *.opendb
 *.tlog
+*.dll
 
 # Unity 3D Generated File On Crash Reports
 sysinfo.txt
