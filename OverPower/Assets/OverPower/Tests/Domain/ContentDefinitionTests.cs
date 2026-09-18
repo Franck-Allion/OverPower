@@ -1,8 +1,13 @@
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OverPower.Domain.Content;
 using OverPower.Domain.Content.Abilities;
 using OverPower.Domain.Content.Resources;
+using OverPower.Domain.Content.Units;
+using OverPower.Domain.Content.Spells;
+using OverPower.Domain.Content.Artifacts;
 using OverPower.Domain.Localization;
 
 namespace OverPower.Tests.Domain
@@ -136,24 +141,279 @@ namespace OverPower.Tests.Domain
         }
 
         [Test]
-        public void DuplicateRegistration_IsRejectedByRegistry()
+        public void UnitDefinition_ValidConstruction_SucceedsAndPreservesStableIdsMetadataAndStats()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+            var nameKey = new LocalizationKey("unit.guardian.name");
+            var descKey = new LocalizationKey("unit.guardian.desc");
+            var ability1 = ContentId.Create("ability.guardian_shield").Value;
+            var ability2 = ContentId.Create("ability.taunt").Value;
+            var abilities = new List<ContentId> { ability1, ability2 };
+
+            // Act
+            var unit = new UnitDefinition(id, nameKey, descKey, 15, 2, 5, abilities);
+
+            // Assert
+            Assert.That(unit.Id, Is.SameAs(id));
+            Assert.That(unit.Id.Value, Is.EqualTo("unit.guardian"));
+            Assert.That(unit.NameKey, Is.EqualTo(nameKey));
+            Assert.That(unit.DescriptionKey, Is.EqualTo(descKey));
+            Assert.That(unit.MaxHpPerMember, Is.EqualTo(15));
+            Assert.That(unit.Armor, Is.EqualTo(2));
+            Assert.That(unit.Attack, Is.EqualTo(5));
+            Assert.That(unit.AbilityIds.Count, Is.EqualTo(2));
+            Assert.That(unit.AbilityIds[0], Is.SameAs(ability1));
+            Assert.That(unit.AbilityIds[1], Is.SameAs(ability2));
+        }
+
+        [Test]
+        public void UnitDefinition_NullId_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new UnitDefinition(
+                null!, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                10, 0, 1, 
+                Enumerable.Empty<ContentId>()));
+        }
+
+        [Test]
+        public void UnitDefinition_InvalidPrefix_ThrowsArgumentException()
+        {
+            // Arrange
+            var id = ContentId.Create("ability.fire").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() => new UnitDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                10, 0, 1, 
+                Enumerable.Empty<ContentId>()));
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        public void UnitDefinition_InvalidHp_ThrowsArgumentOutOfRangeException(int hp)
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => new UnitDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                hp, 0, 1, 
+                Enumerable.Empty<ContentId>()));
+        }
+
+        [Test]
+        public void UnitDefinition_NegativeArmor_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => new UnitDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                10, -1, 1, 
+                Enumerable.Empty<ContentId>()));
+        }
+
+        [Test]
+        public void UnitDefinition_NegativeAttack_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => new UnitDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                10, 0, -5, 
+                Enumerable.Empty<ContentId>()));
+        }
+
+        [Test]
+        public void UnitDefinition_NullAbilitiesCollection_ThrowsArgumentNullException()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new UnitDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                10, 0, 1, 
+                null!));
+        }
+
+        [Test]
+        public void UnitDefinition_CollectionWithNullReferences_ThrowsArgumentException()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+            var listWithNull = new List<ContentId?> { ContentId.Create("ability.taunt").Value, null };
+
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() => new UnitDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                10, 0, 1, 
+                listWithNull!));
+        }
+
+        [Test]
+        public void UnitDefinition_CollectionImmutability_ProtectsAgainstExternalMutation()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+            var mutableList = new List<ContentId> { ContentId.Create("ability.taunt").Value };
+            var unit = new UnitDefinition(id, new LocalizationKey("n"), new LocalizationKey("d"), 10, 0, 1, mutableList);
+
+            // Act
+            mutableList.Add(ContentId.Create("ability.shield").Value);
+
+            // Assert
+            Assert.That(unit.AbilityIds.Count, Is.EqualTo(1));
+            Assert.That(unit.AbilityIds[0].Value, Is.EqualTo("ability.taunt"));
+        }
+
+        [Test]
+        public void SpellDefinition_ValidConstruction_SucceedsAndPreservesStableIdsAndStats()
+        {
+            // Arrange
+            var id = ContentId.Create("spell.fireball").Value;
+            var nameKey = new LocalizationKey("spell.fireball.name");
+            var descKey = new LocalizationKey("spell.fireball.desc");
+
+            // Act
+            var spell = new SpellDefinition(id, nameKey, descKey, 3);
+
+            // Assert
+            Assert.That(spell.Id, Is.SameAs(id));
+            Assert.That(spell.Id.Value, Is.EqualTo("spell.fireball"));
+            Assert.That(spell.NameKey, Is.EqualTo(nameKey));
+            Assert.That(spell.DescriptionKey, Is.EqualTo(descKey));
+            Assert.That(spell.ManaCost, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void SpellDefinition_NullId_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new SpellDefinition(
+                null!, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                2));
+        }
+
+        [Test]
+        public void SpellDefinition_InvalidPrefix_ThrowsArgumentException()
+        {
+            // Arrange
+            var id = ContentId.Create("unit.guardian").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() => new SpellDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                2));
+        }
+
+        [Test]
+        public void SpellDefinition_NegativeManaCost_ThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            var id = ContentId.Create("spell.fireball").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => new SpellDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                -1));
+        }
+
+        [Test]
+        public void ArtifactDefinition_ValidConstruction_SucceedsAndPreservesStableIdsAndMetadata()
+        {
+            // Arrange
+            var id = ContentId.Create("artifact.ancient_ring").Value;
+            var nameKey = new LocalizationKey("artifact.ancient_ring.name");
+            var descKey = new LocalizationKey("artifact.ancient_ring.desc");
+
+            // Act
+            var artifact = new ArtifactDefinition(id, nameKey, descKey);
+
+            // Assert
+            Assert.That(artifact.Id, Is.SameAs(id));
+            Assert.That(artifact.Id.Value, Is.EqualTo("artifact.ancient_ring"));
+            Assert.That(artifact.NameKey, Is.EqualTo(nameKey));
+            Assert.That(artifact.DescriptionKey, Is.EqualTo(descKey));
+        }
+
+        [Test]
+        public void ArtifactDefinition_NullId_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new ArtifactDefinition(
+                null!, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d")));
+        }
+
+        [Test]
+        public void ArtifactDefinition_InvalidPrefix_ThrowsArgumentException()
+        {
+            // Arrange
+            var id = ContentId.Create("spell.fireball").Value;
+
+            // Act & Assert
+            Assert.Throws<ArgumentException>(() => new ArtifactDefinition(
+                id, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d")));
+        }
+
+        [Test]
+        public void DuplicateRegistration_RejectsAllDefinitionCategories()
         {
             // Arrange
             var registry = new ContentIdRegistry();
-            var id1 = ContentId.Create("ability.fire").Value;
-            var id2 = ContentId.Create("ability.fire").Value;
-
-            var ability1 = new AbilityDefinition(id1, new LocalizationKey("name"), new LocalizationKey("desc"));
-            var ability2 = new AbilityDefinition(id2, new LocalizationKey("name"), new LocalizationKey("desc"));
+            var unitId = ContentId.Create("unit.warrior").Value;
+            var spellId = ContentId.Create("spell.heal").Value;
+            var artifactId = ContentId.Create("artifact.crown").Value;
 
             // Act
-            var result1 = registry.Register(ability1.Id);
-            var result2 = registry.Register(ability2.Id);
+            var resUnit1 = registry.Register(unitId);
+            var resUnit2 = registry.Register(unitId);
+
+            var resSpell1 = registry.Register(spellId);
+            var resSpell2 = registry.Register(spellId);
+
+            var resArtifact1 = registry.Register(artifactId);
+            var resArtifact2 = registry.Register(artifactId);
 
             // Assert
-            Assert.That(result1.IsSuccess, Is.True);
-            Assert.That(result2.IsFailure, Is.True);
-            Assert.That(result2.Error.Code, Is.EqualTo("content_id.duplicate"));
+            Assert.That(resUnit1.IsSuccess, Is.True);
+            Assert.That(resUnit2.IsFailure, Is.True);
+
+            Assert.That(resSpell1.IsSuccess, Is.True);
+            Assert.That(resSpell2.IsFailure, Is.True);
+
+            Assert.That(resArtifact1.IsSuccess, Is.True);
+            Assert.That(resArtifact2.IsFailure, Is.True);
         }
     }
 }
