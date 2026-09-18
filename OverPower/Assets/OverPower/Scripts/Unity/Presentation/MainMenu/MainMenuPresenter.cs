@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using OverPower.Application;
 using OverPower.Unity.Bootstrap;
+using OverPower.Domain.Run;
 
 namespace OverPower.Unity.Presentation.MainMenu
 {
@@ -39,7 +40,12 @@ namespace OverPower.Unity.Presentation.MainMenu
 
                 try
                 {
-                    await gameFlow.StartNewRunAsync();
+                    var systemRandom = new System.Random();
+                    byte[] buffer = new byte[8];
+                    systemRandom.NextBytes(buffer);
+                    ulong seedValue = System.BitConverter.ToUInt64(buffer, 0);
+                    RunSeed seed = new RunSeed(seedValue);
+                    await gameFlow.StartNewRunAsync(seed);
                 }
                 catch (System.Exception ex)
                 {

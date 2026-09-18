@@ -281,7 +281,7 @@ Main Menu can initially contain only polished placeholder actions.
 - [x] Tests verifying known seed outputs where implementation stability matters
 - [x] Define seed ownership for a Run
 - [x] Define derivation/substreams if needed to avoid unrelated systems changing each other's sequence
-- [ ] Log Run seed through logging abstraction
+- [x] Log Run seed through logging abstraction
 
 ---
 
@@ -290,9 +290,9 @@ Main Menu can initially contain only polished placeholder actions.
 - [x] Define `IGameLogger`
 - [x] Null logger
 - [x] Test logger
-- [ ] Unity logger adapter
+- [x] Unity logger adapter
 - [x] Semantic category conventions
-- [ ] Development/release verbosity policy
+- [x] Development/release verbosity policy
 
 ---
 

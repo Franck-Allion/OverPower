@@ -17,6 +17,11 @@ namespace OverPower.Tests.Unity
             var navigator = new UnitySceneNavigator();
             var cts = new CancellationTokenSource();
 
+            // Since this test runs in EditMode where SceneManager.LoadSceneAsync throws play-mode only errors,
+            // we must expect the resulting console errors to prevent the test runner from failing.
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(".*Error loading scene MainMenu.*"));
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Error, new System.Text.RegularExpressions.Regex(".*Error loading scene Exploration.*"));
+
             // Act & Assert
             // Start transition A (which remains active in the async yield loop)
             Task taskA = navigator.LoadSceneAsync(GameSceneId.MainMenu, cts.Token);

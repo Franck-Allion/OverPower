@@ -36,8 +36,26 @@ Run applicable checks: `dotnet build`, `dotnet test`. For Unity work also verify
 ## Unity source control
 Visible Meta Files + Force Text. Version `.meta`. Do not regenerate GUIDs without reason. Do not move third-party assets unnecessarily.
 
-### Application versioning
-Unity `PlayerSettings.bundleVersion` is the application-version source of truth. The README version badge must be updated manually whenever `bundleVersion` changes.
+### Roadmap-aligned versioning
+
+OverPower application versions correspond directly to completed roadmap subsections.
+
+Examples:
+- Roadmap 0.2.3 → application version 0.2.3 → Git tag v0.2.3
+- Roadmap 0.3.1 → application version 0.3.1 → Git tag v0.3.1
+
+A version tag is created only when the corresponding roadmap subsection is fully implemented and validated.
+
+Unity `PlayerSettings.bundleVersion` is the application-version source of truth and must match the roadmap version represented by the tag.
+
+The README version badge reads the latest Git tag dynamically and must not duplicate the version manually.
+
+Before creating a version tag:
+1. complete the roadmap subsection;
+2. run all required validation;
+3. commit the version/roadmap changes;
+4. ensure CI is green for that commit;
+5. create the annotated Git tag on that exact commit (with 'v' prefix, e.g. `v0.2.3`).
 
 ## Git LFS
 Use for large binaries where appropriate, e.g. PSD/PSB, WAV/MP3/OGG, FBX, MP4/MOV, ZIP and large PNGs when justified. Do not force every small PNG into LFS.
@@ -49,7 +67,7 @@ Use Unity-standard ignore rules. Ignore Library, Temp, Obj, Logs, Build/Builds, 
 Optional for tiny solo increments; recommended for architectural changes, larger roadmap batches and risky refactors. Include roadmap item, summary, tests, known risks and screenshots for significant UI changes.
 
 ## Versioning
-Pre-1.0 semantic form `0.x.y`. Suggested milestones: 0.1 boot+menu, 0.2 exploration, 0.3 combat, 0.4 complete run loop, 1.0 first stable commercial release.
+OverPower uses a roadmap-driven versioning scheme in the form `0.x.y` mapped directly to completed roadmap milestones/subsections, leading up to `1.0.0` for the first stable commercial release.
 
 # `next` protocol
 

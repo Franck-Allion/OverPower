@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Threading;
 using OverPower.Application;
+using OverPower.Application.Ports.Logging;
 using OverPower.Unity.SceneFlow;
 using OverPower.Unity.Input;
 using OverPower.Unity.Localization;
+using OverPower.Unity.Logging;
 
 namespace OverPower.Unity.Bootstrap
 {
@@ -33,7 +35,18 @@ namespace OverPower.Unity.Bootstrap
 
             // Compose Global Services
             _sceneNavigator = new UnitySceneNavigator();
-            _gameFlowController = new GameFlowController(_sceneNavigator);
+
+            // Set up Logging with Verbosity Filter
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+            GameLogVerbosity verbosity = GameLogVerbosity.Verbose;
+#else
+            GameLogVerbosity verbosity = GameLogVerbosity.Normal;
+#endif
+
+            IGameLogger rawLogger = new UnityGameLogger();
+            IGameLogger logger = new VerbosityFilteredLogger(rawLogger, verbosity);
+
+            _gameFlowController = new GameFlowController(_sceneNavigator, logger);
             _inputReader = gameObject.AddComponent<GameInputReader>();
             _localeService = new UnityLocaleService();
             _cts = new CancellationTokenSource();

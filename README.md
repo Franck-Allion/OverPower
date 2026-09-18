@@ -1,7 +1,7 @@
 # OverPower
 
 [![Core CI](https://github.com/Franck-Allion/OverPower/actions/workflows/core-ci.yml/badge.svg)](https://github.com/Franck-Allion/OverPower/actions/workflows/core-ci.yml)
-![Version](https://img.shields.io/badge/version-0.1.0-blue)
+![Version](https://img.shields.io/github/v/tag/Franck-Allion/OverPower?label=version&sort=semver)
 ![Unity](https://img.shields.io/badge/Unity-6.3-black)
 ![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
 ![Platform](https://img.shields.io/badge/Platform-Windows-blue)
@@ -85,9 +85,9 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Unity Technical Foundation, Architecture & CI Pipeline Established (Roadmap 0.1.1 to 0.1.8 complete)**
+> **Status: Core Domain Foundation in Progress (Roadmap through 0.2.3 complete)**
 >
-> The project baseline is fully established. All initial Unity-independent assemblies are created, custom Input System actions and Unity locale switching (French & English) are verified, and an automated .NET 8 CI compilation/test pipeline has been integrated via GitHub Actions to protect the pure C# decoupling of our Domain and Application layers.
+> Core Domain Foundation is in progress, with roadmap milestones through 0.2.3 fully complete. Shared primitives, deterministic seedable RNG/substreams, and the logging foundation (with explicit runtime verbosity policies, Unity console adapters, and deterministic root Run seed logging) are implemented and covered by standalone unit tests.
 
 ---
 

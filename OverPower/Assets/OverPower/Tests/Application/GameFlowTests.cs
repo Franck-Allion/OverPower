@@ -2,6 +2,8 @@ using NUnit.Framework;
 using System.Threading;
 using System.Threading.Tasks;
 using OverPower.Application;
+using OverPower.Application.Ports.Logging;
+using OverPower.Domain.Run;
 
 namespace OverPower.Tests.Application
 {
@@ -30,7 +32,7 @@ namespace OverPower.Tests.Application
         {
             // Arrange
             var navigator = new FakeSceneNavigator();
-            var controller = new GameFlowController(navigator);
+            var controller = new GameFlowController(navigator, NullGameLogger.Instance);
 
             // Act
             await controller.StartupAsync();
@@ -45,10 +47,10 @@ namespace OverPower.Tests.Application
         {
             // Arrange
             var navigator = new FakeSceneNavigator();
-            var controller = new GameFlowController(navigator);
+            var controller = new GameFlowController(navigator, NullGameLogger.Instance);
 
             // Act
-            await controller.StartNewRunAsync();
+            await controller.StartNewRunAsync(new RunSeed(123456789UL));
 
             // Assert
             Assert.That(navigator.RequestedScene, Is.EqualTo(GameSceneId.Exploration), "StartNewRun must load Exploration.");
@@ -59,7 +61,7 @@ namespace OverPower.Tests.Application
         {
             // Arrange
             var navigator = new FakeSceneNavigator();
-            var controller = new GameFlowController(navigator);
+            var controller = new GameFlowController(navigator, NullGameLogger.Instance);
             var cts = new CancellationTokenSource();
 
             // Act
