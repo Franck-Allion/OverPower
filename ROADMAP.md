@@ -300,9 +300,9 @@ Main Menu can initially contain only polished placeholder actions.
 
 Create Unity-independent contracts/models required to translate authoring content into runtime content.
 
-- [ ] Unit definition model
-- [ ] Spell definition model
-- [ ] Artifact definition model
+- [x] Unit definition model
+- [x] Spell definition model
+- [x] Artifact definition model
 - [x] Ability definition model
 - [x] Resource type model
 - [x] Validation rules
