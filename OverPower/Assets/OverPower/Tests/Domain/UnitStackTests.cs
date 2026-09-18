@@ -1,0 +1,133 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using OverPower.Domain.Content;
+using OverPower.Domain.Content.Units;
+using OverPower.Domain.Combat.Units;
+using OverPower.Domain.Localization;
+
+namespace OverPower.Tests.Domain
+{
+    [TestFixture]
+    public class UnitStackTests
+    {
+        private UnitDefinition _guardianDefinition;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var id = ContentId.Create("unit.guardian").Value;
+            var nameKey = new LocalizationKey("unit.guardian.name");
+            var descKey = new LocalizationKey("unit.guardian.desc");
+            _guardianDefinition = new UnitDefinition(id, nameKey, descKey, 10, 2, 5, new List<ContentId>());
+        }
+
+        [Test]
+        public void UnitStack_Constructor_SucceedsAndInitializesCorrectly()
+        {
+            // Act
+            var stack = new UnitStack(_guardianDefinition, 10);
+
+            // Assert
+            Assert.That(stack.Definition, Is.SameAs(_guardianDefinition));
+            Assert.That(stack.InitialQuantity, Is.EqualTo(10));
+            Assert.That(stack.MaxHpPerMember, Is.EqualTo(10));
+            Assert.That(stack.MaximumTotalHp, Is.EqualTo(100));
+            Assert.That(stack.TotalRemainingHp, Is.EqualTo(100));
+            Assert.That(stack.DisplayedQuantity, Is.EqualTo(10));
+            Assert.That(stack.PartialCurrentMemberHp, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void UnitStack_Constructor_NullDefinition_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new UnitStack(null!, 5));
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        [TestCase(-100)]
+        public void UnitStack_Constructor_InvalidQuantity_ThrowsArgumentOutOfRangeException(int quantity)
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => new UnitStack(_guardianDefinition, quantity));
+        }
+
+        [Test]
+        public void UnitStack_Restore_SucceedsAndPreservesDerivedState_73HpExample()
+        {
+            // Act
+            var stack = UnitStack.Restore(_guardianDefinition, 10, 73);
+
+            // Assert
+            Assert.That(stack.Definition, Is.SameAs(_guardianDefinition));
+            Assert.That(stack.InitialQuantity, Is.EqualTo(10));
+            Assert.That(stack.MaxHpPerMember, Is.EqualTo(10));
+            Assert.That(stack.MaximumTotalHp, Is.EqualTo(100));
+            Assert.That(stack.TotalRemainingHp, Is.EqualTo(73));
+            Assert.That(stack.DisplayedQuantity, Is.EqualTo(8));
+            Assert.That(stack.PartialCurrentMemberHp, Is.EqualTo(3));
+        }
+
+        [TestCase(100, 10, 10)]
+        [TestCase(99, 10, 9)]
+        [TestCase(91, 10, 1)]
+        [TestCase(90, 9, 10)]
+        [TestCase(73, 8, 3)]
+        [TestCase(10, 1, 10)]
+        [TestCase(1, 1, 1)]
+        [TestCase(0, 0, 0)]
+        public void UnitStack_BoundaryValues_DeriveCorrectQuantityAndPartialHp(int remainingHp, int expectedQuantity, int expectedPartialHp)
+        {
+            // Act
+            var stack = UnitStack.Restore(_guardianDefinition, 10, remainingHp);
+
+            // Assert
+            Assert.That(stack.TotalRemainingHp, Is.EqualTo(remainingHp));
+            Assert.That(stack.DisplayedQuantity, Is.EqualTo(expectedQuantity));
+            Assert.That(stack.PartialCurrentMemberHp, Is.EqualTo(expectedPartialHp));
+        }
+
+        [Test]
+        public void UnitStack_Restore_NullDefinition_ThrowsArgumentNullException()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => UnitStack.Restore(null!, 10, 50));
+        }
+
+        [TestCase(0)]
+        [TestCase(-5)]
+        public void UnitStack_Restore_InvalidQuantity_ThrowsArgumentOutOfRangeException(int quantity)
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => UnitStack.Restore(_guardianDefinition, quantity, 50));
+        }
+
+        [TestCase(-1)]
+        [TestCase(101)]
+        [TestCase(150)]
+        public void UnitStack_Restore_InvalidHp_ThrowsArgumentOutOfRangeException(int hp)
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => UnitStack.Restore(_guardianDefinition, 10, hp));
+        }
+
+        [Test]
+        public void UnitStack_OverflowChecked_ThrowsWhenMaximumTotalHpExceedsIntMax()
+        {
+            // Arrange
+            var hugeHpId = ContentId.Create("unit.huge_hp").Value;
+            var hugeHpDefinition = new UnitDefinition(
+                hugeHpId, 
+                new LocalizationKey("n"), 
+                new LocalizationKey("d"), 
+                1_000_000, 0, 0, 
+                new List<ContentId>());
+
+            // Act & Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => new UnitStack(hugeHpDefinition, 3000));
+            Assert.Throws<ArgumentOutOfRangeException>(() => UnitStack.Restore(hugeHpDefinition, 3000, 100));
+        }
+    }
+}

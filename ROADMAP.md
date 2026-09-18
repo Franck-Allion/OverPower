@@ -316,11 +316,11 @@ Do not implement every future field prematurely.
 
 ## 0.2.5 Unit stack model
 
-- [ ] Unit stack quantity
-- [ ] HP per member
-- [ ] Total remaining HP
-- [ ] Current displayed quantity
-- [ ] Partial current member HP
+- [x] Unit stack quantity
+- [x] HP per member
+- [x] Total remaining HP
+- [x] Current displayed quantity
+- [x] Partial current member HP
 - [ ] Armor
 - [ ] Attack
 - [ ] Unit level placeholder/initial structure if needed
@@ -328,8 +328,8 @@ Do not implement every future field prematurely.
 - [ ] Damage application
 - [ ] Healing rules
 - [ ] Death/empty-stack rule
-- [ ] Invariants
-- [ ] Tests covering boundary values
+- [x] Invariants
+- [x] Tests covering boundary values
 
 Required example:
 
