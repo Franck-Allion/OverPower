@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using OverPower.Domain.Content;
 using OverPower.Domain.Content.Units;
 
 namespace OverPower.Domain.Combat.Units
@@ -13,6 +15,12 @@ namespace OverPower.Domain.Combat.Units
         public int MaxHpPerMember => Definition.MaxHpPerMember;
         public int MaximumTotalHp => checked(InitialQuantity * MaxHpPerMember);
         public int TotalRemainingHp { get; private set; }
+
+        public int Armor => Definition.Armor;
+        public int Attack => Definition.Attack;
+        public IReadOnlyList<ContentId> AbilityIds => Definition.AbilityIds;
+
+        public bool IsEmpty => TotalRemainingHp == 0;
 
         public int DisplayedQuantity
         {
@@ -93,6 +101,31 @@ namespace OverPower.Domain.Combat.Units
             }
 
             return new UnitStack(definition, initialQuantity, totalRemainingHp);
+        }
+
+        /// <summary>
+        /// Applies an already-resolved amount of HP damage to the stack.
+        /// </summary>
+        public void ApplyDamage(int damage)
+        {
+            if (damage < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(damage), "Damage cannot be negative.");
+            }
+
+            if (damage == 0)
+            {
+                return;
+            }
+
+            if (damage >= TotalRemainingHp)
+            {
+                TotalRemainingHp = 0;
+            }
+            else
+            {
+                TotalRemainingHp -= damage;
+            }
         }
     }
 }

@@ -321,13 +321,13 @@ Do not implement every future field prematurely.
 - [x] Total remaining HP
 - [x] Current displayed quantity
 - [x] Partial current member HP
-- [ ] Armor
-- [ ] Attack
+- [x] Armor
+- [x] Attack
 - [ ] Unit level placeholder/initial structure if needed
-- [ ] Ability references
-- [ ] Damage application
+- [x] Ability references
+- [x] Damage application
 - [ ] Healing rules
-- [ ] Death/empty-stack rule
+- [x] Death/empty-stack rule
 - [x] Invariants
 - [x] Tests covering boundary values
 
