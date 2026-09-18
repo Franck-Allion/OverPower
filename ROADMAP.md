@@ -303,12 +303,12 @@ Create Unity-independent contracts/models required to translate authoring conten
 - [ ] Unit definition model
 - [ ] Spell definition model
 - [ ] Artifact definition model
-- [ ] Ability definition model
-- [ ] Resource type model
-- [ ] Validation rules
-- [ ] Stable IDs
-- [ ] Localization key references where appropriate
-- [ ] Tests for invalid content definitions
+- [x] Ability definition model
+- [x] Resource type model
+- [x] Validation rules
+- [x] Stable IDs
+- [x] Localization key references where appropriate
+- [x] Tests for invalid content definitions
 
 Do not implement every future field prematurely.
 
