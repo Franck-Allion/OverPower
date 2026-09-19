@@ -80,11 +80,25 @@ Stable IDs such as `unit.guardian`, `spell.fireball`, `artifact.divine_shield`. 
 Runtime cards live in `Domain/Cards`. Immutable `RuntimeCard` holds a caller-supplied
 `CardInstanceId`, `CardType` (Unit/Spell), and authored `ContentId`, with matching
 `unit.`/`spell.` categories. Physical identity is distinct from content identity:
-multiple cards may reference the same content. Compare `InstanceId` explicitly;
+multiple Spell cards may reference the same spell ContentId, while Deck permits
+only one physical Unit card per unit ContentId. Compare `InstanceId` explicitly;
 `RuntimeCard` retains reference equality. IDs are positive `ulong` values, allocated
-by future deterministic deck construction, never by the card. Zero/default IDs
-are rejected at the runtime-card boundary. Containers, unit-stack links, merging
-and spell execution remain deferred to later roadmap work.
+by future deterministic construction orchestration, never by RuntimeCard or Deck.
+Zero/default IDs are rejected at the runtime-card boundary.
+
+`Deck` is immutable composition constructed from supplied cards, preserving their
+references and order in a defensive read-only collection. It rejects null inputs,
+duplicate physical IDs across all card types, and duplicate unit ContentIds.
+An empty composition is valid. Future acquisition can construct a new validated
+composition with the added cards. Deck is distinct from the future randomized
+battle DrawPile and current Hand; shuffle, draw and empty-deck gameplay are deferred.
+
+A unit RuntimeCard identifies a unit type only. Neither RuntimeCard nor Deck owns
+recruited quantity. External run-roster state will own that quantity; deployment
+will combine the card's ContentId, the roster's full currently owned quantity and
+UnitDefinition into one UnitStack, which owns combat HP/quantity. Further recruits
+of an existing type change the roster, keeping its single unit card. Roster,
+acquisition, deployment and spell execution remain deferred to later roadmap work.
 
 ## Addressables
 Use selectively for items such as unit prefabs, card artwork, larger VFX/audio, expanding content. Centralize load/release behavior and avoid leaked handles.

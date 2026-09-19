@@ -58,7 +58,24 @@ Reference MVP values:
 All values configurable, not hardcoded into engine logic.
 
 ## Unit cards and stacking
-A deck cannot contain two separate unit cards of the same unit type. Units accumulate into one card/stack per type. Spells do not merge in the same way.
+A unit card represents a unit type, not an individual unit. All units of that type
+recruited during exploration accumulate in the run's unit roster. The deck contains
+at most one physical card per unit ContentId. Recruiting more of an already owned
+unit type increases the roster quantity without creating another unit card.
+
+When a unit card is deployed in battle, it deploys the full currently owned quantity
+of that type as one UnitStack. For example, 9 recruited Guardians plus one
+`unit.guardian` card deploy as one Guardian UnitStack with quantity 9.
+
+The recruited quantity is not stored in RuntimeCard or Deck. RuntimeCard identifies
+the card and unit type; the run roster owns recruited quantity before deployment;
+UnitStack owns combat HP and quantity once deployed. Future first acquisition adds
+the unit card once and records the recruited quantity in the roster. Roster state,
+acquisition orchestration and deployment are not implemented in this increment.
+
+Spell cards remain independent physical cards: multiple cards may share a spell
+ContentId if each has a distinct CardInstanceId. Every physical ID must be unique
+within a deck, across both unit and spell cards.
 
 ## Unit stacks and HP
 One logical stack represents the squad. Example: Guardian 10 HP ×10 = 100 total HP. At 73 HP, display ×8 with current partial member at 3/10 HP. The stack remains one authoritative gameplay entity.

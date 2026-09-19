@@ -346,15 +346,15 @@ Required example:
 - [x] Card identity
 - [x] Card type: unit / spell
 - [x] Runtime card representation
-- [ ] Deck
+- [x] Deck
 - [ ] Draw pile
 - [ ] Hand
 - [ ] Maximum hand size configuration
 - [ ] Starting hand configuration
 - [ ] Draw count configuration
 - [ ] Deck empty behavior
-- [ ] Unit-card stack/merge semantics
-- [ ] Spell cards remain independent
+- [x] Unit-card stack/merge semantics
+- [x] Spell cards remain independent
 - [~] Tests
 
 Reference values:
