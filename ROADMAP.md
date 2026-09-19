@@ -370,14 +370,14 @@ Draw = 1 / turn
 
 ## 0.2.7 Starting-hand rule
 
-- [ ] Guarantee at least one unit card if deck contains one
-- [ ] Preserve randomness for remaining cards
-- [ ] Deterministic under seed
-- [ ] No duplicate physical card references
-- [ ] Tests for:
-  - [ ] deck with unit cards
-  - [ ] deck without unit cards
-  - [ ] small deck edge cases
+- [x] Guarantee at least one unit card if deck contains one
+- [x] Preserve randomness for remaining cards
+- [x] Deterministic under seed
+- [x] No duplicate physical card references
+- [x] Tests for:
+  - [x] deck with unit cards
+  - [x] deck without unit cards
+  - [x] small deck edge cases
 
 ---
 
