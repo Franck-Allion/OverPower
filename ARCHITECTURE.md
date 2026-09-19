@@ -121,6 +121,12 @@ serialize -> temp file -> successful write -> atomic replace -> backup
 ```
 Initial durable data: schema version, meta currency, unlocks, settings, required statistics. Active-run persistence may be added later.
 
+### Persistence Boundaries
+Responsibility for persistence is strictly decoupled across architectural layers:
+- **Domain (Pure Save DTOs):** Defines stable, serializer-independent, and migration-ready pure C# data contracts (e.g., `SaveGameDto`, `SettingsSaveDto`, `StatisticsSaveDto`) representing the structure of what is persisted.
+- **Application:** Coordinates and drives the use cases for save and load operations (mapping runtime aggregates to/from Save DTOs).
+- **Infrastructure:** Implements the actual file format serialization (e.g., JSON, MessagePack), Disk I/O operations, atomic writing, backup recovery logic, and path configuration.
+
 ## Logging
 Use `IGameLogger` or equivalent, with adapters such as `UnityLogger`, `NullLogger`, `TestLogger`, `CompositeLogger`, `FileLogger`. Domain must not bind to Unity logging.
 

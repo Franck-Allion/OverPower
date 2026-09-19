@@ -398,19 +398,19 @@ Draw = 1 / turn
 
 ## 0.2.9 Save-domain DTO baseline
 
-- [ ] Save schema version
-- [ ] Settings section
-- [ ] Meta currency
-- [ ] Unlock IDs
-- [ ] Statistics baseline
-- [ ] Content/save migration hooks
-- [ ] No Unity object references in persisted DTOs
+- [x] Save schema version
+- [x] Settings section
+- [x] Meta currency
+- [x] Unlock IDs
+- [x] Statistics baseline
+- [x] Content/save migration hooks
+- [x] No Unity object references in persisted DTOs
 
 ### Acceptance gate
 
-- [ ] Domain foundation compiles entirely outside Unity
-- [ ] Unit stack, deck and RNG tests are deterministic
-- [ ] No Domain test requires a Unity runtime
+- [x] Domain foundation compiles entirely outside Unity
+- [x] Unit stack, deck and RNG tests are deterministic
+- [x] No Domain test requires a Unity runtime
 
 ---
 

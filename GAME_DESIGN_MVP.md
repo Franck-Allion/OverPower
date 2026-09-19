@@ -96,7 +96,7 @@ The authoritative hero runtime state manages:
 - **Max HP Upgrade:** Increasing MaxHp immediately restores the same amount to CurrentHp (making max health upgrades instantly beneficial). Negative or zero increases are rejected, and integer overflow is strictly guarded.
 - **Mana:** Spending mana is atomic (insufficient resources leave state completely unchanged; no partial spending). Mana restoration caps at MaxMana.
 - **Max Mana Upgrade:** Increasing MaxMana immediately restores the same amount to CurrentMana. Negative or zero increases are rejected, and integer overflow is strictly guarded.
-- **Gold:** Cannot become negative. Spending gold is atomic, and gains are strictly guarded against integer overflow.
+- **Gold:** Cannot become negative. Spending gold is atomic, and gains are strictly guarded against integer overflow. Gold is a run-level currency that reset between runs, whereas Meta Currency is a persistent cross-run currency stored in the save file.
 - **XP:** Accumulates experience points safely without leveling behavior for now; leveling and progression rules are deferred.
 
 ## XP and progression
