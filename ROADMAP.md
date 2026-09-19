@@ -355,7 +355,7 @@ Required example:
 - [x] Deck empty behavior
 - [x] Unit-card stack/merge semantics
 - [x] Spell cards remain independent
-- [~] Tests
+- [x] Tests
 
 Reference values:
 

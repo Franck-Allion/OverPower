@@ -23,11 +23,17 @@ namespace OverPower.Domain.Cards
             }
 
             _cards = new List<RuntimeCard>();
+            var instanceIds = new HashSet<CardInstanceId>();
+
             foreach (var card in orderedCards)
             {
                 if (card == null)
                 {
                     throw new ArgumentException("Draw pile cannot contain null cards.", nameof(orderedCards));
+                }
+                if (!instanceIds.Add(card.InstanceId))
+                {
+                    throw new ArgumentException($"Duplicate physical card ID '{card.InstanceId}' in draw pile.", nameof(orderedCards));
                 }
                 _cards.Add(card);
             }

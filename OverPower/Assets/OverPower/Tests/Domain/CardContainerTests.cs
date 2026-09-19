@@ -341,11 +341,11 @@ namespace OverPower.Tests.Domain
         public void DrawToHand_GenericStartingHandRegression_DoesNotGuaranteeUnit()
         {
             // StartingHandSize = 3
-            // Pile: fireball (spell), heal (spell), guardian (unit), fireball (spell)
+            // Pile: fireball (spell), heal (spell), fireball (spell), guardian (unit)
             var card1 = CreateCard(1, CardType.Spell, "spell.fireball");
             var card2 = CreateCard(2, CardType.Spell, "spell.heal");
-            var card3 = CreateCard(3, CardType.Unit, "unit.guardian");
-            var card4 = CreateCard(4, CardType.Spell, "spell.fireball");
+            var card3 = CreateCard(3, CardType.Spell, "spell.fireball");
+            var card4 = CreateCard(4, CardType.Unit, "unit.guardian");
 
             var pile = new DrawPile(new[] { card1, card2, card3, card4 });
             var hand = new Hand(4);
@@ -358,6 +358,71 @@ namespace OverPower.Tests.Domain
             Assert.That(hand.Cards[2], Is.SameAs(card3));
             Assert.That(pile.Count, Is.EqualTo(1));
             Assert.That(pile.Cards[0], Is.SameAs(card4));
+
+            // All cards in hand are spells; the Unit card is left in the pile.
+            // This demonstrates that 0.2.6 draw behavior is generic and does NOT guarantee a Unit card.
+            Assert.That(hand.Cards[0].Type, Is.EqualTo(CardType.Spell));
+            Assert.That(hand.Cards[1].Type, Is.EqualTo(CardType.Spell));
+            Assert.That(hand.Cards[2].Type, Is.EqualTo(CardType.Spell));
+            Assert.That(pile.Cards[0].Type, Is.EqualTo(CardType.Unit));
+        }
+
+        [Test]
+        public void DrawPile_Constructor_DuplicateInstanceId_ThrowsArgumentException()
+        {
+            var card1 = CreateCard(1, CardType.Unit, "unit.guardian");
+            var card2 = CreateCard(1, CardType.Spell, "spell.fireball"); // Same physical ID (1)
+            var cards = new[] { card1, card2 };
+
+            Assert.Throws<ArgumentException>(() => new DrawPile(cards));
+        }
+
+        [Test]
+        public void DrawPile_Cards_IsDefensivelyReadOnly()
+        {
+            var card = CreateCard(1, CardType.Unit, "unit.guardian");
+            var pile = new DrawPile(new[] { card });
+
+            var cardsList = pile.Cards;
+
+            // Assert that the returned collection is not a modifiable List<RuntimeCard> via casting.
+            Assert.Throws<NotSupportedException>(() => ((IList<RuntimeCard>)cardsList).Add(CreateCard(2, CardType.Spell, "spell.fireball")));
+        }
+
+        [Test]
+        public void Hand_Cards_IsDefensivelyReadOnly()
+        {
+            var hand = new Hand(4);
+            hand.TryAdd(CreateCard(1, CardType.Unit, "unit.guardian"));
+
+            var cardsList = hand.Cards;
+
+            Assert.Throws<NotSupportedException>(() => ((IList<RuntimeCard>)cardsList).Add(CreateCard(2, CardType.Spell, "spell.fireball")));
+        }
+
+        [Test]
+        public void TryDrawToHand_DuplicateInstanceIdHandRollback_RestoresDrawPileAndHandUnchanged()
+        {
+            // Hand already contains card with InstanceId 10
+            var hand = new Hand(4);
+            var handCard = CreateCard(10, CardType.Unit, "unit.guardian");
+            hand.TryAdd(handCard);
+
+            // DrawPile top contains another RuntimeCard with InstanceId 10
+            var pileCard = CreateCard(10, CardType.Spell, "spell.fireball");
+            var extraCard = CreateCard(11, CardType.Spell, "spell.heal");
+            var pile = new DrawPile(new[] { pileCard, extraCard });
+
+            // TryDrawToHand() should throw InvalidOperationException due to duplicate ID,
+            // but the DrawPile must still contain the original top card (pileCard) at index 0.
+            Assert.Throws<InvalidOperationException>(() => pile.TryDrawToHand(hand));
+
+            Assert.That(hand.Count, Is.EqualTo(1));
+            Assert.That(hand.Cards[0], Is.SameAs(handCard));
+
+            Assert.That(pile.Count, Is.EqualTo(2));
+            Assert.That(pile.Cards[0], Is.SameAs(pileCard));
+            Assert.That(pile.Cards[1], Is.SameAs(extraCard));
         }
 
         #endregion
