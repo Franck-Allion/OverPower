@@ -347,12 +347,12 @@ Required example:
 - [x] Card type: unit / spell
 - [x] Runtime card representation
 - [x] Deck
-- [ ] Draw pile
-- [ ] Hand
-- [ ] Maximum hand size configuration
-- [ ] Starting hand configuration
-- [ ] Draw count configuration
-- [ ] Deck empty behavior
+- [x] Draw pile
+- [x] Hand
+- [x] Maximum hand size configuration
+- [x] Starting hand configuration
+- [x] Draw count configuration
+- [x] Deck empty behavior
 - [x] Unit-card stack/merge semantics
 - [x] Spell cards remain independent
 - [~] Tests
