@@ -63,6 +63,11 @@ A deck cannot contain two separate unit cards of the same unit type. Units accum
 ## Unit stacks and HP
 One logical stack represents the squad. Example: Guardian 10 HP ×10 = 100 total HP. At 73 HP, display ×8 with current partial member at 3/10 HP. The stack remains one authoritative gameplay entity.
 
+Healing supports three distinct capabilities:
+- **Survivor-only healing** (`SurvivorOnly`) restores HP inside currently surviving members only. It cannot resurrect lost members, and has no effect on an empty/dead stack.
+- **Revival healing** (`ReviveToInitial`) restores HP and can resurrect lost members up to the stack's initial quantity, but cannot exceed it. It can successfully recover an empty stack.
+- **Temporary-overflow healing** (`TemporaryOverflow`) can exceed the initial quantity during combat, raising the combat HP and displayed squad size beyond permanent limits. These extra temporary members do not become permanent roster growth and disappear when combat ends. Damage applied during combat naturally consumes temporary members first, and at combat end, any remaining temporary overflow is cleanly discarded.
+
 ## Unit statistics
 At least HP, armor, attack and optional abilities. Exact formulas are later balancing concerns but must live in Domain.
 

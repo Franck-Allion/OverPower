@@ -22,12 +22,16 @@ namespace OverPower.Domain.Combat.Units
 
         public bool IsEmpty => TotalRemainingHp == 0;
 
+        public int TemporaryBonusQuantity => Math.Max(0, DisplayedQuantity - InitialQuantity);
+
         public int DisplayedQuantity
         {
             get
             {
                 if (TotalRemainingHp == 0) return 0;
-                return (TotalRemainingHp + MaxHpPerMember - 1) / MaxHpPerMember;
+                int full = TotalRemainingHp / MaxHpPerMember;
+                int remainder = TotalRemainingHp % MaxHpPerMember;
+                return full + (remainder > 0 ? 1 : 0);
             }
         }
 
@@ -125,6 +129,79 @@ namespace OverPower.Domain.Combat.Units
             else
             {
                 TotalRemainingHp -= damage;
+            }
+        }
+
+        /// <summary>
+        /// Applies healing to the stack according to the specified healing mode capabilities.
+        /// </summary>
+        public void Heal(int amount, HealingMode mode)
+        {
+            if (amount < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(amount), "Healing amount cannot be negative.");
+            }
+
+            if (amount == 0)
+            {
+                return;
+            }
+
+            switch (mode)
+            {
+                case HealingMode.SurvivorOnly:
+                    int survivorCap = DisplayedQuantity * MaxHpPerMember;
+                    if (survivorCap == 0)
+                    {
+                        return; // Empty stack cannot receive survivor-only healing
+                    }
+                    try
+                    {
+                        int newHp = checked(TotalRemainingHp + amount);
+                        TotalRemainingHp = Math.Min(survivorCap, newHp);
+                    }
+                    catch (OverflowException)
+                    {
+                        TotalRemainingHp = survivorCap;
+                    }
+                    break;
+
+                case HealingMode.ReviveToInitial:
+                    try
+                    {
+                        int newHp = checked(TotalRemainingHp + amount);
+                        TotalRemainingHp = Math.Min(MaximumTotalHp, newHp);
+                    }
+                    catch (OverflowException)
+                    {
+                        TotalRemainingHp = MaximumTotalHp;
+                    }
+                    break;
+
+                case HealingMode.TemporaryOverflow:
+                    try
+                    {
+                        TotalRemainingHp = checked(TotalRemainingHp + amount);
+                    }
+                    catch (OverflowException)
+                    {
+                        TotalRemainingHp = int.MaxValue;
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(mode), "Unsupported healing mode.");
+            }
+        }
+
+        /// <summary>
+        /// Normalizes the stack at end of combat, removing any temporary extra members.
+        /// </summary>
+        public void RemoveTemporaryOverflow()
+        {
+            if (TotalRemainingHp > MaximumTotalHp)
+            {
+                TotalRemainingHp = MaximumTotalHp;
             }
         }
     }

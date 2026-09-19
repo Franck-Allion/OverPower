@@ -85,9 +85,9 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Core Domain Foundation in Progress (Roadmap through 0.2.4 complete)**
+> **Status: Core Domain Foundation in Progress (Roadmap through 0.2.5 complete)**
 >
-> Core Domain Foundation is in progress, with roadmap milestones through 0.2.4 fully complete. Shared primitives, deterministic seedable RNG/substreams, the logging foundation, and the core authoring-content definitions (abilities, resources, units, spells, and artifacts) are fully implemented and verified by stand-alone unit tests.
+> Core Domain Foundation is in progress, with roadmap milestones through 0.2.5 fully complete. Shared primitives, deterministic seedable RNG/substreams, the logging foundation, core content definitions, and the authoritative UnitStack combat and healing-rules model are fully implemented and verified by stand-alone unit tests.
 
 ---
 

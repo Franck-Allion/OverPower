@@ -323,10 +323,11 @@ Do not implement every future field prematurely.
 - [x] Partial current member HP
 - [x] Armor
 - [x] Attack
-- [ ] Unit level placeholder/initial structure if needed
+- [x] Unit level placeholder/initial structure if needed
+    — evaluated: not required yet
 - [x] Ability references
 - [x] Damage application
-- [ ] Healing rules
+- [x] Healing rules
 - [x] Death/empty-stack rule
 - [x] Invariants
 - [x] Tests covering boundary values
