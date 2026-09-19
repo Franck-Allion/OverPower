@@ -49,6 +49,11 @@ OverPower
 ```
 Dependency direction: `Unity -> Application -> Domain`; Infrastructure implements inner-layer ports. Domain never depends on Unity or third-party packages.
 
+### Authoritative Runtime State
+Authoritative state resides in the `Domain` layer to ensure full testability and decoupling from presentation:
+- `HeroState` is the authoritative Domain runtime state for hero resources (HP, Mana, Gold, XP) and governs all resource modification invariants.
+- Combat states, units, deck/hand models, and exploration states are also maintained under pure Domain contracts, completely independent of Unity's lifecycle or GameObjects.
+
 ## Recommended assemblies
 Keep asmdefs limited and meaningful:
 ```text

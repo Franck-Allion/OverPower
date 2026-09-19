@@ -383,16 +383,16 @@ Draw = 1 / turn
 
 ## 0.2.8 Player/hero runtime model
 
-- [ ] Hero HP
-- [ ] Hero max HP
-- [ ] Mana
-- [ ] Max mana
-- [ ] Gold
-- [ ] XP placeholder/structure
-- [ ] Resource validation
-- [ ] Spend/gain APIs
-- [ ] No direct uncontrolled public mutation
-- [ ] Tests
+- [x] Hero HP
+- [x] Hero max HP
+- [x] Mana
+- [x] Max mana
+- [x] Gold
+- [x] XP placeholder/structure
+- [x] Resource validation
+- [x] Spend/gain APIs
+- [x] No direct uncontrolled public mutation
+- [x] Tests
 
 ---
 

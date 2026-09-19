@@ -89,7 +89,15 @@ Healing supports three distinct capabilities:
 At least HP, armor, attack and optional abilities. Exact formulas are later balancing concerns but must live in Domain.
 
 ## Hero and victory
-Battle ends when a hero reaches defeat condition (baseline: hero HP reaches zero). Hero/run resources include health/max health, mana/max mana and gold.
+Battle ends when a hero reaches defeat condition (baseline: hero HP reaches zero).
+
+The authoritative hero runtime state manages:
+- **Hero HP:** 0 = dead (IsDead becomes true). Damage cannot reduce HP below 0, and healing is capped at MaxHp. Overkill and negative inputs are rejected.
+- **Max HP Upgrade:** Increasing MaxHp immediately restores the same amount to CurrentHp (making max health upgrades instantly beneficial). Negative or zero increases are rejected, and integer overflow is strictly guarded.
+- **Mana:** Spending mana is atomic (insufficient resources leave state completely unchanged; no partial spending). Mana restoration caps at MaxMana.
+- **Max Mana Upgrade:** Increasing MaxMana immediately restores the same amount to CurrentMana. Negative or zero increases are rejected, and integer overflow is strictly guarded.
+- **Gold:** Cannot become negative. Spending gold is atomic, and gains are strictly guarded against integer overflow.
+- **XP:** Accumulates experience points safely without leveling behavior for now; leveling and progression rules are deferred.
 
 ## XP and progression
 At battle end, player and surviving/in-play units gain XP according to detailed rules to be implemented later. Unit XP can improve attack, defense or abilities; player XP can support a skill tree. Architecture must not block this.

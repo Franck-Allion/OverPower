@@ -85,9 +85,9 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Core Domain Foundation in Progress (Roadmap through 0.2.7 complete)**
+> **Status: Core Domain Foundation in Progress (Roadmap through 0.2.8 complete)**
 >
-> Core Domain Foundation is in progress, with roadmap milestones through 0.2.7 fully complete. Shared primitives, deterministic seedable RNG/substreams, logging foundation, core content definitions, the authoritative UnitStack combat model, and physical card/deck containers with the deterministic starting-hand rule are fully implemented and verified by stand-alone unit tests.
+> Core Domain Foundation is in progress, with roadmap milestones through 0.2.8 fully complete. Shared primitives, deterministic seedable RNG/substreams, logging foundation, core content definitions, the authoritative UnitStack combat model, physical card/deck containers with the deterministic starting-hand rule, and the complete hero runtime state with controlled resource transitions are fully implemented and verified by stand-alone unit tests.
 
 ---
 
