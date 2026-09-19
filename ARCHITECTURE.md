@@ -77,6 +77,15 @@ Definitions: `UnitDefinition`, `SpellDefinition`, `ArtifactDefinition`, `Ability
 ## Content IDs
 Stable IDs such as `unit.guardian`, `spell.fireball`, `artifact.divine_shield`. Displayed names come from localization.
 
+Runtime cards live in `Domain/Cards`. Immutable `RuntimeCard` holds a caller-supplied
+`CardInstanceId`, `CardType` (Unit/Spell), and authored `ContentId`, with matching
+`unit.`/`spell.` categories. Physical identity is distinct from content identity:
+multiple cards may reference the same content. Compare `InstanceId` explicitly;
+`RuntimeCard` retains reference equality. IDs are positive `ulong` values, allocated
+by future deterministic deck construction, never by the card. Zero/default IDs
+are rejected at the runtime-card boundary. Containers, unit-stack links, merging
+and spell execution remain deferred to later roadmap work.
+
 ## Addressables
 Use selectively for items such as unit prefabs, card artwork, larger VFX/audio, expanding content. Centralize load/release behavior and avoid leaked handles.
 

@@ -343,9 +343,9 @@ Required example:
 
 ## 0.2.6 Card and deck model
 
-- [ ] Card identity
-- [ ] Card type: unit / spell
-- [ ] Runtime card representation
+- [x] Card identity
+- [x] Card type: unit / spell
+- [x] Runtime card representation
 - [ ] Deck
 - [ ] Draw pile
 - [ ] Hand
@@ -355,7 +355,7 @@ Required example:
 - [ ] Deck empty behavior
 - [ ] Unit-card stack/merge semantics
 - [ ] Spell cards remain independent
-- [ ] Tests
+- [~] Tests
 
 Reference values:
 
