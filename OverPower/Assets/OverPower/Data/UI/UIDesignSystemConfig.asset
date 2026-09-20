@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 786088ed89a639e4dbe192c574917cae, type: 3}
   m_Name: UIDesignSystemConfig
   m_EditorClassIdentifier: OverPower.Unity::OverPower.Unity.Presentation.DesignSystem.UIDesignSystemConfig
-  _font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  _font: {fileID: 11400000, guid: 90e27dbf71532f64cb790c50ba977cb9, type: 2}
+  _displayFont: {fileID: 11400000, guid: eeca99701af2bcf4eb1f6d14b645d1cf, type: 2}
   _typography:
   - Role: 0
     Size: 64
@@ -83,3 +84,5 @@ MonoBehaviour:
   _hoverScale: 1.015
   _pressedScale: 0.975
   _disabledOpacity: 0.7
+  _revealScale: 0.98
+  _modalBackdropOpacity: 0.82

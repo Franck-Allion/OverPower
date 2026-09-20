@@ -640,7 +640,7 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: b74e470979919bb45ac07322ff0dfdf1, type: 2}
   _surface: {fileID: 1815216303010211684}
   _border: {fileID: 9163625939299483998}
-  _style: 1
+  _style: 3
 --- !u!114 &361406296478302803
 MonoBehaviour:
   m_ObjectHideFlags: 0

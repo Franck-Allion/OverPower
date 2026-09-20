@@ -22,4 +22,16 @@ For a complete and structured inventory of all third-party components used, thei
 
 As specific packages and libraries are integrated during the development lifecycle, their mandatory legal notices, copyright attributions, and license texts will be appended to this section.
 
-*(No integrations have been executed yet. This file will be updated dynamically during Roadmap 0.1+ as packages are imported.)*
+### Open Font Licenses (OFL)
+
+The project includes Open Source fonts licensed under the **SIL Open Font License, Version 1.1**. This license allows free commercial redistribution of the fonts within the compiled game.
+
+#### 1. Source Sans 3
+* **Publisher:** Adobe Systems Incorporated (https://github.com/adobe-fonts/source-sans)
+* **Copyright:** Copyright © 2010-2023 Adobe (http://www.adobe.com/), with Reserved Font Name "Source".
+* **License:** SIL Open Font License, Version 1.1
+
+#### 2. Cinzel
+* **Designer:** Natanael Gama (https://github.com/NDISCOVER/Cinzel)
+* **Copyright:** Copyright © 2012 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel), with Reserved Font Name "Cinzel".
+* **License:** SIL Open Font License, Version 1.1

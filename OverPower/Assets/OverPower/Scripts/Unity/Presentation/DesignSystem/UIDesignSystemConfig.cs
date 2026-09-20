@@ -30,6 +30,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         }
 
         [SerializeField] private TMP_FontAsset _font;
+        [SerializeField] private TMP_FontAsset _displayFont;
         [SerializeField] private TypographyDefinition[] _typography =
         {
             new TypographyDefinition(TypographyStyle.Display, 64, FontStyles.Bold),
@@ -61,7 +62,9 @@ namespace OverPower.Unity.Presentation.DesignSystem
             new PaletteEntry(UISemanticColor.Background, 0x0D141F),
             new PaletteEntry(UISemanticColor.Surface, 0x1B2A3A),
             new PaletteEntry(UISemanticColor.TextPrimary, 0xF5EFE3),
-            new PaletteEntry(UISemanticColor.TextSecondary, 0xB5C4D0)
+            new PaletteEntry(UISemanticColor.TextSecondary, 0xB5C4D0),
+            new PaletteEntry(UISemanticColor.FloatingBorder, 0xA38C5A),
+            new PaletteEntry(UISemanticColor.ModalBorder, 0xE4BD78)
         };
         [SerializeField, Min(0.01f)] private float _fast = 0.12f;
         [SerializeField, Min(0.01f)] private float _normal = 0.20f;
@@ -97,11 +100,15 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         public void ApplyTypography(TMP_Text text, TypographyStyle role)
         {
-            if (_font == null) throw new InvalidOperationException("Design system font is required.");
+            TMP_FontAsset activeFont = (role == TypographyStyle.Display || role == TypographyStyle.Title)
+                ? (_displayFont ?? _font)
+                : _font;
+
+            if (activeFont == null) throw new InvalidOperationException("Design system font is required.");
             foreach (var definition in _typography)
             {
                 if (definition.Role != role) continue;
-                text.font = _font;
+                text.font = activeFont;
                 text.fontSize = definition.Size;
                 text.fontStyle = definition.Style;
                 text.enableAutoSizing = false;

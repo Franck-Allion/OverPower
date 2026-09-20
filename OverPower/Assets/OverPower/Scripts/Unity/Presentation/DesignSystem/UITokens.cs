@@ -5,7 +5,8 @@ namespace OverPower.Unity.Presentation.DesignSystem
     {
         Primary, Secondary, Interactive, Selected, Disabled, Danger, Warning, Success,
         Health, Mana, Armor, Gold, Locked, Affordable, Unaffordable,
-        Background, Surface, TextPrimary, TextSecondary
+        Background, Surface, TextPrimary, TextSecondary,
+        FloatingBorder, ModalBorder
     }
     public enum UIMotion { Fast, Normal, Emphasis }
     public enum UIButtonFamily { Primary, Secondary, Icon }
