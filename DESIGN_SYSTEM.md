@@ -59,6 +59,31 @@ Assets/OverPower/UI/
 ## Central configuration
 A small `UIDesignSystemConfig` ScriptableObject may hold selected global references such as fonts, standard sprites/materials, semantic palette, common UI sounds and transition timings. Do not turn it into a huge universal theme object.
 
+## Inline gameplay icons
+To maintain readability and quick semantic recognition inside localized rich text (such as card descriptions, ability tooltips, and explanatory text), the design system establishes a stable, parser-independent inline-icon token convention:
+
+### Author Syntax
+Content authors and localization tables express resources using semantic braces:
+- `{attack}` - Attack/offensive power
+- `{health}` - Health/HP pool
+- `{gold}` - Gold run-currency
+- `{mana}` - Mana resource
+
+### Presentation Mapping
+At render-time, these brace tokens are dynamically translated into TextMeshPro `<sprite name="...">` tags pointing to the centralized `OverPowerInlineIcons` Sprite Asset:
+- `{attack}` &rarr; `<sprite name="attack">`
+- `{health}` &rarr; `<sprite name="health">`
+- `{gold}`   &rarr; `<sprite name="gold">`
+- `{mana}`   &rarr; `<sprite name="mana">`
+
+Unknown tokens are left completely untouched and unchanged.
+
+### Source Assets
+- **Format:** Transparent background PNG.
+- **Dimensions:** 256×256 px.
+- **Location:** `Assets/OverPower/UI/DesignSystem/Icons/Inline/`
+- **Public Sprite Names:** `attack`, `health`, `gold`, `mana`.
+
 ## Cards
 Stable information architecture: artwork, name, cost, type, description, stats where relevant, abilities/effects, rarity/state if introduced. Theme can evolve while hierarchy stays consistent.
 

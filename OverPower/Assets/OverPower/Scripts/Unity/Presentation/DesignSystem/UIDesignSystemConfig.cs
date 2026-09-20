@@ -31,6 +31,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         [SerializeField] private TMP_FontAsset _font;
         [SerializeField] private TMP_FontAsset _displayFont;
+        [SerializeField] private TMP_SpriteAsset _inlineIconSpriteAsset;
         [SerializeField] private TypographyDefinition[] _typography =
         {
             new TypographyDefinition(TypographyStyle.Display, 64, FontStyles.Bold),
@@ -80,6 +81,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public float DisabledOpacity => _disabledOpacity;
         public float RevealScale => _revealScale;
         public float ModalBackdropOpacity => _modalBackdropOpacity;
+        public TMP_SpriteAsset InlineIconSpriteAsset => _inlineIconSpriteAsset;
 
         public Color GetColor(UISemanticColor role)
         {

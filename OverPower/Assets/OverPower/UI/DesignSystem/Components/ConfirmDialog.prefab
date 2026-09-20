@@ -57,7 +57,7 @@ MonoBehaviour:
   m_PreferredWidth: -1
   m_PreferredHeight: 120
   m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
+  m_FlexibleHeight: 0
   m_LayoutPriority: 1
 --- !u!222 &2809513530562295118
 CanvasRenderer:
@@ -89,8 +89,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 90e27dbf71532f64cb790c50ba977cb9, type: 2}
+  m_sharedMaterial: {fileID: -4885676226658721687, guid: 90e27dbf71532f64cb790c50ba977cb9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_PreferredWidth: -1
   m_PreferredHeight: 64
   m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
+  m_FlexibleHeight: 0
   m_LayoutPriority: 1
 --- !u!1001 &910942849521485026
 PrefabInstance:
@@ -495,7 +495,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4461976764359100559, guid: 1d762bbe3cc27f441a4d6ec13a63e8e8, type: 3}
       propertyPath: _style
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4747086030224162684, guid: 1d762bbe3cc27f441a4d6ec13a63e8e8, type: 3}
       propertyPath: m_Color.b
@@ -508,14 +508,6 @@ PrefabInstance:
     - target: {fileID: 4747086030224162684, guid: 1d762bbe3cc27f441a4d6ec13a63e8e8, type: 3}
       propertyPath: m_Color.r
       value: 0.89411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 5576046064837660979, guid: 1d762bbe3cc27f441a4d6ec13a63e8e8, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5576046064837660979, guid: 1d762bbe3cc27f441a4d6ec13a63e8e8, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 9126226899949155827, guid: 1d762bbe3cc27f441a4d6ec13a63e8e8, type: 3}
       propertyPath: m_Name

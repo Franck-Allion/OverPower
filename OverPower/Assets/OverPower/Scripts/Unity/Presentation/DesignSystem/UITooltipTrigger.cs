@@ -50,7 +50,11 @@ namespace OverPower.Unity.Presentation.DesignSystem
             var rect = (RectTransform)transform;
             var camera = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
             var screen = RectTransformUtility.WorldToScreenPoint(camera, rect.TransformPoint(rect.rect.center));
-            _tooltip.Show(this, _titleText ?? string.Empty, _bodyText ?? string.Empty, _icon, screen);
+
+            string formattedTitle = UIRichTextFormatter.Format(_titleText ?? string.Empty);
+            string formattedBody = UIRichTextFormatter.Format(_bodyText ?? string.Empty);
+
+            _tooltip.Show(this, formattedTitle, formattedBody, _icon, screen);
         }
         private void CancelDelay() { _delay?.Kill(); _delay = null; }
         private void OnDisable()

@@ -89,6 +89,33 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
                 "Les flèches naviguent. Valider confirme. Annuler rend le focus au bouton d’origine.", TypographyStyle.BodySmall, 120, UISemanticColor.TextSecondary);
             Text(decisions, "components.note", "Presentation only — no gameplay state or scene loading.",
                 "Présentation uniquement — sans état de jeu ni chargement de scène.", TypographyStyle.Caption, 100, UISemanticColor.TextSecondary);
+
+            var richText = Column("RichText", columns);
+            Text(richText, "components.richtext", "04  /  INLINE ICONS & RICH TEXT", "04  /  ICÔNES EN LIGNE ET TEXTE ENRICHI", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            Text(richText, "richtext.intro", "A clean inline syntax", "Un texte enrichi fluide", TypographyStyle.Heading, 48);
+            Text(richText, "richtext.instructions", "Authors write {health} or {mana}. Rendering converts tokens to high-fidelity icons.",
+                "Les auteurs écrivent {health} ou {mana}. Le moteur affiche les icônes haute-fidélité.", TypographyStyle.BodySmall, 80, UISemanticColor.TextSecondary);
+
+            // Side-by-side baseline comparison
+            RichText(richText, "richtext.comparison", "Baseline:  {attack}  {health}  {gold}  {mana}", "Ligne de base :  {attack}  {health}  {gold}  {mana}", TypographyStyle.Body, 40);
+
+            // Card-description constrained block
+            var cardPanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, richText);
+            Height((RectTransform)cardPanel.transform, 310);
+            Label(cardPanel.transform.Find("Header").GetComponent<TMP_Text>(), "richtext.card_title", "Fireball & Healing", "Boule de feu et Soin");
+            var cardContent = cardPanel.transform.Find("Content");
+            var cardContentLayout = cardContent.GetComponent<VerticalLayoutGroup>();
+            if (cardContentLayout != null)
+            {
+                cardContentLayout.spacing = UISpacing.Sm;
+            }
+
+            // Create individual description sentences using Source Sans 3 Body / BodySmall inside the card panel
+            RichText(cardContent, "richtext.sentence1", "Heal 20 {health} to the targeted unit.", "Soigne 20 {health} à l'unité ciblée.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence2", "Gain 2 {mana}.", "Gagne 2 {mana}.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence3", "Costs 3 {gold}.", "Coûte 3 {gold}.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence4", "This unit gains 5 {attack}.", "Cette unité gagne 5 {attack}.", TypographyStyle.BodySmall, 40);
+
             Text(page, "components.footer", "Inspect the four edge markers • All text uses the EN / FR preview table",
                 "Inspectez les quatre repères de bord • Tous les textes utilisent la table EN / FR", TypographyStyle.Caption, 32, UISemanticColor.TextSecondary);
 
@@ -189,8 +216,8 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             SetReference(trigger, "_config", _config);
             SetReference(trigger, "_tooltip", tooltip);
             AddString("tooltip.title", "Details at a glance", "L’essentiel en un regard");
-            AddString("tooltip.body", "Prepared display data, shared typography and safe placement. Leave the control to dismiss.",
-                "Des informations préparées, une typographie commune et un placement sûr. Quittez le contrôle pour fermer.");
+            AddString("tooltip.body", "Heal 20 {health} to the targeted unit. Leave the control to dismiss.",
+                "Soigne 20 {health} à l'unité ciblée. Quittez le contrôle pour fermer.");
             var so = new SerializedObject(trigger);
             foreach (var pair in new[] { new[] { "_title", "tooltip.title" }, new[] { "_body", "tooltip.body" } })
             {
@@ -203,6 +230,30 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             button.AccessibleLabel.TableEntryReference = "tooltip.title";
             button.gameObject.SetActive(true);
             return trigger;
+        }
+        private static UIRichText RichText(Transform parent, string key, string en, string fr, TypographyStyle style, float height)
+        {
+            var rect = Rect(key, parent);
+            Height(rect, height);
+            rect.gameObject.SetActive(false);
+
+            var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
+            text.raycastTarget = false;
+            text.textWrappingMode = TextWrappingModes.Normal;
+            text.overflowMode = TextOverflowModes.Ellipsis;
+            _config.ApplyTypography(text, style);
+
+            var rich = rect.gameObject.AddComponent<UIRichText>();
+            SetReference(rich, "_config", _config);
+
+            AddString(key, en, fr);
+
+            var localized = rect.gameObject.AddComponent<LocalizeStringEvent>();
+            localized.StringReference = new LocalizedString(_strings.SharedData.TableCollectionNameGuid, key);
+            UnityEventTools.AddPersistentListener(localized.OnUpdateString, rich.SetText);
+
+            rect.gameObject.SetActive(true);
+            return rich;
         }
         private static void SetArray<T>(UnityEngine.Object target, string field, T[] values) where T : UnityEngine.Object
         {

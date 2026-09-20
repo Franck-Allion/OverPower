@@ -27,3 +27,16 @@ When introducing a new third-party asset or library to the project:
 2.  **Add to Git LFS:** If the package contains large binaries (FBX, WAV, PSD, etc.), confirm that those extensions are tracked in `.gitattributes`.
 3.  **Update this File:** Add a row to the table above with accurate information.
 4.  **Update Notices:** If the library requires a mandatory copyright attribution or license text inclusion, add it to [`Docs/ThirdParty/THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
+---
+
+## Project-Owned / Internal Assets Register
+
+The following assets are custom, project-owned graphics provided specifically for the **OverPower** project. They are not third-party dependencies and carry no external licensing restrictions:
+
+| Asset / Graphic | Format | Purpose | Integration Location | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| **icon_attack.png** | PNG (256x256, Transparent) | Inline Rich Text Icon for Attack/Offensive Power | `OverPower/Assets/OverPower/UI/DesignSystem/Icons/Inline/` | Custom vector-based UI graphic. |
+| **icon_health.png** | PNG (256x256, Transparent) | Inline Rich Text Icon for Health/HP Pool | `OverPower/Assets/OverPower/UI/DesignSystem/Icons/Inline/` | Custom vector-based UI graphic. |
+| **icon_gold.png** | PNG (256x256, Transparent) | Inline Rich Text Icon for Gold Run-Currency | `OverPower/Assets/OverPower/UI/DesignSystem/Icons/Inline/` | Custom vector-based UI graphic. |
+| **icon_mana.png** | PNG (256x256, Transparent) | Inline Rich Text Icon for Mana Resource | `OverPower/Assets/OverPower/UI/DesignSystem/Icons/Inline/` | Custom vector-based UI graphic. |

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: OverPower.Unity::OverPower.Unity.Presentation.DesignSystem.UIDesignSystemConfig
   _font: {fileID: 11400000, guid: 90e27dbf71532f64cb790c50ba977cb9, type: 2}
   _displayFont: {fileID: 11400000, guid: eeca99701af2bcf4eb1f6d14b645d1cf, type: 2}
+  _inlineIconSpriteAsset: {fileID: 11400000, guid: ea74db677c2d1bb42bacad406733714f, type: 2}
   _typography:
   - Role: 0
     Size: 64

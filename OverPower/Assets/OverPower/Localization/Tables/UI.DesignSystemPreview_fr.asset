@@ -290,8 +290,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79254366388225
-    m_Localized: "Des informations pr\xE9par\xE9es, une typographie commune et un
-      placement s\xFBr. Quittez le contr\xF4le pour fermer."
+    m_Localized: "Soigne 20 {health} \xE0 l'unit\xE9 cibl\xE9e. Quittez le contr\xF4le
+      pour fermer."
     m_Metadata:
       m_Items: []
   - m_Id: 79254538354688
@@ -317,6 +317,51 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 79254618046464
     m_Localized: Composants
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191575310925824
+    m_Localized: FloatingBorder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191575344480256
+    m_Localized: ModalBorder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583192023040
+    m_Localized: "04  /  IC\xD4NES EN LIGNE ET TEXTE ENRICHI"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583204605952
+    m_Localized: Un texte enrichi fluide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583221383168
+    m_Localized: "Les auteurs \xE9crivent {health} ou {mana}. Le moteur affiche les
+      ic\xF4nes haute-fid\xE9lit\xE9."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583242354688
+    m_Localized: 'Ligne de base :  {attack}  {health}  {gold}  {mana}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583292686336
+    m_Localized: Boule de feu et Soin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583309463552
+    m_Localized: "Soigne 20 {health} \xE0 l'unit\xE9 cibl\xE9e."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583355600896
+    m_Localized: Gagne 2 {mana}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583363989504
+    m_Localized: "Co\xFBte 3 {gold}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583376572416
+    m_Localized: "Cette unit\xE9 gagne 5 {attack}."
     m_Metadata:
       m_Items: []
   references:

@@ -307,6 +307,50 @@ MonoBehaviour:
     m_Key: tabs.components
     m_Metadata:
       m_Items: []
+  - m_Id: 191575310925824
+    m_Key: color.FloatingBorder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191575344480256
+    m_Key: color.ModalBorder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583192023040
+    m_Key: components.richtext
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583204605952
+    m_Key: richtext.intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583221383168
+    m_Key: richtext.instructions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583242354688
+    m_Key: richtext.comparison
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583292686336
+    m_Key: richtext.card_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583309463552
+    m_Key: richtext.sentence1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583355600896
+    m_Key: richtext.sentence2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583363989504
+    m_Key: richtext.sentence3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 191583376572416
+    m_Key: richtext.sentence4
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
