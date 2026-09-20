@@ -1,0 +1,5 @@
+{
+    "name": "OverPower.Unity.DesignSystem.Editor",
+    "references": ["OverPower.Unity", "Unity.TextMeshPro", "Unity.InputSystem", "Unity.Localization", "Unity.Localization.Editor", "Unity.ugui"],
+    "includePlatforms": ["Editor"]
+}

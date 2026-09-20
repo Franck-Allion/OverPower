@@ -420,14 +420,14 @@ Draw = 1 / turn
 
 Create only the foundations needed for the first screens.
 
-- [ ] Typography styles
-- [ ] Semantic color palette
-- [ ] Spacing tokens
-- [ ] Motion tokens
-- [ ] `UIDesignSystemConfig`
-- [ ] Primary button
-- [ ] Secondary button
-- [ ] Icon button
+- [x] Typography styles
+- [x] Semantic color palette
+- [x] Spacing tokens
+- [x] Motion tokens
+- [x] `UIDesignSystemConfig`
+- [x] Primary button
+- [x] Secondary button
+- [x] Icon button
 - [ ] Panel
 - [ ] Badge
 - [ ] Resource counter/chip

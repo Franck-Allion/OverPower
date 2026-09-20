@@ -7,6 +7,8 @@
         "OverPower.Domain",
         "OverPower.Application",
         "OverPower.Unity",
+        "Unity.TextMeshPro",
+        "Unity.ugui",
         "Unity.Localization",
         "Unity.Localization.Editor",
         "Unity.ResourceManager"

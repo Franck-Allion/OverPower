@@ -82,3 +82,37 @@ Raw controls and labels may exist briefly during implementation, but player-faci
 build real screen -> discover reusable pattern -> extract/refine component/token -> reuse
 ```
 Once accepted, a pattern becomes the preferred project standard.
+
+## Bootstrap implementation (0.3.1, tokens and buttons)
+
+The selected configuration is `Assets/OverPower/Data/UI/UIDesignSystemConfig.asset`.
+Presentation scripts live in `Scripts/Unity/Presentation/DesignSystem`; semantic
+roles use enums (`TypographyStyle`, `UISemanticColor`, `UIMotion`). `UISpacing`
+provides the eight contract values. Prefabs reference the configuration explicitly.
+The central font is applied on enable; TMP's serialized font is an authoring preview,
+not an independent theme override.
+
+`UI/DesignSystem/Components` contains PrimaryButton, SecondaryButton and IconButton.
+All use `UIButton`, a uGUI Button specialization: filled primary, outlined secondary,
+64×64 icon target. A side mark denotes hover/focus; an unavailable bar and reduced
+opacity accompany disabled colors. Only the visual child scales; the hit target
+stays stable. Each control replaces its own unscaled DOTween and resets on disable
+or destruction. Screen composition owns `onClick`, localized TMP labels and the
+icon's `AccessibleLabel` LocalizedString hook. This hook prepares future tooltips;
+it does not implement a tooltip or a screen-reader integration.
+
+Open `Scenes/Development/DesignSystemPreview.unity` for the FR/EN validation
+composition (1920×1080, CanvasScaler, nested layouts). It is not in the build scene
+list. `OverPower > UI > Create Design System Preview` explicitly regenerates its
+prefabs and scene; it overwrites those authored preview assets. Production screens
+are not modified. The preview uses its own `UI.DesignSystemPreview` string table;
+technical role names remain identical in both languages.
+
+Temporary assets: Liberation Sans SDF from the installed TMP essentials (license
+in `Assets/TextMesh Pro/Fonts`) is the bootstrap font. Replace the single selected
+reference with licensed TMP SDF font assets covering French accents and English
+when the art direction is approved; recheck all eight roles and label fitting.
+The icon button's neutral disc is a built-in Unity sprite placeholder. Screens must
+supply an appropriate project-owned icon: 64×64 transparent sprite, square aspect,
+readable at 20×20 inside the 64×64 target. Replace it during the first actual screen
+integration; it carries no Settings/Language behavior.

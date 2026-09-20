@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI.DesignSystemPreview Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: UI.DesignSystemPreview
+  m_TableCollectionNameGuidString: 08952217ceaf0e744986a49516c59080
+  m_Entries:
+  - m_Id: 5160763392
+    m_Key: eyebrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6230310912
+    m_Key: title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6242893824
+    m_Key: intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6263865344
+    m_Key: actions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6276448256
+    m_Key: hierarchy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7887060992
+    m_Key: continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8658812928
+    m_Key: back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9581559808
+    m_Key: information
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9606725632
+    m_Key: type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9615114240
+    m_Key: type.Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9627697152
+    m_Key: type.Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9636085760
+    m_Key: type.Heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9648668672
+    m_Key: type.Body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9652862976
+    m_Key: type.BodySmall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9661251584
+    m_Key: type.Caption
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9669640192
+    m_Key: type.Stat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9673834496
+    m_Key: type.Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9678028800
+    m_Key: palette
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9699000320
+    m_Key: color.Primary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9715777536
+    m_Key: color.Secondary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9724166144
+    m_Key: color.Interactive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736749056
+    m_Key: color.Selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9757720576
+    m_Key: color.Disabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9778692096
+    m_Key: color.Danger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9791275008
+    m_Key: color.Warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9808052224
+    m_Key: color.Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9820635136
+    m_Key: color.Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9833218048
+    m_Key: color.Mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9854189568
+    m_Key: color.Armor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9862578176
+    m_Key: color.Gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9875161088
+    m_Key: color.Locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9896132608
+    m_Key: color.Affordable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9908715520
+    m_Key: color.Unaffordable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9925492736
+    m_Key: color.Background
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9942269952
+    m_Key: color.Surface
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9954852864
+    m_Key: color.TextPrimary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9975824384
+    m_Key: color.TextSecondary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9988407296
+    m_Key: footer
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5803704337304125751
+  references:
+    version: 2
+    RefIds:
+    - rid: 5803704337304125751
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1789886280533

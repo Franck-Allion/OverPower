@@ -1,0 +1,176 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI.DesignSystemPreview_fr
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 08952217ceaf0e744986a49516c59080, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 5160763392
+    m_Localized: OVERPOWER  /  FONDATIONS VISUELLES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6230310912
+    m_Localized: "Syst\xE8me visuel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6242893824
+    m_Localized: "Des surfaces sobres. Des intentions claires. Un retour pr\xE9cis."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6263865344
+    m_Localized: 01  /  ACTIONS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6276448256
+    m_Localized: Un langage commun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7887060992
+    m_Localized: Continuer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8658812928
+    m_Localized: Retour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9581559808
+    m_Localized: Informations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9606725632
+    m_Localized: 02  /  TYPOGRAPHIE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9615114240
+    m_Localized: Display
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9627697152
+    m_Localized: Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9636085760
+    m_Localized: Heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9648668672
+    m_Localized: Body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9652862976
+    m_Localized: BodySmall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9661251584
+    m_Localized: Caption
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9669640192
+    m_Localized: 128 / 256
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9673834496
+    m_Localized: Button
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9678028800
+    m_Localized: "03  /  PALETTE S\xC9MANTIQUE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9699000320
+    m_Localized: Primary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9715777536
+    m_Localized: Secondary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9724166144
+    m_Localized: Interactive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9736749056
+    m_Localized: Selected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9757720576
+    m_Localized: Disabled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9778692096
+    m_Localized: Danger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9791275008
+    m_Localized: Warning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9808052224
+    m_Localized: Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9820635136
+    m_Localized: Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9833218048
+    m_Localized: Mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9854189568
+    m_Localized: Armor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9862578176
+    m_Localized: Gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9875161088
+    m_Localized: Locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9896132608
+    m_Localized: Affordable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9908715520
+    m_Localized: Unaffordable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9925492736
+    m_Localized: Background
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9942269952
+    m_Localized: Surface
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9954852864
+    m_Localized: TextPrimary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9975824384
+    m_Localized: TextSecondary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 9988407296
+    m_Localized: "Fl\xE8ches : focus     Entr\xE9e : valider     \u2022     Plein
+      : principal   /   Contour : secondaire   /   Barre : indisponible"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
