@@ -171,6 +171,154 @@ MonoBehaviour:
       : principal   /   Contour : secondaire   /   Barre : indisponible"
     m_Metadata:
       m_Items: []
+  - m_Id: 79253561081856
+    m_Localized: "OVERPOWER  /  COMPOSANTS R\xC9UTILISABLES"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253716271104
+    m_Localized: "La biblioth\xE8que visuelle"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253733048320
+    m_Localized: "Des \xE9l\xE9ments simples. Un langage commun. Pr\xEAts pour les
+      \xE9crans du jeu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253762408448
+    m_Localized: "01  /  SURFACES ET \xC9TATS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253791768576
+    m_Localized: Une place pour le contenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253800157184
+    m_Localized: Une surface sobre, des espacements communs et un titre facultatif.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253833711616
+    m_Localized: Neutre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253850488832
+    m_Localized: "Pr\xEAt"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253884043264
+    m_Localized: "Verrouill\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253896626176
+    m_Localized: "Des valeurs contextualis\xE9es"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253921792000
+    m_Localized: "Sant\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253925986304
+    m_Localized: Mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253938569216
+    m_Localized: Or
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254114729984
+    m_Localized: "02  /  D\xC9TAILS ET MOUVEMENT"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254118924288
+    m_Localized: "Des d\xE9tails au bon moment"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254131507200
+    m_Localized: "Survolez ou s\xE9lectionnez un point d\u2019inspection. Les d\xE9tails
+      restent dans le cadre."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254160867328
+    m_Localized: "Voir les d\xE9tails"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254186033152
+    m_Localized: "Une apparition discr\xE8te"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254194421760
+    m_Localized: "Des dur\xE9es communes. Sans boucle. Interruptible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254219587584
+    m_Localized: Afficher / masquer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254232170496
+    m_Localized: "03  /  D\xC9CISIONS"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254244753408
+    m_Localized: "Un temps pour d\xE9cider"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254261530624
+    m_Localized: "Un dialogue cibl\xE9, deux actions claires. Les commandes du fond
+      attendent sa fermeture."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254282502144
+    m_Localized: Ouvrir la confirmation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254295085056
+    m_Localized: "Les fl\xE8ches naviguent. Valider confirme. Annuler rend le focus
+      au bouton d\u2019origine."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254307667968
+    m_Localized: "Pr\xE9sentation uniquement \u2014 sans \xE9tat de jeu ni chargement
+      de sc\xE8ne."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254320250880
+    m_Localized: "Inspectez les quatre rep\xE8res de bord \u2022 Tous les textes
+      utilisent la table EN / FR"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254366388224
+    m_Localized: "L\u2019essentiel en un regard"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254366388225
+    m_Localized: "Des informations pr\xE9par\xE9es, une typographie commune et un
+      placement s\xFBr. Quittez le contr\xF4le pour fermer."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254538354688
+    m_Localized: Confirmer cette action ?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254538354689
+    m_Localized: "Ceci est un aper\xE7u visuel. Choisissez une action pour revenir
+      \xE0 la biblioth\xE8que de composants."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254546743296
+    m_Localized: Confirmer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254550937600
+    m_Localized: Revenir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254597074944
+    m_Localized: Fondations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254618046464
+    m_Localized: Composants
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

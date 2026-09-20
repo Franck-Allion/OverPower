@@ -1,0 +1,216 @@
+using System.Collections.Generic;
+using OverPower.Unity.Presentation.DesignSystem.Preview;
+using TMPro;
+using UnityEditor;
+using UnityEditor.Events;
+using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+using UnityEngine.UI;
+
+namespace OverPower.Unity.Presentation.DesignSystem.Editor
+{
+    public static partial class DesignSystemPreviewBuilder
+    {
+        private static void BuildComponentsPreview(Canvas canvas, RectTransform foundations, RectTransform buttonSamples)
+        {
+            var panelPrefab = CreatePanel();
+            var badgePrefab = CreateBadge();
+            var chipPrefab = CreateResourceChip();
+            var tooltipPrefab = CreateTooltip();
+            var modalPrefab = CreateConfirmDialog(panelPrefab);
+            var background = Rect("BackgroundContent", canvas.transform);
+            Stretch(background, 0);
+            var backgroundGroup = background.gameObject.AddComponent<CanvasGroup>();
+            foundations.SetParent(background, false);
+            var page = Rect("Components", background);
+            Stretch(page, UISpacing.Page);
+            Vertical(page, 0);
+            page.GetComponent<VerticalLayoutGroup>().spacing = UISpacing.Xl;
+            Text(page, "components.eyebrow", "OVERPOWER  /  REUSABLE COMPONENTS", "OVERPOWER  /  COMPOSANTS RÉUTILISABLES", TypographyStyle.Caption, 26, UISemanticColor.Primary);
+            Text(page, "components.title", "The component library", "La bibliothèque visuelle", TypographyStyle.Display, 82);
+            Text(page, "components.intro", "Small primitives. Shared language. Ready for real screens.",
+                "Des éléments simples. Un langage commun. Prêts pour les écrans du jeu.", TypographyStyle.Body, 38, UISemanticColor.TextSecondary);
+            var columns = Rect("ComponentColumns", page);
+            Height(columns, 650);
+            Horizontal(columns, 0, 0);
+            var columnsLayout = columns.GetComponent<HorizontalLayoutGroup>();
+            columnsLayout.spacing = UISpacing.Xxl;
+            columnsLayout.childForceExpandWidth = columnsLayout.childForceExpandHeight = true;
+            var surfaces = Column("Surfaces", columns);
+            var details = Column("Details", columns);
+            var decisions = Column("Decisions", columns);
+            Text(surfaces, "components.surfaces", "01  /  SURFACES & STATUS", "01  /  SURFACES ET ÉTATS", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            var samplePanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, surfaces);
+            Height((RectTransform)samplePanel.transform, 170);
+            Label(samplePanel.transform.Find("Header").GetComponent<TMP_Text>(), "panel.title", "A place for content", "Une place pour le contenu");
+            var panelBody = PlainText("Body", samplePanel.transform.Find("Content"), TypographyStyle.BodySmall, 64);
+            Label(panelBody, "panel.body", "A calm surface with shared spacing and an optional heading.",
+                "Une surface sobre, des espacements communs et un titre facultatif.");
+            var badges = Rect("BadgeSamples", surfaces);
+            Horizontal(badges, 0, 0);
+            Height(badges, 48);
+            BadgeExample(badgePrefab, badges, UISemanticColor.Secondary, "badge.neutral", "Neutral", "Neutre");
+            BadgeExample(badgePrefab, badges, UISemanticColor.Success, "badge.ready", "Ready", "Prêt");
+            BadgeExample(badgePrefab, badges, UISemanticColor.Warning, "badge.locked", "Locked", "Verrouillé");
+            Text(surfaces, "resources.heading", "Numbers with context", "Des valeurs contextualisées", TypographyStyle.Heading, 48);
+            var numbers = Rect("ResourceValues", surfaces);
+            Horizontal(numbers, 0, 0);
+            Height(numbers, 108);
+            numbers.GetComponent<HorizontalLayoutGroup>().childForceExpandWidth = true;
+            ChipWithCaption(chipPrefab, numbers, UISemanticColor.Health, 9, "resource.health", "Health", "Santé");
+            ChipWithCaption(chipPrefab, numbers, UISemanticColor.Mana, 99, "resource.mana", "Mana", "Mana");
+            ChipWithCaption(chipPrefab, numbers, UISemanticColor.Gold, 999, "resource.gold", "Gold", "Or");
+            var ratios = Rect("ResourceRatios", surfaces);
+            Horizontal(ratios, 0, 0);
+            Height(ratios, 68);
+            ChipExample(chipPrefab, ratios, UISemanticColor.Health, 12, 20);
+            ChipExample(chipPrefab, ratios, UISemanticColor.Mana, 100, 100);
+
+            Text(details, "components.details", "02  /  DETAILS & MOTION", "02  /  DÉTAILS ET MOUVEMENT", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            Text(details, "tooltip.intro", "Details, when you need them", "Des détails au bon moment", TypographyStyle.Heading, 48);
+            Text(details, "tooltip.instructions", "Hover or focus an inspection control. The detail view stays inside the canvas.",
+                "Survolez ou sélectionnez un point d’inspection. Les détails restent dans le cadre.", TypographyStyle.BodySmall, 80, UISemanticColor.TextSecondary);
+            var inspect = ExampleButton(details, UIButtonFamily.Secondary, "tooltip.inspect", "Inspect details", "Voir les détails");
+            var revealPanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, details);
+            Height((RectTransform)revealPanel.transform, 166);
+            Label(revealPanel.transform.Find("Header").GetComponent<TMP_Text>(), "motion.title", "A restrained reveal", "Une apparition discrète");
+            Label(PlainText("Body", revealPanel.transform.Find("Content"), TypographyStyle.BodySmall, 64),
+                "motion.body", "Shared timings. No loops. Safe to interrupt.", "Des durées communes. Sans boucle. Interruptible.");
+            var reveal = Transition((RectTransform)revealPanel.transform, null, true, false);
+            var toggle = ExampleButton(details, UIButtonFamily.Secondary, "motion.toggle", "Show / hide", "Afficher / masquer");
+
+            Text(decisions, "components.decisions", "03  /  DECISIONS", "03  /  DÉCISIONS", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            Text(decisions, "modal.intro", "A clear moment to decide", "Un temps pour décider", TypographyStyle.Heading, 48);
+            Text(decisions, "modal.instructions", "A focused dialog, with two clear actions. Background controls pause until it closes.",
+                "Un dialogue ciblé, deux actions claires. Les commandes du fond attendent sa fermeture.", TypographyStyle.BodySmall, 100, UISemanticColor.TextSecondary);
+            var open = ExampleButton(decisions, UIButtonFamily.Primary, "modal.open", "Open confirmation", "Ouvrir la confirmation");
+            Text(decisions, "modal.navigation", "Arrows navigate. Submit confirms. Cancel returns focus to the opening control.",
+                "Les flèches naviguent. Valider confirme. Annuler rend le focus au bouton d’origine.", TypographyStyle.BodySmall, 120, UISemanticColor.TextSecondary);
+            Text(decisions, "components.note", "Presentation only — no gameplay state or scene loading.",
+                "Présentation uniquement — sans état de jeu ni chargement de scène.", TypographyStyle.Caption, 100, UISemanticColor.TextSecondary);
+            Text(page, "components.footer", "Inspect the four edge markers • All text uses the EN / FR preview table",
+                "Inspectez les quatre repères de bord • Tous les textes utilisent la table EN / FR", TypographyStyle.Caption, 32, UISemanticColor.TextSecondary);
+
+            var tooltipObject = (GameObject)PrefabUtility.InstantiatePrefab(tooltipPrefab, canvas.transform);
+            var tooltip = tooltipObject.GetComponent<UITooltip>();
+            tooltip.BindCanvas((RectTransform)canvas.transform, canvas);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(tooltip);
+            var triggers = new List<UITooltipTrigger> { TooltipTrigger(inspect, tooltip) };
+            var edges = Rect("EdgeControls", page);
+            edges.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            Stretch(edges, -UISpacing.Page);
+            var anchors = new[] { new Vector2(0, 0.5f), new Vector2(1, 0.5f), new Vector2(0.5f, 1), new Vector2(0.5f, 0) };
+            var offsets = new[] { new Vector2(32, 0), new Vector2(-32, 0), new Vector2(0, -32), new Vector2(0, 32) };
+            for (int i = 0; i < anchors.Length; i++)
+            {
+                var edge = InstantiateButton(UIButtonFamily.Icon, edges);
+                edge.name = "EdgeInspection" + i;
+                var rect = (RectTransform)edge.transform;
+                rect.anchorMin = rect.anchorMax = anchors[i];
+                rect.anchoredPosition = offsets[i];
+                triggers.Add(TooltipTrigger(edge, tooltip));
+            }
+
+            var modalObject = (GameObject)PrefabUtility.InstantiatePrefab(modalPrefab, canvas.transform);
+            var dialog = modalObject.GetComponent<UIConfirmDialog>();
+            dialog.BindBackground(backgroundGroup);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(dialog);
+            var modalTexts = modalObject.GetComponentsInChildren<TMP_Text>(true);
+            foreach (var text in modalTexts)
+            {
+                if (text.name == "Header") Label(text, "dialog.title", "Confirm this action?", "Confirmer cette action ?");
+                else if (text.name == "Body") Label(text, "dialog.body", "This is a presentation preview. Choose either action to return to the component library.",
+                    "Ceci est un aperçu visuel. Choisissez une action pour revenir à la bibliothèque de composants.");
+            }
+            Label(dialog.Primary.GetComponentInChildren<TMP_Text>(), "dialog.confirm", "Confirm", "Confirmer");
+            Label(dialog.Secondary.GetComponentInChildren<TMP_Text>(), "dialog.cancel", "Go back", "Revenir");
+            UnityEventTools.AddPersistentListener(open.onClick, dialog.Open);
+            var preview = canvas.gameObject.AddComponent<DesignSystemPreviewView>();
+            SetReference(preview, "_foundations", foundations.gameObject);
+            SetReference(preview, "_components", page.gameObject);
+            SetReference(preview, "_componentFocus", open);
+            SetReference(preview, "_tooltip", tooltip);
+            SetReference(preview, "_dialog", dialog);
+            SetReference(preview, "_reveal", reveal);
+            SetArray(preview, "_buttonSamples", buttonSamples.GetComponentsInChildren<UIButton>());
+            SetArray(preview, "_tooltipTriggers", triggers.ToArray());
+            UnityEventTools.AddPersistentListener(toggle.onClick, preview.ToggleReveal);
+            var tabs = Rect("PreviewPages", background);
+            tabs.anchorMin = tabs.anchorMax = Vector2.one;
+            tabs.pivot = Vector2.one;
+            tabs.anchoredPosition = new Vector2(-UISpacing.Page, -UISpacing.Page);
+            tabs.sizeDelta = new Vector2(520, 48);
+            Horizontal(tabs, 0, 0);
+            var firstTab = ExampleButton(tabs, UIButtonFamily.Secondary, "tabs.foundations", "Foundations", "Fondations");
+            var secondTab = ExampleButton(tabs, UIButtonFamily.Secondary, "tabs.components", "Components", "Composants");
+            UnityEventTools.AddPersistentListener(firstTab.onClick, preview.ShowFoundations);
+            UnityEventTools.AddPersistentListener(secondTab.onClick, preview.ShowComponents);
+            page.gameObject.SetActive(false);
+        }
+
+        private static void BadgeExample(GameObject prefab, Transform parent, UISemanticColor tone, string key, string en, string fr)
+        {
+            var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+            var badge = instance.GetComponent<UIBadge>();
+            badge.SetTone(tone);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(badge);
+            Label(instance.GetComponentInChildren<TMP_Text>(), key, en, fr);
+        }
+        private static void ChipExample(GameObject prefab, Transform parent, UISemanticColor tone, int value, int? maximum = null)
+        {
+            var chip = ((GameObject)PrefabUtility.InstantiatePrefab(prefab, parent)).GetComponent<UIResourceChip>();
+            chip.SetTone(tone);
+            if (maximum.HasValue) chip.SetValue(value, maximum.Value); else chip.SetValue(value);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(chip);
+        }
+        private static void ChipWithCaption(GameObject prefab, Transform parent, UISemanticColor tone, int value, string key, string en, string fr)
+        {
+            var column = Column(key, parent);
+            column.GetComponent<VerticalLayoutGroup>().childForceExpandWidth = true;
+            Text(column, key, en, fr, TypographyStyle.Caption, 26, tone);
+            ChipExample(prefab, column, tone, value);
+        }
+        private static UIButton ExampleButton(Transform parent, UIButtonFamily family, string key, string en, string fr)
+        {
+            var button = InstantiateButton(family, parent);
+            Label(button.GetComponentInChildren<TMP_Text>(), key, en, fr);
+            return button;
+        }
+        private static void Label(TMP_Text text, string key, string en, string fr)
+        {
+            AddString(key, en, fr);
+            Localize(text, key, en);
+        }
+        private static UITooltipTrigger TooltipTrigger(UIButton button, UITooltip tooltip)
+        {
+            button.gameObject.SetActive(false);
+            var trigger = button.gameObject.AddComponent<UITooltipTrigger>();
+            SetReference(trigger, "_config", _config);
+            SetReference(trigger, "_tooltip", tooltip);
+            AddString("tooltip.title", "Details at a glance", "L’essentiel en un regard");
+            AddString("tooltip.body", "Prepared display data, shared typography and safe placement. Leave the control to dismiss.",
+                "Des informations préparées, une typographie commune et un placement sûr. Quittez le contrôle pour fermer.");
+            var so = new SerializedObject(trigger);
+            foreach (var pair in new[] { new[] { "_title", "tooltip.title" }, new[] { "_body", "tooltip.body" } })
+            {
+                var reference = so.FindProperty(pair[0]);
+                reference.FindPropertyRelative("m_TableReference.m_TableCollectionName").stringValue = "GUID:" + _strings.SharedData.TableCollectionNameGuid.ToString("N");
+                reference.FindPropertyRelative("m_TableEntryReference.m_Key").stringValue = pair[1];
+            }
+            so.ApplyModifiedPropertiesWithoutUndo();
+            button.AccessibleLabel.TableReference = _strings.SharedData.TableCollectionNameGuid;
+            button.AccessibleLabel.TableEntryReference = "tooltip.title";
+            button.gameObject.SetActive(true);
+            return trigger;
+        }
+        private static void SetArray<T>(UnityEngine.Object target, string field, T[] values) where T : UnityEngine.Object
+        {
+            var so = new SerializedObject(target);
+            var array = so.FindProperty(field);
+            array.arraySize = values.Length;
+            for (int i = 0; i < values.Length; i++) array.GetArrayElementAtIndex(i).objectReferenceValue = values[i];
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+    }
+}

@@ -428,12 +428,12 @@ Create only the foundations needed for the first screens.
 - [x] Primary button
 - [x] Secondary button
 - [x] Icon button
-- [ ] Panel
-- [ ] Badge
-- [ ] Resource counter/chip
-- [ ] Tooltip foundation
-- [ ] Modal/confirm dialog foundation
-- [ ] Common transition component(s)
+- [x] Panel
+- [x] Badge
+- [x] Resource counter/chip
+- [x] Tooltip foundation
+- [x] Modal/confirm dialog foundation
+- [x] Common transition component(s)
 
 ---
 

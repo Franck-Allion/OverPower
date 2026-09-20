@@ -15,7 +15,7 @@ using UnityEngine.UI;
 namespace OverPower.Unity.Presentation.DesignSystem.Editor
 {
     /// <summary>Explicit authoring command; never runs on import or changes production scenes.</summary>
-    public static class DesignSystemPreviewBuilder
+    public static partial class DesignSystemPreviewBuilder
     {
         public const string Root = "Assets/OverPower/UI/DesignSystem";
         public const string ConfigPath = "Assets/OverPower/Data/UI/UIDesignSystemConfig.asset";
@@ -126,6 +126,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             Text(page, "footer", "Arrows: focus     Enter: submit     •     Solid: primary   /   Outline: secondary   /   Bar: unavailable",
                 "Flèches : focus     Entrée : valider     •     Plein : principal   /   Contour : secondaire   /   Barre : indisponible",
                 TypographyStyle.Caption, 40, UISemanticColor.TextSecondary);
+            BuildComponentsPreview(canvas, page, actions);
             foreach (var table in _strings.StringTables) EditorUtility.SetDirty(table);
             EditorUtility.SetDirty(_strings.SharedData);
             AssetDatabase.SaveAssets();
@@ -226,6 +227,8 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             rect.gameObject.SetActive(false);
             var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
             text.raycastTarget = false;
+            text.textWrappingMode = TextWrappingModes.Normal;
+            text.overflowMode = TextOverflowModes.Ellipsis;
             _config.ApplyTypography(text, style);
             text.color = _config.GetColor(color);
             var typography = rect.gameObject.AddComponent<UITypography>();
@@ -268,7 +271,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
         }
         private static void Stretch(RectTransform rect, float inset)
         { rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one; rect.offsetMin = Vector2.one * inset; rect.offsetMax = Vector2.one * -inset; }
-        private static void Height(RectTransform rect, float value) => rect.gameObject.AddComponent<LayoutElement>().preferredHeight = value;
+        private static void Height(RectTransform rect, float value)
+        {
+            var layout = rect.gameObject.AddComponent<LayoutElement>();
+            layout.preferredHeight = value;
+            layout.flexibleHeight = 0;
+        }
         private static void SetReference(UnityEngine.Object target, string field, UnityEngine.Object value)
         {
             var so = new SerializedObject(target);

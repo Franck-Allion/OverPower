@@ -69,10 +69,14 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField, Range(1f, 1.05f)] private float _hoverScale = 1.015f;
         [SerializeField, Range(0.9f, 1f)] private float _pressedScale = 0.975f;
         [SerializeField, Range(0.5f, 1f)] private float _disabledOpacity = 0.7f;
+        [SerializeField, Range(0.9f, 1f)] private float _revealScale = 0.98f;
+        [SerializeField, Range(0f, 1f)] private float _modalBackdropOpacity = 0.82f;
 
         public float HoverScale => _hoverScale;
         public float PressedScale => _pressedScale;
         public float DisabledOpacity => _disabledOpacity;
+        public float RevealScale => _revealScale;
+        public float ModalBackdropOpacity => _modalBackdropOpacity;
 
         public Color GetColor(UISemanticColor role)
         {

@@ -171,6 +171,152 @@ MonoBehaviour:
       /   Outline: secondary   /   Bar: unavailable"
     m_Metadata:
       m_Items: []
+  - m_Id: 79253561081856
+    m_Localized: OVERPOWER  /  REUSABLE COMPONENTS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253716271104
+    m_Localized: The component library
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253733048320
+    m_Localized: Small primitives. Shared language. Ready for real screens.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253762408448
+    m_Localized: 01  /  SURFACES & STATUS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253791768576
+    m_Localized: A place for content
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253800157184
+    m_Localized: A calm surface with shared spacing and an optional heading.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253833711616
+    m_Localized: Neutral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253850488832
+    m_Localized: Ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253884043264
+    m_Localized: Locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253896626176
+    m_Localized: Numbers with context
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253921792000
+    m_Localized: Health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253925986304
+    m_Localized: Mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253938569216
+    m_Localized: Gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254114729984
+    m_Localized: 02  /  DETAILS & MOTION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254118924288
+    m_Localized: Details, when you need them
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254131507200
+    m_Localized: Hover or focus an inspection control. The detail view stays inside
+      the canvas.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254160867328
+    m_Localized: Inspect details
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254186033152
+    m_Localized: A restrained reveal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254194421760
+    m_Localized: Shared timings. No loops. Safe to interrupt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254219587584
+    m_Localized: Show / hide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254232170496
+    m_Localized: 03  /  DECISIONS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254244753408
+    m_Localized: A clear moment to decide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254261530624
+    m_Localized: A focused dialog, with two clear actions. Background controls pause
+      until it closes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254282502144
+    m_Localized: Open confirmation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254295085056
+    m_Localized: Arrows navigate. Submit confirms. Cancel returns focus to the opening
+      control.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254307667968
+    m_Localized: "Presentation only \u2014 no gameplay state or scene loading."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254320250880
+    m_Localized: "Inspect the four edge markers \u2022 All text uses the EN / FR
+      preview table"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254366388224
+    m_Localized: Details at a glance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254366388225
+    m_Localized: Prepared display data, shared typography and safe placement. Leave
+      the control to dismiss.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254538354688
+    m_Localized: Confirm this action?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254538354689
+    m_Localized: This is a presentation preview. Choose either action to return to
+      the component library.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254546743296
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254550937600
+    m_Localized: Go back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254597074944
+    m_Localized: Foundations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254618046464
+    m_Localized: Components
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

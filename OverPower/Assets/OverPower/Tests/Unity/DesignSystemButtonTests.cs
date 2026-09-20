@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using NUnit.Framework;
 using OverPower.Unity.Presentation.DesignSystem;
+using OverPower.Unity.Presentation.DesignSystem.Preview;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -42,7 +43,7 @@ namespace OverPower.Tests.Unity
             yield return null;
             var eventSystem = EventSystem.current;
             Assert.That(eventSystem, Is.Not.Null);
-            var buttons = Object.FindObjectsByType<UIButton>(FindObjectsSortMode.None);
+            var buttons = Object.FindFirstObjectByType<DesignSystemPreviewView>().ButtonSamples;
             Assert.That(buttons.Length, Is.EqualTo(6));
             Assert.That(eventSystem.currentSelectedGameObject.GetComponent<UIButton>().Family, Is.EqualTo(UIButtonFamily.Primary));
             ExecuteEvents.Execute(eventSystem.currentSelectedGameObject,

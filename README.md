@@ -85,15 +85,11 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Design System bootstrap (0.3.1) in progress; Core Domain Foundation complete**
-
-Design System bootstrap (0.3.1) is in progress: semantic tokens, the central UI
-configuration and reusable Primary/Secondary/Icon button prefabs are available.
-Open `OverPower/Assets/OverPower/Scenes/Development/DesignSystemPreview.unity`
-for the localized 1080p preview. The remaining 0.3.1 components and the 0.3.2 Main
-Menu pass are still pending; the application version remains 0.2.9.
-
-The Core Domain Foundation is fully complete, with all roadmap milestones through 0.2.9 implemented and verified by extensive, deterministic unit and integration tests. Shared primitives, deterministic seedable RNG/substreams, logging foundation, core content definitions, the authoritative UnitStack combat model, physical card/deck containers with the deterministic starting-hand rule, the complete hero runtime state with controlled resource transitions, and the migration-ready persistent Save DTO contracts are fully implemented and compile standalone outside of Unity.
+> **Status: Core Domain Foundation complete & Design System bootstrap (0.3.1) complete**
+>
+> The pure C# Core Domain Foundation (Milestone 0.2) and the presentation Design System bootstrap (Milestone 0.3.1) are fully complete. This includes shared primitives, deterministic RNG/substreams, authoritative combat/deck aggregates, starting hand rules, and persistent DTO schemas, alongside cohesive UI configuration, primary/secondary/icon buttons, reusable panels, badges, resource chips, tooltips, modals, and DOTween-based transitions.
+>
+> Open `OverPower/Assets/OverPower/Scenes/Development/DesignSystemPreview.unity` for the localized 1080p development preview scene. The application version is aligned to 0.3.1.
 
 ---
 

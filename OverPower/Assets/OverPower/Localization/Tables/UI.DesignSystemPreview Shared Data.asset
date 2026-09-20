@@ -167,6 +167,146 @@ MonoBehaviour:
     m_Key: footer
     m_Metadata:
       m_Items: []
+  - m_Id: 79253561081856
+    m_Key: components.eyebrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253716271104
+    m_Key: components.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253733048320
+    m_Key: components.intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253762408448
+    m_Key: components.surfaces
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253791768576
+    m_Key: panel.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253800157184
+    m_Key: panel.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253833711616
+    m_Key: badge.neutral
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253850488832
+    m_Key: badge.ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253884043264
+    m_Key: badge.locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253896626176
+    m_Key: resources.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253921792000
+    m_Key: resource.health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253925986304
+    m_Key: resource.mana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79253938569216
+    m_Key: resource.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254114729984
+    m_Key: components.details
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254118924288
+    m_Key: tooltip.intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254131507200
+    m_Key: tooltip.instructions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254160867328
+    m_Key: tooltip.inspect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254186033152
+    m_Key: motion.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254194421760
+    m_Key: motion.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254219587584
+    m_Key: motion.toggle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254232170496
+    m_Key: components.decisions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254244753408
+    m_Key: modal.intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254261530624
+    m_Key: modal.instructions
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254282502144
+    m_Key: modal.open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254295085056
+    m_Key: modal.navigation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254307667968
+    m_Key: components.note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254320250880
+    m_Key: components.footer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254366388224
+    m_Key: tooltip.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254366388225
+    m_Key: tooltip.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254538354688
+    m_Key: dialog.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254538354689
+    m_Key: dialog.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254546743296
+    m_Key: dialog.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254550937600
+    m_Key: dialog.cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254597074944
+    m_Key: tabs.foundations
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79254618046464
+    m_Key: tabs.components
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
