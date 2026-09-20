@@ -35,8 +35,8 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  m_Material: {fileID: 8576274203323664546}
-  spriteSheet: {fileID: 0}
+  m_Material: {fileID: 6385425823548970027}
+  spriteSheet: {fileID: 2800000, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
     m_Unicode: 0
@@ -47,12 +47,12 @@ MonoBehaviour:
     m_Unicode: 0
     m_GlyphIndex: 1
     m_Scale: 1
-    m_Name: health
+    m_Name: gold
   - m_ElementType: 2
     m_Unicode: 0
     m_GlyphIndex: 2
     m_Scale: 1
-    m_Name: gold
+    m_Name: health
   - m_ElementType: 2
     m_Unicode: 0
     m_GlyphIndex: 3
@@ -68,13 +68,13 @@ MonoBehaviour:
       m_HorizontalAdvance: 256
     m_GlyphRect:
       m_X: 0
-      m_Y: 0
+      m_Y: 256
       m_Width: 256
       m_Height: 256
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 21300000, guid: e956181848c3faa4b8d130217a925a18, type: 3}
+    sprite: {fileID: 3870244539617078810, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
   - m_Index: 1
     m_Metrics:
       m_Width: 256
@@ -90,7 +90,7 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 21300000, guid: 30d9f1c78e988e64c97ce694c45ce244, type: 3}
+    sprite: {fileID: 2317138849345682547, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
   - m_Index: 2
     m_Metrics:
       m_Width: 256
@@ -99,14 +99,14 @@ MonoBehaviour:
       m_HorizontalBearingY: 204.8
       m_HorizontalAdvance: 256
     m_GlyphRect:
-      m_X: 0
-      m_Y: 0
+      m_X: 256
+      m_Y: 256
       m_Width: 256
       m_Height: 256
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 21300000, guid: 0754cc34f7b1a9d4cb038860ed40ced4, type: 3}
+    sprite: {fileID: -4209461954710867259, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
   - m_Index: 3
     m_Metrics:
       m_Width: 256
@@ -115,17 +115,17 @@ MonoBehaviour:
       m_HorizontalBearingY: 204.8
       m_HorizontalAdvance: 256
     m_GlyphRect:
-      m_X: 0
+      m_X: 256
       m_Y: 0
       m_Width: 256
       m_Height: 256
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
-    sprite: {fileID: 21300000, guid: e80dd6ff36efe814b9454def32cec991, type: 3}
+    sprite: {fileID: -4225634055810630605, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
---- !u!21 &8576274203323664546
+--- !u!21 &6385425823548970027
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
