@@ -214,7 +214,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             layout.spacing = UISpacing.Sm;
             layout.childControlHeight = true;
             layout.childControlWidth = true;
-            layout.childForceExpandWidth = false;
+            layout.childForceExpandWidth = true;
             layout.childForceExpandHeight = false;
             return column;
         }
@@ -228,12 +228,14 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             if (layout != null)
             {
                 layout.flexibleWidth = 1;
+                layout.minWidth = 100;
             }
             rect.gameObject.SetActive(false);
             var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
             text.raycastTarget = false;
             text.textWrappingMode = TextWrappingModes.Normal;
             text.overflowMode = TextOverflowModes.Ellipsis;
+            text.alignment = TextAlignmentOptions.MidlineLeft;
             _config.ApplyTypography(text, style);
             text.color = _config.GetColor(color);
             var typography = rect.gameObject.AddComponent<UITypography>();

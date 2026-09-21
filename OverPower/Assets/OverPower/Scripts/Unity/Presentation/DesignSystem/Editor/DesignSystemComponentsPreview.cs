@@ -43,15 +43,15 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             Text(surfaces, "components.surfaces", "01  /  SURFACES & STATUS", "01  /  SURFACES ET ÉTATS", TypographyStyle.Caption, 32, UISemanticColor.Primary);
             var samplePanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, surfaces);
             Height((RectTransform)samplePanel.transform, 170);
-            Label(samplePanel.transform.Find("Header").GetComponent<TMP_Text>(), "panel.title", "A place for content", "Une place pour le contenu");
+            Label(samplePanel.transform.Find("Header").GetComponent<TMP_Text>(), "panel.title", "GUARDIAN", "GARDIEN");
             var panelBody = PlainText("Body", samplePanel.transform.Find("Content"), TypographyStyle.BodySmall, 64);
-            Label(panelBody, "panel.body", "A calm surface with shared spacing and an optional heading.",
-                "Une surface sobre, des espacements communs et un titre facultatif.");
+            Label(panelBody, "panel.body", "Front-line defender. High armor and shield capacity. Absorbs heavy damage to protect the back row.",
+                "Défenseur de première ligne. Armure et bouclier élevés. Absorbe de lourds dégâts pour protéger le rang arrière.");
             var badges = Rect("BadgeSamples", surfaces);
             Horizontal(badges, 0, 0);
             Height(badges, 48);
-            BadgeExample(badgePrefab, badges, UISemanticColor.Secondary, "badge.neutral", "Neutral", "Neutre");
-            BadgeExample(badgePrefab, badges, UISemanticColor.Success, "badge.ready", "Ready", "Prêt");
+            BadgeExample(badgePrefab, badges, UISemanticColor.Secondary, "badge.ready", "Ready", "Prêt");
+            BadgeExample(badgePrefab, badges, UISemanticColor.Success, "badge.empowered", "Empowered", "Renforcé");
             BadgeExample(badgePrefab, badges, UISemanticColor.Warning, "badge.locked", "Locked", "Verrouillé");
             Text(surfaces, "resources.heading", "Numbers with context", "Des valeurs contextualisées", TypographyStyle.Heading, 48);
             var numbers = Rect("ResourceValues", surfaces);
@@ -102,7 +102,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             // Card-description constrained block
             var cardPanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, richText);
             Height((RectTransform)cardPanel.transform, 310);
-            Label(cardPanel.transform.Find("Header").GetComponent<TMP_Text>(), "richtext.card_title", "Fireball & Healing", "Boule de feu et Soin");
+            Label(cardPanel.transform.Find("Header").GetComponent<TMP_Text>(), "richtext.card_title", "Fireball", "Boule de feu");
             var cardContent = cardPanel.transform.Find("Content");
             var cardContentLayout = cardContent.GetComponent<VerticalLayoutGroup>();
             if (cardContentLayout != null)
@@ -111,10 +111,10 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             }
 
             // Create individual description sentences using Source Sans 3 Body / BodySmall inside the card panel
-            RichText(cardContent, "richtext.sentence1", "Heal 20 {health} to the targeted unit.", "Soigne 20 {health} à l'unité ciblée.", TypographyStyle.BodySmall, 40);
-            RichText(cardContent, "richtext.sentence2", "Gain 2 {mana}.", "Gagne 2 {mana}.", TypographyStyle.BodySmall, 40);
-            RichText(cardContent, "richtext.sentence3", "Costs 3 {gold}.", "Coûte 3 {gold}.", TypographyStyle.BodySmall, 40);
-            RichText(cardContent, "richtext.sentence4", "This unit gains 5 {attack}.", "Cette unité gagne 5 {attack}.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence1", "Deal 8 {attack} to the targeted unit.", "Inflige 8 {attack} à l'unité ciblée.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence2", "Apply burn damage for 2 turns.", "Applique des dégâts de brûlure pendant 2 tours.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence3", "Costs 3 {mana}.", "Coûte 3 {mana}.", TypographyStyle.BodySmall, 40);
+            RichText(cardContent, "richtext.sentence4", "Gain 15 {gold} upon victory.", "Gagne 15 {gold} en cas de victoire.", TypographyStyle.BodySmall, 40);
 
             Text(page, "components.footer", "Inspect the four edge markers • All text uses the EN / FR preview table",
                 "Inspectez les quatre repères de bord • Tous les textes utilisent la table EN / FR", TypographyStyle.Caption, 32, UISemanticColor.TextSecondary);
@@ -146,12 +146,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var modalTexts = modalObject.GetComponentsInChildren<TMP_Text>(true);
             foreach (var text in modalTexts)
             {
-                if (text.name == "Header") Label(text, "dialog.title", "Confirm this action?", "Confirmer cette action ?");
-                else if (text.name == "Body") Label(text, "dialog.body", "This is a presentation preview. Choose either action to return to the component library.",
-                    "Ceci est un aperçu visuel. Choisissez une action pour revenir à la bibliothèque de composants.");
+                if (text.name == "Header") Label(text, "dialog.title", "Abandon Expedition?", "Abandonner l'expédition ?");
+                else if (text.name == "Body") Label(text, "dialog.body", "All accumulated gold, meta currency, and progress made during this expedition will be lost. Return to the safety of the main sanctuary?",
+                    "Tout l'or, la méta-monnaie et les progrès accumulés pendant cette expédition seront perdus. Revenir à la sécurité du sanctuaire principal ?");
             }
-            Label(dialog.Primary.GetComponentInChildren<TMP_Text>(), "dialog.confirm", "Confirm", "Confirmer");
-            Label(dialog.Secondary.GetComponentInChildren<TMP_Text>(), "dialog.cancel", "Go back", "Revenir");
+            Label(dialog.Primary.GetComponentInChildren<TMP_Text>(), "dialog.confirm", "Abandon", "Abandonner");
+            Label(dialog.Secondary.GetComponentInChildren<TMP_Text>(), "dialog.cancel", "Continue", "Continuer");
             UnityEventTools.AddPersistentListener(open.onClick, dialog.Open);
             var preview = canvas.gameObject.AddComponent<DesignSystemPreviewView>();
             SetReference(preview, "_foundations", foundations.gameObject);
@@ -215,7 +215,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var trigger = button.gameObject.AddComponent<UITooltipTrigger>();
             SetReference(trigger, "_config", _config);
             SetReference(trigger, "_tooltip", tooltip);
-            AddString("tooltip.title", "Details at a glance", "L’essentiel en un regard");
+            AddString("tooltip.title", "GUARD STANCE", "POSTURE DE GARDE");
             AddString("tooltip.body", "Heal 20 {health} to the targeted unit. Leave the control to dismiss.",
                 "Soigne 20 {health} à l'unité ciblée. Quittez le contrôle pour fermer.");
             var so = new SerializedObject(trigger);

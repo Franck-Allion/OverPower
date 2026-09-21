@@ -134,13 +134,31 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
         {
             var border = root.gameObject.AddComponent<Image>();
             border.raycastTarget = false;
+            
             var surface = Image("Surface", root, _config.GetColor(UISemanticColor.Surface));
             surface.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
             Stretch(surface.rectTransform, 1);
+
+            // Subtle inner border (1-pixel inset highlight inside surface)
+            var innerBorder = Image("InnerBorder", surface.transform, Color.clear);
+            innerBorder.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            Stretch(innerBorder.rectTransform, 1);
+
+            // Subtle top accent bar (3-pixel gold line anchored to top)
+            var accentBar = Image("TopAccentBar", root, Color.clear);
+            accentBar.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
+            accentBar.rectTransform.anchorMin = new Vector2(0, 1);
+            accentBar.rectTransform.anchorMax = new Vector2(1, 1);
+            accentBar.rectTransform.pivot = new Vector2(0.5f, 1);
+            accentBar.rectTransform.sizeDelta = new Vector2(0, 3);
+            accentBar.rectTransform.anchoredPosition = new Vector2(0, 0);
+
             var panel = root.gameObject.AddComponent<UIPanel>();
             SetReference(panel, "_config", _config);
             SetReference(panel, "_surface", surface);
             SetReference(panel, "_border", border);
+            SetReference(panel, "_innerBorder", innerBorder);
+            SetReference(panel, "_accentBar", accentBar);
             SetEnum(panel, "_style", (int)style);
             panel.Apply();
         }

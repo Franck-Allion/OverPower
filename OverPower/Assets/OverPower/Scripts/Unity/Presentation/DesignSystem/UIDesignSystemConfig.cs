@@ -31,17 +31,18 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         [SerializeField] private TMP_FontAsset _font;
         [SerializeField] private TMP_FontAsset _displayFont;
+        [SerializeField] private TMP_FontAsset _semiboldFont;
         [SerializeField] private TMP_SpriteAsset _inlineIconSpriteAsset;
         [SerializeField] private TypographyDefinition[] _typography =
         {
-            new TypographyDefinition(TypographyStyle.Display, 64, FontStyles.Bold),
-            new TypographyDefinition(TypographyStyle.Title, 42, FontStyles.Bold),
-            new TypographyDefinition(TypographyStyle.Heading, 28, FontStyles.Bold),
-            new TypographyDefinition(TypographyStyle.Body, 24),
-            new TypographyDefinition(TypographyStyle.BodySmall, 20),
-            new TypographyDefinition(TypographyStyle.Caption, 18),
-            new TypographyDefinition(TypographyStyle.Stat, 32, FontStyles.Bold),
-            new TypographyDefinition(TypographyStyle.Button, 24, FontStyles.Bold)
+            new TypographyDefinition(TypographyStyle.Display, 64, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.Title, 42, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.Heading, 28, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.Body, 24, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.BodySmall, 20, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.Caption, 18, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.Stat, 32, FontStyles.Normal),
+            new TypographyDefinition(TypographyStyle.Button, 24, FontStyles.Normal)
         };
         [SerializeField] private PaletteEntry[] _palette =
         {
@@ -102,9 +103,16 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         public void ApplyTypography(TMP_Text text, TypographyStyle role)
         {
-            TMP_FontAsset activeFont = (role == TypographyStyle.Display || role == TypographyStyle.Title)
-                ? (_displayFont ?? _font)
-                : _font;
+            TMP_FontAsset activeFont = _font;
+            if (role == TypographyStyle.Display || role == TypographyStyle.Title)
+            {
+                activeFont = _displayFont ?? _font;
+            }
+            else if (role == TypographyStyle.Heading || role == TypographyStyle.Caption || 
+                     role == TypographyStyle.Stat || role == TypographyStyle.Button)
+            {
+                activeFont = _semiboldFont ?? _font;
+            }
 
             if (activeFont == null) throw new InvalidOperationException("Design system font is required.");
             foreach (var definition in _typography)

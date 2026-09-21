@@ -44,7 +44,9 @@ namespace OverPower.Unity.Presentation.DesignSystem
             _scaleTween?.Kill();
             _scaleTween = null;
             bool disabled = state == SelectionState.Disabled;
-            bool focused = state == SelectionState.Selected || state == SelectionState.Highlighted;
+            bool isSelected = state == SelectionState.Selected;
+            bool isHovered = state == SelectionState.Highlighted;
+            bool focused = isSelected || isHovered;
             bool pressed = state == SelectionState.Pressed;
             bool primary = _family == UIButtonFamily.Primary;
             var accent = disabled ? UISemanticColor.Disabled : focused || pressed
@@ -54,7 +56,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             var ink = _config.GetColor(primary && !disabled ? UISemanticColor.Background : UISemanticColor.TextPrimary);
             if (_label != null) _label.color = ink;
             if (_icon != null) _icon.color = ink;
-            _focusMark.SetActive(focused && !disabled);
+            _focusMark.SetActive(isSelected && !disabled);
             _disabledMark.SetActive(disabled);
             _visualOpacity.alpha = disabled ? _config.DisabledOpacity : 1f;
             var scale = Vector3.one * (pressed ? _config.PressedScale : focused ? _config.HoverScale : 1f);
