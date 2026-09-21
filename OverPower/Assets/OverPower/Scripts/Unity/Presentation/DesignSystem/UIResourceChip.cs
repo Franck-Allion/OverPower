@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace OverPower.Unity.Presentation.DesignSystem
 {
+    [ExecuteAlways]
     public sealed class UIResourceChip : MonoBehaviour
     {
         [SerializeField] private UIDesignSystemConfig _config;

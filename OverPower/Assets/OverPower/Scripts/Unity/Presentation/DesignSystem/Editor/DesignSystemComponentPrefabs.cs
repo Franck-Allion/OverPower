@@ -53,8 +53,23 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var icon = Image("Icon", root, Color.white);
             icon.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
             FixedSize(icon.rectTransform, 20, 20);
+            
             var value = PlainText("Value", root, TypographyStyle.Stat, 40);
+            var valueLayout = value.GetComponent<LayoutElement>();
+            if (valueLayout != null)
+            {
+                valueLayout.minWidth = 32;
+                valueLayout.flexibleWidth = 1;
+            }
+
             var maximum = PlainText("Maximum", root, TypographyStyle.BodySmall, 32);
+            var maxLayout = maximum.GetComponent<LayoutElement>();
+            if (maxLayout != null)
+            {
+                maxLayout.minWidth = 48;
+                maxLayout.flexibleWidth = 0;
+            }
+
             var chip = root.gameObject.AddComponent<UIResourceChip>();
             SetReference(chip, "_config", _config);
             SetReference(chip, "_icon", icon);

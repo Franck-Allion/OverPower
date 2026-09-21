@@ -189,11 +189,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79253791768576
-    m_Localized: Une place pour le contenu
+    m_Localized: GARDIEN
     m_Metadata:
       m_Items: []
   - m_Id: 79253800157184
-    m_Localized: Une surface sobre, des espacements communs et un titre facultatif.
+    m_Localized: "D\xE9fenseur de premi\xE8re ligne. Armure et bouclier \xE9lev\xE9s.
+      Absorbe de lourds d\xE9g\xE2ts pour prot\xE9ger le rang arri\xE8re."
     m_Metadata:
       m_Items: []
   - m_Id: 79253833711616
@@ -286,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79254366388224
-    m_Localized: "L\u2019essentiel en un regard"
+    m_Localized: POSTURE DE GARDE
     m_Metadata:
       m_Items: []
   - m_Id: 79254366388225
@@ -295,20 +296,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79254538354688
-    m_Localized: Confirmer cette action ?
+    m_Localized: "Abandonner l'exp\xE9dition ?"
     m_Metadata:
       m_Items: []
   - m_Id: 79254538354689
-    m_Localized: "Ceci est un aper\xE7u visuel. Choisissez une action pour revenir
-      \xE0 la biblioth\xE8que de composants."
+    m_Localized: "Tout l'or, la m\xE9ta-monnaie et les progr\xE8s accumul\xE9s pendant
+      cette exp\xE9dition seront perdus. Revenir \xE0 la s\xE9curit\xE9 du sanctuaire
+      principal ?"
     m_Metadata:
       m_Items: []
   - m_Id: 79254546743296
-    m_Localized: Confirmer
+    m_Localized: Abandonner
     m_Metadata:
       m_Items: []
   - m_Id: 79254550937600
-    m_Localized: Revenir
+    m_Localized: Continuer
     m_Metadata:
       m_Items: []
   - m_Id: 79254597074944
@@ -345,23 +347,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 191583292686336
-    m_Localized: Boule de feu et Soin
+    m_Localized: Boule de feu
     m_Metadata:
       m_Items: []
   - m_Id: 191583309463552
-    m_Localized: "Soigne 20 {health} \xE0 l'unit\xE9 cibl\xE9e."
+    m_Localized: "Inflige 8 {attack} \xE0 l'unit\xE9 cibl\xE9e."
     m_Metadata:
       m_Items: []
   - m_Id: 191583355600896
-    m_Localized: Gagne 2 {mana}.
+    m_Localized: "Applique des d\xE9g\xE2ts de br\xFBlure pendant 2 tours."
     m_Metadata:
       m_Items: []
   - m_Id: 191583363989504
-    m_Localized: "Co\xFBte 3 {gold}."
+    m_Localized: "Co\xFBte 3 {mana}."
     m_Metadata:
       m_Items: []
   - m_Id: 191583376572416
-    m_Localized: "Cette unit\xE9 gagne 5 {attack}."
+    m_Localized: Gagne 15 {gold} en cas de victoire.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 550696182808576
+    m_Localized: "Renforc\xE9"
     m_Metadata:
       m_Items: []
   references:

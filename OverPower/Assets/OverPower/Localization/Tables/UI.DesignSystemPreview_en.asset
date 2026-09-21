@@ -188,11 +188,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79253791768576
-    m_Localized: A place for content
+    m_Localized: GUARDIAN
     m_Metadata:
       m_Items: []
   - m_Id: 79253800157184
-    m_Localized: A calm surface with shared spacing and an optional heading.
+    m_Localized: Front-line defender. High armor and shield capacity. Absorbs heavy
+      damage to protect the back row.
     m_Metadata:
       m_Items: []
   - m_Id: 79253833711616
@@ -284,7 +285,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79254366388224
-    m_Localized: Details at a glance
+    m_Localized: GUARD STANCE
     m_Metadata:
       m_Items: []
   - m_Id: 79254366388225
@@ -292,20 +293,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 79254538354688
-    m_Localized: Confirm this action?
+    m_Localized: Abandon Expedition?
     m_Metadata:
       m_Items: []
   - m_Id: 79254538354689
-    m_Localized: This is a presentation preview. Choose either action to return to
-      the component library.
+    m_Localized: All accumulated gold, meta currency, and progress made during this
+      expedition will be lost. Return to the safety of the main sanctuary?
     m_Metadata:
       m_Items: []
   - m_Id: 79254546743296
-    m_Localized: Confirm
+    m_Localized: Abandon
     m_Metadata:
       m_Items: []
   - m_Id: 79254550937600
-    m_Localized: Go back
+    m_Localized: Continue
     m_Metadata:
       m_Items: []
   - m_Id: 79254597074944
@@ -342,23 +343,27 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 191583292686336
-    m_Localized: Fireball & Healing
+    m_Localized: Fireball
     m_Metadata:
       m_Items: []
   - m_Id: 191583309463552
-    m_Localized: Heal 20 {health} to the targeted unit.
+    m_Localized: Deal 8 {attack} to the targeted unit.
     m_Metadata:
       m_Items: []
   - m_Id: 191583355600896
-    m_Localized: Gain 2 {mana}.
+    m_Localized: Apply burn damage for 2 turns.
     m_Metadata:
       m_Items: []
   - m_Id: 191583363989504
-    m_Localized: Costs 3 {gold}.
+    m_Localized: Costs 3 {mana}.
     m_Metadata:
       m_Items: []
   - m_Id: 191583376572416
-    m_Localized: This unit gains 5 {attack}.
+    m_Localized: Gain 15 {gold} upon victory.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 550696182808576
+    m_Localized: Empowered
     m_Metadata:
       m_Items: []
   references:

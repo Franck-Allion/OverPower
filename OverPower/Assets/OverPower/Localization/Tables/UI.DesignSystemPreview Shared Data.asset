@@ -351,6 +351,10 @@ MonoBehaviour:
     m_Key: richtext.sentence4
     m_Metadata:
       m_Items: []
+  - m_Id: 550696182808576
+    m_Key: badge.empowered
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

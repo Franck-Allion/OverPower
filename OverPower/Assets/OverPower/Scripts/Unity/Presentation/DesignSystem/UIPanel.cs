@@ -19,6 +19,25 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             if (_config == null || _surface == null) return;
 
+            // Inset calculation to ensure complete borders (eliminating 1px subpixel truncation issues)
+            int inset = 1;
+            if (_style == UIPanelStyle.Subtle)
+            {
+                inset = 0;
+            }
+            else if (_style == UIPanelStyle.Elevated || _style == UIPanelStyle.Floating)
+            {
+                inset = 2; // 2px border
+            }
+            else if (_style == UIPanelStyle.Modal)
+            {
+                inset = 3; // 3px border
+            }
+
+            // Adjust surface offsets programmatically based on border thickness
+            _surface.rectTransform.offsetMin = new Vector2(inset, inset);
+            _surface.rectTransform.offsetMax = new Vector2(-inset, -inset);
+
             // Surface background color (Subtle uses deep Background, others use Surface)
             _surface.color = _config.GetColor(_style == UIPanelStyle.Subtle ? UISemanticColor.Background : UISemanticColor.Surface);
 
@@ -51,12 +70,15 @@ namespace OverPower.Unity.Presentation.DesignSystem
                 _border.enabled = _style != UIPanelStyle.Subtle;
             }
 
-            // 2. Inner Highlight / Border
+            // 2. Inner Highlight / Border (inset by 1px inside surface)
             if (_innerBorder != null)
             {
                 _innerBorder.enabled = _style != UIPanelStyle.Subtle;
                 if (_innerBorder.enabled)
                 {
+                    _innerBorder.rectTransform.offsetMin = new Vector2(1, 1);
+                    _innerBorder.rectTransform.offsetMax = new Vector2(-1, -1);
+
                     // Subtle highlights using transparent colors
                     if (_style == UIPanelStyle.Floating)
                     {
@@ -80,6 +102,11 @@ namespace OverPower.Unity.Presentation.DesignSystem
                 if (_accentBar.enabled)
                 {
                     _accentBar.color = _config.GetColor(UISemanticColor.Primary); // Pure Gold
+                    // Align horizontal margins inside the border frame
+                    _accentBar.rectTransform.offsetMin = new Vector2(inset, _accentBar.rectTransform.offsetMin.y);
+                    _accentBar.rectTransform.offsetMax = new Vector2(-inset, _accentBar.rectTransform.offsetMax.y);
+                    // Elevated gets 3px bar, Modal gets a slightly thicker 4px bar
+                    _accentBar.rectTransform.sizeDelta = new Vector2(0, _style == UIPanelStyle.Modal ? 4 : 3);
                 }
             }
         }

@@ -65,7 +65,13 @@ namespace OverPower.Unity.Presentation.DesignSystem
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(_bounds, _screenPoint, camera, out var point);
                 var area = _bounds.rect;
                 float width = rect.rect.width, height = rect.rect.height;
-                point += new Vector2(UISpacing.Lg, -UISpacing.Lg);
+
+                // Intelligently select offset direction based on available space in quadrants
+                float xOffset = point.x > area.center.x ? -(width + UISpacing.Lg) : UISpacing.Lg;
+                float yOffset = point.y < area.center.y ? height + UISpacing.Lg : -UISpacing.Lg;
+
+                point += new Vector2(xOffset, yOffset);
+
                 // The prefab uses top-left pivot and center anchors, directly under the supplied bounds.
                 float x = Mathf.Clamp(point.x, area.xMin + UISpacing.Sm, Mathf.Max(area.xMin + UISpacing.Sm, area.xMax - width - UISpacing.Sm));
                 float y = Mathf.Clamp(point.y, Mathf.Min(area.yMax - UISpacing.Sm, area.yMin + height + UISpacing.Sm), area.yMax - UISpacing.Sm);
