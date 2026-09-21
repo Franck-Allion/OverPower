@@ -224,6 +224,11 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
         {
             var rect = Rect(key, parent);
             Height(rect, height);
+            var layout = rect.GetComponent<LayoutElement>();
+            if (layout != null)
+            {
+                layout.flexibleWidth = 1;
+            }
             rect.gameObject.SetActive(false);
             var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
             text.raycastTarget = false;

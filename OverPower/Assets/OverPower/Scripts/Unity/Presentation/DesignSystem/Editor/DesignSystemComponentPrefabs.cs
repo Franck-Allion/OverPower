@@ -81,6 +81,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             body.overflowMode = TextOverflowModes.Ellipsis;
             var transition = Transition(root, null, false, false);
             var tooltip = root.gameObject.AddComponent<UITooltip>();
+            SetReference(tooltip, "_config", _config);
             SetReference(tooltip, "_transition", transition);
             SetReference(tooltip, "_title", title);
             SetReference(tooltip, "_body", body);

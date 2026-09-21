@@ -6,6 +6,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
 {
     public sealed class UITooltip : MonoBehaviour
     {
+        [SerializeField] private UIDesignSystemConfig _config;
         [SerializeField] private UITransition _transition;
         [SerializeField] private TMP_Text _title;
         [SerializeField] private TMP_Text _body;
@@ -29,6 +30,13 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             if (!isActiveAndEnabled) return;
             if (_bounds == null || _canvas == null) throw new System.InvalidOperationException("Bind tooltip canvas before showing.");
+
+            if (_config != null && _config.InlineIconSpriteAsset != null)
+            {
+                if (_title != null) _title.spriteAsset = _config.InlineIconSpriteAsset;
+                if (_body != null) _body.spriteAsset = _config.InlineIconSpriteAsset;
+            }
+
             _owner = owner;
             _title.text = title;
             _body.text = body;

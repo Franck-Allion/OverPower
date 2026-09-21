@@ -722,6 +722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a45ab18960c1c742973268071c89d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: OverPower.Unity::OverPower.Unity.Presentation.DesignSystem.UITooltip
+  _config: {fileID: 11400000, guid: b74e470979919bb45ac07322ff0dfdf1, type: 2}
   _transition: {fileID: 1531451912043960739}
   _title: {fileID: 1423811653799556005}
   _body: {fileID: 617954570677352495}
