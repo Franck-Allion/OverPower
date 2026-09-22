@@ -13,20 +13,20 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [Header("Target References")]
         [SerializeField] private RectTransform _targetTransform;
         [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private Image _targetImage;
+        [SerializeField] private Graphic _targetGraphic;
 
         [Header("Alpha Breathing")]
         [SerializeField] private bool _animateAlpha = true;
-        [SerializeField] private float _baseAlpha = 0.35f;
-        [SerializeField] private float _peakAlpha = 0.90f;
+        [SerializeField] private float _baseAlpha = 0.18f;
+        [SerializeField] private float _peakAlpha = 0.25f;
 
         [Header("Scale Breathing")]
         [SerializeField] private bool _animateScale = true;
         [SerializeField] private float _baseScale = 1.00f;
-        [SerializeField] private float _peakScale = 1.012f;
+        [SerializeField] private float _peakScale = 1.018f;
 
         [Header("Timing & Easing")]
-        [SerializeField] private float _halfCycleDuration = 2.6f;
+        [SerializeField] private float _halfCycleDuration = 3.2f;
         [SerializeField] private Ease _ease = Ease.InOutSine;
         [SerializeField] private bool _autoPlay = true;
 
@@ -43,29 +43,38 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         private void Awake()
         {
-            if (_targetTransform == null) _targetTransform = transform as RectTransform;
-            if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
-            if (_targetImage == null) _targetImage = GetComponent<Image>();
+            ResolveReferences();
         }
 
         private void OnEnable()
         {
-            ApplyRestingState();
+            ResolveReferences();
             if (_autoPlay && _isAnimated)
             {
-                Play();
+                StartAnimation();
+            }
+            else
+            {
+                RestoreBaseState();
             }
         }
 
         private void OnDisable()
         {
-            Stop();
-            ApplyRestingState();
+            StopAnimation();
+            RestoreBaseState();
         }
 
         private void OnDestroy()
         {
-            KillTween();
+            StopAnimation();
+        }
+
+        private void ResolveReferences()
+        {
+            if (_targetTransform == null) _targetTransform = transform as RectTransform;
+            if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
+            if (_targetGraphic == null) _targetGraphic = GetComponent<Graphic>();
         }
 
         /// <summary>
@@ -77,87 +86,107 @@ namespace OverPower.Unity.Presentation.DesignSystem
             _isAnimated = enabled;
             if (!_isAnimated)
             {
-                Stop();
-                ApplyRestingState();
+                StopAnimation();
+                RestoreBaseState();
             }
             else if (isActiveAndEnabled)
             {
-                Play();
+                StartAnimation();
             }
         }
 
         public void Play()
         {
-            KillTween();
-
-            if (!isActiveAndEnabled || !_isAnimated)
-            {
-                ApplyRestingState();
-                return;
-            }
-
-            ApplyRestingState();
-
-            _sequence = DOTween.Sequence();
-            _sequence.SetUpdate(true); // Unscaled time for UI
-            _sequence.SetRecyclable(false);
-
-            if (_animateAlpha)
-            {
-                if (_canvasGroup != null)
-                {
-                    _sequence.Join(DOTween.To(() => _canvasGroup.alpha, a => _canvasGroup.alpha = a, _peakAlpha, _halfCycleDuration).SetEase(_ease));
-                }
-                else if (_targetImage != null)
-                {
-                    _sequence.Join(DOTween.To(() => _targetImage.color.a, a =>
-                    {
-                        var c = _targetImage.color;
-                        c.a = a;
-                        _targetImage.color = c;
-                    }, _peakAlpha, _halfCycleDuration).SetEase(_ease));
-                }
-            }
-
-            if (_animateScale && _targetTransform != null)
-            {
-                var targetScale = new Vector3(_peakScale, _peakScale, 1f);
-                _sequence.Join(DOTween.To(() => _targetTransform.localScale, s => _targetTransform.localScale = s, targetScale, _halfCycleDuration).SetEase(_ease));
-            }
-
-            _sequence.SetLoops(-1, LoopType.Yoyo);
+            StartAnimation();
         }
 
         public void Stop()
         {
-            KillTween();
+            StopAnimation();
+            RestoreBaseState();
         }
 
-        public void ApplyRestingState()
+        public void StartAnimation()
         {
-            if (_canvasGroup != null && _animateAlpha)
+            StopAnimation();
+
+            if (!isActiveAndEnabled || !_isAnimated)
             {
-                _canvasGroup.alpha = _baseAlpha;
-            }
-            else if (_targetImage != null && _animateAlpha)
-            {
-                var c = _targetImage.color;
-                c.a = _baseAlpha;
-                _targetImage.color = c;
+                RestoreBaseState();
+                return;
             }
 
-            if (_targetTransform != null && _animateScale)
+            ResolveReferences();
+            RestoreBaseState();
+
+            _sequence = DOTween.Sequence();
+
+            Tween alphaTween = null;
+            if (_animateAlpha)
             {
-                _targetTransform.localScale = new Vector3(_baseScale, _baseScale, 1f);
+                if (_canvasGroup != null)
+                {
+                    alphaTween = DOTween.To(() => _canvasGroup.alpha, a => _canvasGroup.alpha = a, _peakAlpha, _halfCycleDuration).SetEase(_ease);
+                }
+                else if (_targetGraphic != null)
+                {
+                    alphaTween = DOTween.To(() => _targetGraphic.color.a, a =>
+                    {
+                        var c = _targetGraphic.color;
+                        c.a = a;
+                        _targetGraphic.color = c;
+                    }, _peakAlpha, _halfCycleDuration).SetEase(_ease);
+                }
             }
+
+            Tween scaleTween = null;
+            if (_animateScale && _targetTransform != null)
+            {
+                var targetScale = Vector3.one * _peakScale;
+                scaleTween = DOTween.To(() => _targetTransform.localScale, s => _targetTransform.localScale = s, targetScale, _halfCycleDuration).SetEase(_ease);
+            }
+
+            if (alphaTween != null)
+            {
+                _sequence.Append(alphaTween);
+                if (scaleTween != null) _sequence.Join(scaleTween);
+            }
+            else if (scaleTween != null)
+            {
+                _sequence.Append(scaleTween);
+            }
+
+            _sequence
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetUpdate(true) // Unscaled time for UI
+                .SetLink(gameObject, LinkBehaviour.KillOnDisable);
         }
 
-        private void KillTween()
+        public void StopAnimation()
         {
             if (_sequence != null)
             {
                 _sequence.Kill();
                 _sequence = null;
+            }
+        }
+
+        public void RestoreBaseState()
+        {
+            if (_canvasGroup != null && _animateAlpha)
+            {
+                _canvasGroup.alpha = _baseAlpha;
+            }
+            else if (_targetGraphic != null && _animateAlpha)
+            {
+                var c = _targetGraphic.color;
+                c.a = _baseAlpha;
+                _targetGraphic.color = c;
+            }
+
+            if (_targetTransform != null && _animateScale)
+            {
+                _targetTransform.localScale = Vector3.one * _baseScale;
             }
         }
     }

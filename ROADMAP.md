@@ -439,19 +439,19 @@ Create only the foundations needed for the first screens.
 
 ## 0.3.2 Main Menu premium pass
 
-- [ ] Replace any bootstrap/debug controls
-- [ ] Background/art composition
-- [ ] Game title treatment
-- [ ] Play button
+- [x] Replace any bootstrap/debug controls
+- [x] Background/art composition
+- [x] Game title treatment
+- [x] Play button
 - [ ] Settings access
-- [ ] Language access
-- [ ] Exit action
+- [x] Language access
+- [x] Exit action
 - [ ] Hover/pressed/disabled states
 - [ ] DOTween transitions
 - [ ] UI sound hooks
 - [ ] Keyboard/mouse navigation
 - [ ] Controller-friendly navigation topology prepared
-- [ ] FR/EN localization
+- [x] FR/EN localization
 - [ ] 16:9 1080p reference validation
 - [ ] Basic alternate-resolution validation
 

@@ -9,6 +9,11 @@
 [Ll]ogs/
 [Bb]uild/
 [Bb]uilds/
+[Rr]elease/
+[Rr]eleases/
+OverPower/Release/
+OverPower/Build/
+OverPower/Builds/
 UserSettings/
 [Mm]emoryCaptures/
 DotNet/OverPower.Application/bin/
@@ -67,6 +72,10 @@ crashlytics-build.properties
 # Packed Addressables (ignore cached/built addressable assets)
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/[Ii]nitial[Dd]ata/
 /[Aa]ssets/StreamingAssets/aa/
+OverPower/Assets/AddressableAssetsData/link.xml*
+OverPower/Assets/AddressableAssetsData/Windows/
+OverPower/Assets/AddressableAssetsData/Windows.meta
+OverPower/Assets/AddressableAssetsData/ProfileDataSourceSettings.asset*
 
 # OS-generated files
 .DS_Store

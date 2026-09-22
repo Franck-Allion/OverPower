@@ -131,12 +131,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
                 var shadowRect = shadowObj.GetComponent<RectTransform>();
                 shadowRect.anchorMin = shadowRect.anchorMax = new Vector2(0.5f, 0.5f);
                 shadowRect.pivot = new Vector2(0.5f, 0.5f);
-                shadowRect.sizeDelta = new Vector2(panelW + 36f, panelH + 36f);
-                shadowRect.anchoredPosition = new Vector2(0f, -12f);
+                shadowRect.sizeDelta = new Vector2(panelW + 48f, panelH + 48f);
+                shadowRect.anchoredPosition = new Vector2(0f, -14f);
                 var shadowImg = shadowObj.GetComponent<Image>();
                 shadowImg.sprite = glowSprite;
                 shadowImg.type = Image.Type.Sliced;
-                shadowImg.color = new Color(0f, 0f, 0f, 0.60f); // Clean, grounded drop shadow
+                shadowImg.color = new Color(0f, 0f, 0f, 0.55f); // Soft grounded shadow
                 shadowImg.raycastTarget = false;
             }
 
@@ -148,54 +148,41 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
                 var auraContainerRect = auraContainerObj.GetComponent<RectTransform>();
                 auraContainerRect.anchorMin = auraContainerRect.anchorMax = new Vector2(0.5f, 0.5f);
                 auraContainerRect.pivot = new Vector2(0.5f, 0.5f);
-                auraContainerRect.sizeDelta = new Vector2(panelW, panelH);
+                // Exact size: panel + 64px ensures the 32px 9-sliced border starts precisely at the panel edge!
+                auraContainerRect.sizeDelta = new Vector2(panelW + 64f, panelH + 64f);
                 auraContainerRect.anchoredPosition = Vector2.zero;
 
                 var canvasGroup = auraContainerObj.GetComponent<CanvasGroup>();
                 canvasGroup.blocksRaycasts = false;
                 canvasGroup.interactable = false;
-                canvasGroup.alpha = 0.35f;
+                canvasGroup.alpha = 0.18f;
 
                 var auraPulse = auraContainerObj.GetComponent<UIAuraPulse>();
                 var pulseSo = new SerializedObject(auraPulse);
                 pulseSo.FindProperty("_targetTransform").objectReferenceValue = auraContainerRect;
                 pulseSo.FindProperty("_canvasGroup").objectReferenceValue = canvasGroup;
-                pulseSo.FindProperty("_baseAlpha").floatValue = 0.35f;
-                pulseSo.FindProperty("_peakAlpha").floatValue = 0.90f;
+                pulseSo.FindProperty("_baseAlpha").floatValue = 0.18f;
+                pulseSo.FindProperty("_peakAlpha").floatValue = 0.25f;
                 pulseSo.FindProperty("_baseScale").floatValue = 1.00f;
-                pulseSo.FindProperty("_peakScale").floatValue = 1.012f;
-                pulseSo.FindProperty("_halfCycleDuration").floatValue = 2.6f;
+                pulseSo.FindProperty("_peakScale").floatValue = 1.018f;
+                pulseSo.FindProperty("_halfCycleDuration").floatValue = 3.2f;
                 pulseSo.FindProperty("_ease").enumValueIndex = (int)DG.Tweening.Ease.InOutSine;
                 pulseSo.FindProperty("_autoPlay").boolValue = true;
                 pulseSo.ApplyModifiedProperties();
 
-                // 3a. Diffuse Outer Golden Aura (Discreet halo tightly contoured to the panel)
-                var outerAuraObj = new GameObject("GoldenAuraOuter", typeof(RectTransform), typeof(Image));
-                outerAuraObj.transform.SetParent(auraContainerRect, false);
-                var outerAuraRect = outerAuraObj.GetComponent<RectTransform>();
-                outerAuraRect.anchorMin = outerAuraRect.anchorMax = new Vector2(0.5f, 0.5f);
-                outerAuraRect.pivot = new Vector2(0.5f, 0.5f);
-                outerAuraRect.sizeDelta = new Vector2(panelW + 28f, panelH + 28f);
-                outerAuraRect.anchoredPosition = new Vector2(0f, 0f);
-                var outerAuraImg = outerAuraObj.GetComponent<Image>();
-                outerAuraImg.sprite = glowSprite;
-                outerAuraImg.type = Image.Type.Sliced;
-                outerAuraImg.color = new Color(0.89f, 0.74f, 0.47f, 0.28f); // Subdued noble gold
-                outerAuraImg.raycastTarget = false;
-
-                // 3b. Subtle Inner Golden Glow (Slightly warmer, focused around upper edges)
-                var innerAuraObj = new GameObject("GoldenAuraInner", typeof(RectTransform), typeof(Image));
-                innerAuraObj.transform.SetParent(auraContainerRect, false);
-                var innerAuraRect = innerAuraObj.GetComponent<RectTransform>();
-                innerAuraRect.anchorMin = innerAuraRect.anchorMax = new Vector2(0.5f, 0.5f);
-                innerAuraRect.pivot = new Vector2(0.5f, 0.5f);
-                innerAuraRect.sizeDelta = new Vector2(panelW + 10f, panelH + 10f);
-                innerAuraRect.anchoredPosition = new Vector2(0f, 2f);
-                var innerAuraImg = innerAuraObj.GetComponent<Image>();
-                innerAuraImg.sprite = glowSprite;
-                innerAuraImg.type = Image.Type.Sliced;
-                innerAuraImg.color = new Color(1f, 0.88f, 0.64f, 0.35f); // Warm luminance near border
-                innerAuraImg.raycastTarget = false;
+                // 3a. Golden Aura Visual Image (Renders the 32px smooth golden falloff around the panel)
+                var auraVisualObj = new GameObject("AuraVisual", typeof(RectTransform), typeof(Image));
+                auraVisualObj.transform.SetParent(auraContainerRect, false);
+                var auraVisualRect = auraVisualObj.GetComponent<RectTransform>();
+                auraVisualRect.anchorMin = Vector2.zero;
+                auraVisualRect.anchorMax = Vector2.one;
+                auraVisualRect.offsetMin = Vector2.zero;
+                auraVisualRect.offsetMax = Vector2.zero;
+                var auraVisualImg = auraVisualObj.GetComponent<Image>();
+                auraVisualImg.sprite = glowSprite;
+                auraVisualImg.type = Image.Type.Sliced;
+                auraVisualImg.color = config.GetColor(UISemanticColor.Primary); // Pure noble gold #E4BD78
+                auraVisualImg.raycastTarget = false;
             }
 
             // 5. Central Elevated Main Menu Panel
