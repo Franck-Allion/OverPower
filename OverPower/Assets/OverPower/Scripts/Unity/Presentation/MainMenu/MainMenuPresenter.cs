@@ -110,7 +110,7 @@ namespace OverPower.Unity.Presentation.MainMenu
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+            UnityEngine.Application.Quit();
 #endif
         }
 
