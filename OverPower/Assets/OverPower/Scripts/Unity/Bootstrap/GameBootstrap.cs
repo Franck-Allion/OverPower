@@ -86,6 +86,7 @@ namespace OverPower.Unity.Bootstrap
         public IGameFlowController GameFlow => _gameFlowController;
         public IGameInput Input => _inputReader;
         public UnityLocaleService Locale => _localeService;
+        public static bool IsInitialized => _instance != null;
 
         public static IGameFlowController GetGameFlow()
         {

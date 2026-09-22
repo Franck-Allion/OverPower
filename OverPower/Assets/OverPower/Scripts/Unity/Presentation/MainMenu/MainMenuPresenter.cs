@@ -1,22 +1,30 @@
 using UnityEngine;
-using UnityEngine.UI;
 using OverPower.Application;
 using OverPower.Unity.Bootstrap;
 using OverPower.Domain.Run;
+using OverPower.Unity.Presentation.DesignSystem;
 
 namespace OverPower.Unity.Presentation.MainMenu
 {
-    public class MainMenuPresenter : MonoBehaviour
+    /// <summary>
+    /// Screen-level presenter orchestrating the main menu actions and wiring events.
+    /// </summary>
+    public sealed class MainMenuPresenter : MonoBehaviour
     {
-        [SerializeField] private Button playButton;
-        [SerializeField] private Button languageButton;
+        [SerializeField] private UIButton playButton;
+        [SerializeField] private UIButton languageButton;
+        [SerializeField] private UIButton exitButton;
+
+        private void Awake()
+        {
+            UnityEngine.Application.runInBackground = true;
+        }
 
         private void Start()
         {
             if (playButton != null)
             {
                 playButton.onClick.AddListener(OnPlayClicked);
-                Debug.Log("[MainMenuPresenter] Play button listener attached.");
             }
             else
             {
@@ -26,13 +34,24 @@ namespace OverPower.Unity.Presentation.MainMenu
             if (languageButton != null)
             {
                 languageButton.onClick.AddListener(OnLanguageClicked);
-                Debug.Log("[MainMenuPresenter] Language button listener attached.");
+            }
+            else
+            {
+                Debug.LogError("[MainMenuPresenter] Language button reference is missing!");
+            }
+
+            if (exitButton != null)
+            {
+                exitButton.onClick.AddListener(OnExitClicked);
+            }
+            else
+            {
+                Debug.LogError("[MainMenuPresenter] Exit button reference is missing!");
             }
         }
 
         private async void OnPlayClicked()
         {
-            Debug.Log("[MainMenuPresenter] Play button clicked.");
             IGameFlowController gameFlow = GameBootstrap.GetGameFlow();
             if (gameFlow != null)
             {
@@ -61,11 +80,14 @@ namespace OverPower.Unity.Presentation.MainMenu
 
         private async void OnLanguageClicked()
         {
-            Debug.Log("[MainMenuPresenter] Language button clicked.");
-            var localeService = GameBootstrap.GetLocaleService();
+            var localeService = GameBootstrap.IsInitialized
+                ? GameBootstrap.GetLocaleService()
+                : new OverPower.Unity.Localization.UnityLocaleService();
+
             if (localeService != null)
             {
-                string nextLocale = localeService.CurrentLocale.Identifier.Code == "fr" ? "en" : "fr";
+                string currentCode = localeService.CurrentLocale != null ? localeService.CurrentLocale.Identifier.Code : "en";
+                string nextLocale = currentCode == "fr" ? "en" : "fr";
                 if (languageButton != null) languageButton.interactable = false;
 
                 try
@@ -81,10 +103,15 @@ namespace OverPower.Unity.Presentation.MainMenu
                     if (languageButton != null) languageButton.interactable = true;
                 }
             }
-            else
-            {
-                Debug.LogError("[MainMenuPresenter] LocaleService is not available.");
-            }
+        }
+
+        private void OnExitClicked()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         private void OnDestroy()
@@ -96,6 +123,10 @@ namespace OverPower.Unity.Presentation.MainMenu
             if (languageButton != null)
             {
                 languageButton.onClick.RemoveListener(OnLanguageClicked);
+            }
+            if (exitButton != null)
+            {
+                exitButton.onClick.RemoveListener(OnExitClicked);
             }
         }
     }

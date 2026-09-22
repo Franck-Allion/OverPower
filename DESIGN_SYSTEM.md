@@ -133,10 +133,7 @@ prefabs and scene; it overwrites those authored preview assets. Production scree
 are not modified. The preview uses its own `UI.DesignSystemPreview` string table;
 technical role names remain identical in both languages.
 
-Temporary assets: Liberation Sans SDF from the installed TMP essentials (license
-in `Assets/TextMesh Pro/Fonts`) is the bootstrap font. Replace the single selected
-reference with licensed TMP SDF font assets covering French accents and English
-when the art direction is approved; recheck all eight roles and label fitting.
+Production typography: The project integrates Source Sans 3 as the central functional sans-serif font (covering Body, Heading, Button, Stat, and Caption) and Cinzel as the expressive display and title-level font (Display, Title). Both are integrated production typography choices with their license and provenance (SIL Open Font License 1.1) formally documented in the Third-Party notices and Asset Inventory.
 The icon button's neutral disc is a built-in Unity sprite placeholder. Screens must
 supply an appropriate project-owned icon: 64×64 transparent sprite, square aspect,
 readable at 20×20 inside the 64×64 target. Replace it during the first actual screen
