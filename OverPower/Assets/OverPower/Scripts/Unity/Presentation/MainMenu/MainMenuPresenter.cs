@@ -13,14 +13,12 @@ namespace OverPower.Unity.Presentation.MainMenu
     {
         [SerializeField] private UIButton playButton;
         [SerializeField] private UIButton settingsButton;
-        [SerializeField] private UIButton languageButton;
         [SerializeField] private UIButton exitButton;
         [SerializeField] private UISettingsModal settingsModal;
         [SerializeField] private UITransition mainPanelTransition;
 
         public UIButton PlayButton => playButton;
         public UIButton SettingsButton => settingsButton;
-        public UIButton LanguageButton => languageButton;
         public UIButton ExitButton => exitButton;
         public UISettingsModal SettingsModal => settingsModal;
         public UITransition MainPanelTransition => mainPanelTransition;
@@ -44,15 +42,6 @@ namespace OverPower.Unity.Presentation.MainMenu
             if (settingsButton != null)
             {
                 settingsButton.onClick.AddListener(OnSettingsClicked);
-            }
-
-            if (languageButton != null)
-            {
-                languageButton.onClick.AddListener(OnLanguageClicked);
-            }
-            else
-            {
-                Debug.LogError("[MainMenuPresenter] Language button reference is missing!");
             }
 
             if (exitButton != null)
@@ -85,7 +74,6 @@ namespace OverPower.Unity.Presentation.MainMenu
             {
                 if (playButton != null) playButton.interactable = false;
                 if (settingsButton != null) settingsButton.interactable = false;
-                if (languageButton != null) languageButton.interactable = false;
                 if (exitButton != null) exitButton.interactable = false;
 
                 if (mainPanelTransition != null)
@@ -107,7 +95,6 @@ namespace OverPower.Unity.Presentation.MainMenu
                     Debug.LogError($"[MainMenuPresenter] Error starting new run: {ex.Message}");
                     if (playButton != null) playButton.interactable = true;
                     if (settingsButton != null) settingsButton.interactable = true;
-                    if (languageButton != null) languageButton.interactable = true;
                     if (exitButton != null) exitButton.interactable = true;
                     if (mainPanelTransition != null) mainPanelTransition.Show();
                 }
@@ -115,33 +102,6 @@ namespace OverPower.Unity.Presentation.MainMenu
             else
             {
                 Debug.LogError("[MainMenuPresenter] GameFlow controller is not available.");
-            }
-        }
-
-        private async void OnLanguageClicked()
-        {
-            var localeService = GameBootstrap.IsInitialized
-                ? GameBootstrap.GetLocaleService()
-                : new OverPower.Unity.Localization.UnityLocaleService();
-
-            if (localeService != null)
-            {
-                string currentCode = localeService.CurrentLocale != null ? localeService.CurrentLocale.Identifier.Code : "en";
-                string nextLocale = currentCode == "fr" ? "en" : "fr";
-                if (languageButton != null) languageButton.interactable = false;
-
-                try
-                {
-                    await localeService.SetLocaleAsync(nextLocale);
-                }
-                catch (System.Exception ex)
-                {
-                    Debug.LogError($"[MainMenuPresenter] Error switching language: {ex.Message}");
-                }
-                finally
-                {
-                    if (languageButton != null) languageButton.interactable = true;
-                }
             }
         }
 
@@ -163,10 +123,6 @@ namespace OverPower.Unity.Presentation.MainMenu
             if (settingsButton != null)
             {
                 settingsButton.onClick.RemoveListener(OnSettingsClicked);
-            }
-            if (languageButton != null)
-            {
-                languageButton.onClick.RemoveListener(OnLanguageClicked);
             }
             if (exitButton != null)
             {

@@ -11,6 +11,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
+using OverPower.Unity.Presentation.Audio;
 using OverPower.Unity.Presentation.DesignSystem;
 using OverPower.Unity.Presentation.MainMenu;
 
@@ -384,18 +385,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             settingsLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.settings");
             UnityEventTools.AddPersistentListener(settingsLocalize.OnUpdateString, settingsText.SetText);
 
-            // 7c. Language Button (SecondaryButton prefab)
-            var langButtonObj = (GameObject)PrefabUtility.InstantiatePrefab(
-                AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/SecondaryButton.prefab"), 
-                actionBlockObj.transform);
-            langButtonObj.name = "LanguageButton";
-            var langBtn = langButtonObj.GetComponent<UIButton>();
-            var langText = langButtonObj.GetComponentInChildren<TextMeshProUGUI>();
-            var langLocalize = langText.gameObject.AddComponent<LocalizeStringEvent>();
-            langLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.language");
-            UnityEventTools.AddPersistentListener(langLocalize.OnUpdateString, langText.SetText);
-
-            // 7d. Exit Button (SecondaryButton prefab)
+            // 7c. Exit Button (SecondaryButton prefab)
             var exitButtonObj = (GameObject)PrefabUtility.InstantiatePrefab(
                 AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/SecondaryButton.prefab"), 
                 actionBlockObj.transform);
@@ -406,7 +396,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             exitLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.exit");
             UnityEventTools.AddPersistentListener(exitLocalize.OnUpdateString, exitText.SetText);
 
-            // Explicit vertical navigation topology: Play -> Settings -> Language -> Exit (with wrap)
+            // Explicit vertical navigation topology: Play -> Settings -> Exit (with wrap)
             var playNav = playBtn.navigation;
             playNav.mode = Navigation.Mode.Explicit;
             playNav.selectOnDown = settingsBtn;
@@ -416,18 +406,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var settingsNav = settingsBtn.navigation;
             settingsNav.mode = Navigation.Mode.Explicit;
             settingsNav.selectOnUp = playBtn;
-            settingsNav.selectOnDown = langBtn;
+            settingsNav.selectOnDown = exitBtn;
             settingsBtn.navigation = settingsNav;
-
-            var langNav = langBtn.navigation;
-            langNav.mode = Navigation.Mode.Explicit;
-            langNav.selectOnUp = settingsBtn;
-            langNav.selectOnDown = exitBtn;
-            langBtn.navigation = langNav;
 
             var exitNav = exitBtn.navigation;
             exitNav.mode = Navigation.Mode.Explicit;
-            exitNav.selectOnUp = langBtn;
+            exitNav.selectOnUp = settingsBtn;
             exitNav.selectOnDown = playBtn;
             exitBtn.navigation = exitNav;
 
@@ -602,6 +586,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             modalCloseBtnElem.preferredWidth = 240;
             modalCloseBtnElem.preferredHeight = 48;
             var modalCloseBtn = modalCloseBtnObj.GetComponent<UIButton>();
+            modalCloseBtn.SubmitInteractionType = UIInteractionType.Close;
             var modalCloseBtnText = modalCloseBtnObj.GetComponentInChildren<TextMeshProUGUI>();
             var modalCloseLocalize = modalCloseBtnText.gameObject.AddComponent<LocalizeStringEvent>();
             modalCloseLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.common.close");
@@ -662,7 +647,6 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var so = new SerializedObject(presenter);
             so.FindProperty("playButton").objectReferenceValue = playBtn;
             so.FindProperty("settingsButton").objectReferenceValue = settingsBtn;
-            so.FindProperty("languageButton").objectReferenceValue = langBtn;
             so.FindProperty("exitButton").objectReferenceValue = exitBtn;
             so.FindProperty("settingsModal").objectReferenceValue = settingsModalComponent;
             so.FindProperty("mainPanelTransition").objectReferenceValue = mainPanelTrans;
@@ -678,6 +662,31 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
                     eventSystem.firstSelectedGameObject = playButtonObj;
                 }
             }
+
+            // 11. Central UI Audio Feedback
+            var audioObj = GameObject.Find("UIAudio");
+            if (audioObj == null)
+            {
+                audioObj = new GameObject("UIAudio");
+            }
+            var audioSource = audioObj.GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = audioObj.AddComponent<AudioSource>();
+            }
+            audioSource.playOnAwake = false;
+            audioSource.loop = false;
+            audioSource.spatialBlend = 0f; // 2D
+
+            var uiAudio = audioObj.GetComponent<UIAudioFeedback>();
+            if (uiAudio == null)
+            {
+                uiAudio = audioObj.AddComponent<UIAudioFeedback>();
+            }
+            var audioSo = new SerializedObject(uiAudio);
+            audioSo.FindProperty("_audioSource").objectReferenceValue = audioSource;
+            audioSo.ApplyModifiedProperties();
+            EditorUtility.SetDirty(audioObj);
 
             EditorUtility.SetDirty(presenterObj);
             EditorSceneManager.MarkSceneDirty(scene);

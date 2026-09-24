@@ -33,7 +33,7 @@ namespace OverPower.Tests.Unity
             var uiPanel = mainPanelObj.GetComponent<UIPanel>();
             Assert.That(uiPanel, Is.Not.Null, "MainPanel must have UIPanel component attached.");
 
-            // 3. Verify Play, Settings, Language, and Exit buttons exist inside ActionBlock
+            // 3. Verify Play, Settings, and Exit buttons exist inside ActionBlock (no standalone LanguageButton)
             var actionBlock = mainPanelObj.Find("ActionBlock");
             Assert.That(actionBlock, Is.Not.Null, "ActionBlock must exist.");
 
@@ -50,10 +50,7 @@ namespace OverPower.Tests.Unity
             Assert.That(settingsBtn.Family, Is.EqualTo(UIButtonFamily.Secondary), "SettingsButton must be SecondaryButton.");
 
             var langButtonObj = actionBlock.Find("LanguageButton");
-            Assert.That(langButtonObj, Is.Not.Null, "LanguageButton must exist inside ActionBlock.");
-            var langBtn = langButtonObj.GetComponent<UIButton>();
-            Assert.That(langBtn, Is.Not.Null, "LanguageButton must have UIButton component.");
-            Assert.That(langBtn.Family, Is.EqualTo(UIButtonFamily.Secondary), "LanguageButton must be SecondaryButton.");
+            Assert.That(langButtonObj, Is.Null, "Standalone LanguageButton must not exist in ActionBlock.");
 
             var exitButtonObj = actionBlock.Find("ExitButton");
             Assert.That(exitButtonObj, Is.Not.Null, "ExitButton must exist inside ActionBlock.");
@@ -74,12 +71,22 @@ namespace OverPower.Tests.Unity
             // 5. Verify MainMenuPresenter references
             Assert.That(presenter.PlayButton, Is.EqualTo(playBtn));
             Assert.That(presenter.SettingsButton, Is.EqualTo(settingsBtn));
-            Assert.That(presenter.LanguageButton, Is.EqualTo(langBtn));
             Assert.That(presenter.ExitButton, Is.EqualTo(exitBtn));
             Assert.That(presenter.SettingsModal, Is.EqualTo(settingsModal));
             Assert.That(presenter.MainPanelTransition, Is.Not.Null);
 
-            // 6. Verify no missing scripts on any GameObject in the hierarchy
+            // 6. Verify UIAudioFeedback and AudioSource exist
+            var audioObj = GameObject.Find("UIAudio");
+            Assert.That(audioObj, Is.Not.Null, "UIAudio GameObject must exist.");
+            var audioSource = audioObj.GetComponent<AudioSource>();
+            Assert.That(audioSource, Is.Not.Null, "UIAudio must have an AudioSource.");
+            Assert.That(audioSource.spatialBlend, Is.EqualTo(0f), "AudioSource must be 2D.");
+            Assert.That(audioSource.playOnAwake, Is.False, "AudioSource must not play on awake.");
+            var uiAudio = audioObj.GetComponent<OverPower.Unity.Presentation.Audio.UIAudioFeedback>();
+            Assert.That(uiAudio, Is.Not.Null, "UIAudio must have UIAudioFeedback component.");
+            Assert.That(uiAudio.AudioSource, Is.EqualTo(audioSource), "UIAudioFeedback must reference the AudioSource.");
+
+            // 7. Verify no missing scripts on any GameObject in the hierarchy
             foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects())
             {
                 foreach (var comp in go.GetComponentsInChildren<Component>(true))
@@ -100,27 +107,21 @@ namespace OverPower.Tests.Unity
 
             var playBtn = actionBlock.Find("PlayButton").GetComponent<UIButton>();
             var settingsBtn = actionBlock.Find("SettingsButton").GetComponent<UIButton>();
-            var langBtn = actionBlock.Find("LanguageButton").GetComponent<UIButton>();
             var exitBtn = actionBlock.Find("ExitButton").GetComponent<UIButton>();
 
-            // Play navigation
+            // Play navigation: down -> Settings, up -> Exit (wrap)
             Assert.That(playBtn.navigation.mode, Is.EqualTo(UnityEngine.UI.Navigation.Mode.Explicit));
             Assert.That(playBtn.navigation.selectOnDown, Is.EqualTo(settingsBtn));
             Assert.That(playBtn.navigation.selectOnUp, Is.EqualTo(exitBtn));
 
-            // Settings navigation
+            // Settings navigation: up -> Play, down -> Exit
             Assert.That(settingsBtn.navigation.mode, Is.EqualTo(UnityEngine.UI.Navigation.Mode.Explicit));
             Assert.That(settingsBtn.navigation.selectOnUp, Is.EqualTo(playBtn));
-            Assert.That(settingsBtn.navigation.selectOnDown, Is.EqualTo(langBtn));
+            Assert.That(settingsBtn.navigation.selectOnDown, Is.EqualTo(exitBtn));
 
-            // Language navigation
-            Assert.That(langBtn.navigation.mode, Is.EqualTo(UnityEngine.UI.Navigation.Mode.Explicit));
-            Assert.That(langBtn.navigation.selectOnUp, Is.EqualTo(settingsBtn));
-            Assert.That(langBtn.navigation.selectOnDown, Is.EqualTo(exitBtn));
-
-            // Exit navigation
+            // Exit navigation: up -> Settings, down -> Play (wrap)
             Assert.That(exitBtn.navigation.mode, Is.EqualTo(UnityEngine.UI.Navigation.Mode.Explicit));
-            Assert.That(exitBtn.navigation.selectOnUp, Is.EqualTo(langBtn));
+            Assert.That(exitBtn.navigation.selectOnUp, Is.EqualTo(settingsBtn));
             Assert.That(exitBtn.navigation.selectOnDown, Is.EqualTo(playBtn));
 
             // EventSystem initial selected
@@ -137,7 +138,7 @@ namespace OverPower.Tests.Unity
 
             var canvasObj = GameObject.Find("Canvas");
             var localizers = canvasObj.GetComponentsInChildren<UnityEngine.Localization.Components.LocalizeStringEvent>(true);
-            Assert.That(localizers.Length, Is.GreaterThanOrEqualTo(7));
+            Assert.That(localizers.Length, Is.GreaterThanOrEqualTo(6));
 
             var foundKeys = new System.Collections.Generic.HashSet<string>();
             foreach (var loc in localizers)

@@ -39,6 +39,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private UnityEvent _onHoverFeedback = new UnityEvent();
         [SerializeField] private UnityEvent _onPressFeedback = new UnityEvent();
         [SerializeField] private UnityEvent _onSubmitFeedback = new UnityEvent();
+        [SerializeField] private UIInteractionType _submitInteractionType = UIInteractionType.Submit;
 
         public static event Action<UIButton, UIInteractionType> OnButtonFeedback;
 
@@ -50,6 +51,11 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public UnityEvent OnHoverFeedback => _onHoverFeedback;
         public UnityEvent OnPressFeedback => _onPressFeedback;
         public UnityEvent OnSubmitFeedback => _onSubmitFeedback;
+        public UIInteractionType SubmitInteractionType
+        {
+            get => _submitInteractionType;
+            set => _submitInteractionType = value;
+        }
 
         protected override void OnEnable()
         {
@@ -118,7 +124,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             if (IsInteractable())
             {
                 _onSubmitFeedback?.Invoke();
-                OnButtonFeedback?.Invoke(this, UIInteractionType.Submit);
+                OnButtonFeedback?.Invoke(this, _submitInteractionType);
             }
         }
 
@@ -128,7 +134,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             if (IsInteractable())
             {
                 _onSubmitFeedback?.Invoke();
-                OnButtonFeedback?.Invoke(this, UIInteractionType.Submit);
+                OnButtonFeedback?.Invoke(this, _submitInteractionType);
             }
         }
 

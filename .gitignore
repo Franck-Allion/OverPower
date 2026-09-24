@@ -69,6 +69,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Unity recovery artifacts
+OverPower/Assets/_Recovery/
+OverPower/Assets/_Recovery.meta
+
 # Packed Addressables (ignore cached/built addressable assets)
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/[Ii]nitial[Dd]ata/
 /[Aa]ssets/StreamingAssets/aa/

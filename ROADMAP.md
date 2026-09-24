@@ -443,17 +443,17 @@ Create only the foundations needed for the first screens.
 - [x] Background/art composition
 - [x] Game title treatment
 - [x] Play button
-- [ ] Settings access
+- [x] Settings access
 - [x] Language access
 - [x] Exit action
-- [ ] Hover/pressed/disabled states
-- [ ] DOTween transitions
-- [ ] UI sound hooks
-- [ ] Keyboard/mouse navigation
-- [ ] Controller-friendly navigation topology prepared
+- [x] Hover/pressed/disabled states
+- [x] DOTween transitions
+- [x] UI sound hooks
+- [x] Keyboard/mouse navigation
+- [x] Controller-friendly navigation topology prepared
 - [x] FR/EN localization
-- [ ] 16:9 1080p reference validation
-- [ ] Basic alternate-resolution validation
+- [x] 16:9 1080p reference validation
+- [x] Basic alternate-resolution validation
 
 ### Required placeholders
 
