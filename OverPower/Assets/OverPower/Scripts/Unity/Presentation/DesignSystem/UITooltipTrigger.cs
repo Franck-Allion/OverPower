@@ -19,17 +19,32 @@ namespace OverPower.Unity.Presentation.DesignSystem
         private Selectable _selectable;
         private Canvas _canvas;
 
+        private void Awake() => ResolveReferences();
+
         private void OnEnable()
         {
-            _selectable = GetComponent<Selectable>();
-            _canvas = GetComponentInParent<Canvas>();
+            ResolveReferences();
             _title.StringChanged += TitleChanged;
             _body.StringChanged += BodyChanged;
         }
+
+        private void ResolveReferences()
+        {
+            if (_selectable == null) _selectable = GetComponent<Selectable>();
+            if (_canvas == null) _canvas = GetComponentInParent<Canvas>();
+        }
+
         private void TitleChanged(string value) { _titleText = value; RefreshOpenTooltip(); }
         private void BodyChanged(string value) { _bodyText = value; RefreshOpenTooltip(); }
-        private bool WantsDetails => isActiveAndEnabled && (_hovered || _focused || _explicitDetails)
-            && (_selectable == null || _selectable.IsInteractable());
+        private bool WantsDetails
+        {
+            get
+            {
+                ResolveReferences();
+                return isActiveAndEnabled && (_hovered || _focused || _explicitDetails)
+                    && (_selectable == null || _selectable.IsInteractable());
+            }
+        }
         public void OnPointerEnter(PointerEventData data) { _hovered = true; Schedule(); }
         public void OnPointerExit(PointerEventData data) { _hovered = false; Schedule(); }
         public void OnSelect(BaseEventData data) { _focused = true; Schedule(); }
@@ -47,8 +62,9 @@ namespace OverPower.Unity.Presentation.DesignSystem
         private void RefreshOpenTooltip() { if (_delay == null && WantsDetails) Show(); }
         private void Show()
         {
+            ResolveReferences();
             var rect = (RectTransform)transform;
-            var camera = _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : _canvas.worldCamera;
+            var camera = (_canvas != null && _canvas.renderMode != RenderMode.ScreenSpaceOverlay) ? _canvas.worldCamera : null;
             var screen = RectTransformUtility.WorldToScreenPoint(camera, rect.TransformPoint(rect.rect.center));
 
             string formattedTitle = UIRichTextFormatter.Format(_titleText ?? string.Empty);

@@ -50,9 +50,10 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             if (!isActiveAndEnabled) return;
             if (_background == null) throw new System.InvalidOperationException("Bind the modal background before opening.");
+            var eventSystem = EventSystem.current != null ? EventSystem.current : FindFirstObjectByType<EventSystem>();
             if (!_ownsBackground)
             {
-                _previousFocus = EventSystem.current != null ? EventSystem.current.currentSelectedGameObject : null;
+                _previousFocus = eventSystem != null ? eventSystem.currentSelectedGameObject : null;
                 _previousInteractable = _background.interactable;
                 _previousRaycasts = _background.blocksRaycasts;
                 _ownsBackground = true;
@@ -60,8 +61,15 @@ namespace OverPower.Unity.Presentation.DesignSystem
             _background.interactable = false;
             _background.blocksRaycasts = false;
             IsOpen = true;
-            _transition.Show();
-            if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(_primary.gameObject);
+            if (UnityEngine.Application.isPlaying)
+            {
+                _transition.Show();
+            }
+            else
+            {
+                _transition.ShowImmediate();
+            }
+            if (eventSystem != null) eventSystem.SetSelectedGameObject(_primary.gameObject);
         }
         public void Close() { IsOpen = false; _transition.Hide(); }
         public void Cancel() { if (!IsOpen) return; Close(); _cancelled.Invoke(); }
@@ -73,10 +81,11 @@ namespace OverPower.Unity.Presentation.DesignSystem
             if (!_ownsBackground) return;
             _ownsBackground = false;
             if (_background != null) { _background.interactable = _previousInteractable; _background.blocksRaycasts = _previousRaycasts; }
-            if (_previousFocus != null && _previousFocus.activeInHierarchy && EventSystem.current != null)
+            var eventSystem = EventSystem.current != null ? EventSystem.current : FindFirstObjectByType<EventSystem>();
+            if (_previousFocus != null && _previousFocus.activeInHierarchy && eventSystem != null)
             {
                 var selectable = _previousFocus.GetComponent<Selectable>();
-                if (selectable == null || selectable.IsInteractable()) EventSystem.current.SetSelectedGameObject(_previousFocus);
+                if (selectable == null || selectable.IsInteractable()) eventSystem.SetSelectedGameObject(_previousFocus);
             }
             _previousFocus = null;
         }

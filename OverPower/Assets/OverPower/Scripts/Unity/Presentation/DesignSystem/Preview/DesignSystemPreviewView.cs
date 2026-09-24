@@ -15,6 +15,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Preview
         [SerializeField] private UIConfirmDialog _dialog;
         [SerializeField] private UITransition _reveal;
         public UIButton[] ButtonSamples => _buttonSamples;
+        public UIButton ComponentFocus => _componentFocus;
         public UITooltip Tooltip => _tooltip;
         public UITooltipTrigger[] TooltipTriggers => _tooltipTriggers;
         public UIConfirmDialog Dialog => _dialog;

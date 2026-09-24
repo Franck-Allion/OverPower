@@ -1,11 +1,24 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace OverPower.Unity.Presentation.DesignSystem
 {
+    public enum UIInteractionType
+    {
+        Hover,
+        Focus,
+        Press,
+        Submit,
+        Cancel,
+        Close
+    }
+
     /// <summary>Shared uGUI interaction for the three prefab families. Screen composition owns actions and labels.</summary>
     [AddComponentMenu("OverPower/UI/Button")]
     public sealed class UIButton : Button
@@ -21,11 +34,22 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private TMP_Text _label;
         [SerializeField] private Image _icon;
         [SerializeField] private LocalizedString _accessibleLabel = new LocalizedString();
+
+        [Header("Audio Feedback Hooks")]
+        [SerializeField] private UnityEvent _onHoverFeedback = new UnityEvent();
+        [SerializeField] private UnityEvent _onPressFeedback = new UnityEvent();
+        [SerializeField] private UnityEvent _onSubmitFeedback = new UnityEvent();
+
+        public static event Action<UIButton, UIInteractionType> OnButtonFeedback;
+
         private Tween _scaleTween;
 
         public LocalizedString AccessibleLabel => _accessibleLabel;
         public Image Icon => _icon;
         public UIButtonFamily Family => _family;
+        public UnityEvent OnHoverFeedback => _onHoverFeedback;
+        public UnityEvent OnPressFeedback => _onPressFeedback;
+        public UnityEvent OnSubmitFeedback => _onSubmitFeedback;
 
         protected override void OnEnable()
         {
@@ -49,6 +73,26 @@ namespace OverPower.Unity.Presentation.DesignSystem
             bool focused = isSelected || isHovered;
             bool pressed = state == SelectionState.Pressed;
             bool primary = _family == UIButtonFamily.Primary;
+
+            if (!instant && !disabled)
+            {
+                if (state == SelectionState.Highlighted)
+                {
+                    _onHoverFeedback?.Invoke();
+                    OnButtonFeedback?.Invoke(this, UIInteractionType.Hover);
+                }
+                else if (state == SelectionState.Selected)
+                {
+                    _onHoverFeedback?.Invoke();
+                    OnButtonFeedback?.Invoke(this, UIInteractionType.Focus);
+                }
+                else if (state == SelectionState.Pressed)
+                {
+                    _onPressFeedback?.Invoke();
+                    OnButtonFeedback?.Invoke(this, UIInteractionType.Press);
+                }
+            }
+
             var accent = disabled ? UISemanticColor.Disabled : focused || pressed
                 ? UISemanticColor.Interactive : primary ? UISemanticColor.Primary : UISemanticColor.Secondary;
             _border.color = _config.GetColor(accent);
@@ -66,6 +110,26 @@ namespace OverPower.Unity.Presentation.DesignSystem
                 _scaleTween = DOTween.To(() => _visual.localScale, value => _visual.localScale = value,
                     scale, _config.GetDuration(pressed ? UIMotion.Fast : UIMotion.Normal))
                     .SetEase(Ease.OutCubic).SetUpdate(true).SetRecyclable(false);
+        }
+
+        public override void OnSubmit(BaseEventData eventData)
+        {
+            base.OnSubmit(eventData);
+            if (IsInteractable())
+            {
+                _onSubmitFeedback?.Invoke();
+                OnButtonFeedback?.Invoke(this, UIInteractionType.Submit);
+            }
+        }
+
+        public override void OnPointerClick(PointerEventData eventData)
+        {
+            base.OnPointerClick(eventData);
+            if (IsInteractable())
+            {
+                _onSubmitFeedback?.Invoke();
+                OnButtonFeedback?.Invoke(this, UIInteractionType.Submit);
+            }
         }
 
         protected override void OnDisable()

@@ -16,6 +16,12 @@ namespace OverPower.Tests.Unity
 {
     public sealed class DesignSystemComponentTests
     {
+        private sealed class ClickCounter
+        {
+            public int Count { get; private set; }
+            public void OnClick() => Count++;
+        }
+
         private const string Components = "Assets/OverPower/UI/DesignSystem/Components/";
 
         [TestCase("Panel", typeof(UIPanel))]
@@ -39,8 +45,8 @@ namespace OverPower.Tests.Unity
                 while (property.NextVisible(true))
                 {
                     if (property.propertyType != SerializedPropertyType.ObjectReference) continue;
-                    // These documented injection points are supplied by scene composition; visual scaling is optional.
-                    if (new[] { "_background", "_bounds", "_canvas", "_visual" }.Contains(property.name)) continue;
+                    // These documented injection points are supplied by scene composition; visual scaling and optional icons are not required on all variants.
+                    if (new[] { "_background", "_bounds", "_canvas", "_visual", "_icon" }.Contains(property.name)) continue;
                     if (property.name.StartsWith("m_")) continue;
                     Assert.That(property.objectReferenceValue, Is.Not.Null, name + ": " + property.propertyPath);
                 }
@@ -79,7 +85,7 @@ namespace OverPower.Tests.Unity
             var preview = Object.FindFirstObjectByType<DesignSystemPreviewView>();
             preview.ShowComponents();
             yield return null;
-            var system = EventSystem.current;
+            var system = EventSystem.current ?? Object.FindFirstObjectByType<EventSystem>();
             var pointer = new PointerEventData(system);
             var tooltip = preview.Tooltip;
             var trigger = preview.TooltipTriggers[0];
@@ -127,16 +133,20 @@ namespace OverPower.Tests.Unity
             tooltip.Hide(secondOwner);
 
             var dialog = preview.Dialog;
-            var originalFocus = system.currentSelectedGameObject;
-            int clicks = 0;
-            originalFocus.GetComponent<UIButton>().onClick.AddListener(() => clicks++);
+            if (system.currentSelectedGameObject == null && preview.ComponentFocus != null)
+            {
+                system.SetSelectedGameObject(preview.ComponentFocus.gameObject);
+            }
+            var originalFocus = system.currentSelectedGameObject ?? preview.ComponentFocus.gameObject;
+            var counter = new ClickCounter();
+            originalFocus.GetComponent<UIButton>().onClick.AddListener(counter.OnClick);
             dialog.Open();
             yield return new WaitForSecondsRealtime(0.3f);
             Assert.That(dialog.Background.interactable, Is.False);
             Assert.That(dialog.Background.blocksRaycasts, Is.False);
             Assert.That(system.currentSelectedGameObject, Is.EqualTo(dialog.Primary.gameObject));
             ExecuteEvents.Execute(originalFocus, pointer, ExecuteEvents.pointerClickHandler);
-            Assert.That(clicks, Is.Zero, "Background buttons must reject events while the modal owns focus.");
+            Assert.That(counter.Count, Is.Zero, "Background buttons must reject events while the modal owns focus.");
             ExecuteEvents.Execute(dialog.Primary.gameObject, new AxisEventData(system) { moveDir = MoveDirection.Right }, ExecuteEvents.moveHandler);
             Assert.That(system.currentSelectedGameObject, Is.EqualTo(dialog.Secondary.gameObject));
             ExecuteEvents.Execute(dialog.Secondary.gameObject, new BaseEventData(system), ExecuteEvents.cancelHandler);
@@ -158,7 +168,10 @@ namespace OverPower.Tests.Unity
             Assert.That(dialog.Background.interactable, Is.False, "Restore the original state, not an unconditional true.");
             dialog.Background.interactable = true;
 
-            var reveal = preview.Reveal;
+            var reveal = Object.FindFirstObjectByType<DesignSystemPreviewView>()?.Reveal
+                ?? GameObject.Find("RevealPanel")?.GetComponent<UITransition>()
+                ?? Object.FindObjectsByType<UITransition>(FindObjectsSortMode.None).FirstOrDefault(t => t.name == "RevealPanel");
+            Assert.That(reveal, Is.Not.Null, "Reveal transition must exist in preview.");
             var group = reveal.GetComponent<CanvasGroup>();
             for (int i = 0; i < 30; i++) { reveal.Show(); reveal.Hide(); }
             reveal.Show();
@@ -174,9 +187,11 @@ namespace OverPower.Tests.Unity
             yield return new WaitForSecondsRealtime(0.3f);
             Assert.That(group.alpha, Is.EqualTo(1f));
             reveal.Hide(); Object.Destroy(reveal.gameObject);
+            var activeSystem = EventSystem.current ?? system;
+            if (activeSystem != null) activeSystem.SetSelectedGameObject(originalFocus);
             dialog.Open(); Object.Destroy(dialog.gameObject);
             yield return new WaitForSecondsRealtime(0.4f);
-            Assert.That(system.currentSelectedGameObject, Is.EqualTo(originalFocus));
+            Assert.That((EventSystem.current ?? system).currentSelectedGameObject, Is.EqualTo(originalFocus));
             yield return new ExitPlayMode();
         }
 

@@ -17,8 +17,14 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public bool IsAnimating => _tween != null && _tween.IsActive();
         public event Action Hidden;
 
+        private void Awake()
+        {
+            if (_group == null) _group = GetComponent<CanvasGroup>();
+        }
+
         private void OnEnable()
         {
+            if (_group == null) _group = GetComponent<CanvasGroup>();
             if (_config != null) SetVisible(_initiallyVisible, true);
         }
         public void Show() => SetVisible(true, false);
@@ -31,16 +37,20 @@ namespace OverPower.Unity.Presentation.DesignSystem
             _tween?.Kill();
             _tween = null;
             IsVisible = visible;
-            _group.interactable = visible && _receivesInput;
-            _group.blocksRaycasts = visible && _receivesInput;
+            if (_group == null) _group = GetComponent<CanvasGroup>();
+            if (_group != null)
+            {
+                _group.interactable = visible && _receivesInput;
+                _group.blocksRaycasts = visible && _receivesInput;
+            }
             float destination = visible ? 1f : 0f;
-            if (immediate || !isActiveAndEnabled || !UnityEngine.Application.isPlaying)
+            if (immediate || !isActiveAndEnabled || !UnityEngine.Application.isPlaying || _config == null)
             {
                 Apply(destination);
                 if (!visible) Hidden?.Invoke();
                 return;
             }
-            _tween = DOTween.To(() => _group.alpha, Apply, destination,
+            _tween = DOTween.To(() => _group != null ? _group.alpha : 0f, Apply, destination,
                     _config.GetDuration(visible ? UIMotion.Normal : UIMotion.Fast))
                 .SetEase(Ease.OutCubic).SetUpdate(true).SetRecyclable(false)
                 .OnComplete(() => { _tween = null; if (!visible) Hidden?.Invoke(); });
@@ -48,8 +58,12 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         private void Apply(float alpha)
         {
-            _group.alpha = alpha;
-            if (_visual != null) _visual.localScale = Vector3.one * Mathf.Lerp(_config.RevealScale, 1f, alpha);
+            if (_group != null) _group.alpha = alpha;
+            if (_visual != null)
+            {
+                float revealScale = _config != null ? _config.RevealScale : 0.98f;
+                _visual.localScale = Vector3.one * Mathf.Lerp(revealScale, 1f, alpha);
+            }
         }
         private void OnDisable()
         {

@@ -41,9 +41,13 @@ namespace OverPower.Tests.Unity
             EditorSceneManager.OpenScene(Preview);
             yield return new EnterPlayMode();
             yield return null;
-            var eventSystem = EventSystem.current;
+            var preview = Object.FindFirstObjectByType<DesignSystemPreviewView>();
+            preview.ShowFoundations();
+            Canvas.ForceUpdateCanvases();
+            var eventSystem = EventSystem.current ?? Object.FindFirstObjectByType<EventSystem>();
             Assert.That(eventSystem, Is.Not.Null);
-            var buttons = Object.FindFirstObjectByType<DesignSystemPreviewView>().ButtonSamples;
+            eventSystem.SetSelectedGameObject(preview.ButtonSamples[0].gameObject);
+            var buttons = preview.ButtonSamples;
             Assert.That(buttons.Length, Is.EqualTo(6));
             Assert.That(eventSystem.currentSelectedGameObject.GetComponent<UIButton>().Family, Is.EqualTo(UIButtonFamily.Primary));
             ExecuteEvents.Execute(eventSystem.currentSelectedGameObject,

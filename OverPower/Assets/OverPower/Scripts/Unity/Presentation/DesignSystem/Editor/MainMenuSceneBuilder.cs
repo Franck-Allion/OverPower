@@ -257,10 +257,25 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
                 CreateCornerAccent("CornerBR", mainPanelRect, diamondSprite, new Vector2(1, 0), new Vector2(0.5f, 0.5f), new Vector2(-2, 2), config.GetColor(UISemanticColor.Primary));
             }
 
+            // MainPanel CanvasGroup & UITransition for screen presentation entrance/exit
+            var mainPanelCg = mainPanelObj.AddComponent<CanvasGroup>();
+            mainPanelCg.alpha = 1f;
+            mainPanelCg.interactable = true;
+            mainPanelCg.blocksRaycasts = true;
+
+            var mainPanelTrans = mainPanelObj.AddComponent<UITransition>();
+            SetReference(mainPanelTrans, "_config", config);
+            SetReference(mainPanelTrans, "_group", mainPanelCg);
+            SetReference(mainPanelTrans, "_visual", mainPanelRect);
+            var transSo = new SerializedObject(mainPanelTrans);
+            transSo.FindProperty("_initiallyVisible").boolValue = true;
+            transSo.FindProperty("_receivesInput").boolValue = true;
+            transSo.ApplyModifiedProperties();
+
             // Set up main vertical layout inside panel
             var panelLayout = mainPanelObj.AddComponent<VerticalLayoutGroup>();
             panelLayout.padding = new RectOffset(60, 60, 80, 80);
-            panelLayout.spacing = 32;
+            panelLayout.spacing = 28;
             panelLayout.childControlHeight = true;
             panelLayout.childControlWidth = true;
             panelLayout.childForceExpandHeight = false;
@@ -341,7 +356,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var actionBlockObj = new GameObject("ActionBlock", typeof(RectTransform));
             actionBlockObj.transform.SetParent(mainPanelRect, false);
             var actionLayout = actionBlockObj.AddComponent<VerticalLayoutGroup>();
-            actionLayout.spacing = 22;
+            actionLayout.spacing = 18;
             actionLayout.childControlHeight = true;
             actionLayout.childControlWidth = true;
             actionLayout.childForceExpandHeight = false;
@@ -358,7 +373,18 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             playLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.play");
             UnityEventTools.AddPersistentListener(playLocalize.OnUpdateString, playText.SetText);
 
-            // 7b. Language Button (SecondaryButton prefab)
+            // 7b. Settings Button (SecondaryButton prefab)
+            var settingsButtonObj = (GameObject)PrefabUtility.InstantiatePrefab(
+                AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/SecondaryButton.prefab"), 
+                actionBlockObj.transform);
+            settingsButtonObj.name = "SettingsButton";
+            var settingsBtn = settingsButtonObj.GetComponent<UIButton>();
+            var settingsText = settingsButtonObj.GetComponentInChildren<TextMeshProUGUI>();
+            var settingsLocalize = settingsText.gameObject.AddComponent<LocalizeStringEvent>();
+            settingsLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.settings");
+            UnityEventTools.AddPersistentListener(settingsLocalize.OnUpdateString, settingsText.SetText);
+
+            // 7c. Language Button (SecondaryButton prefab)
             var langButtonObj = (GameObject)PrefabUtility.InstantiatePrefab(
                 AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/SecondaryButton.prefab"), 
                 actionBlockObj.transform);
@@ -369,7 +395,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             langLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.language");
             UnityEventTools.AddPersistentListener(langLocalize.OnUpdateString, langText.SetText);
 
-            // 7c. Exit Button (SecondaryButton prefab)
+            // 7d. Exit Button (SecondaryButton prefab)
             var exitButtonObj = (GameObject)PrefabUtility.InstantiatePrefab(
                 AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/SecondaryButton.prefab"), 
                 actionBlockObj.transform);
@@ -380,7 +406,248 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             exitLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.exit");
             UnityEventTools.AddPersistentListener(exitLocalize.OnUpdateString, exitText.SetText);
 
-            // 8. Presenter Configuration
+            // Explicit vertical navigation topology: Play -> Settings -> Language -> Exit (with wrap)
+            var playNav = playBtn.navigation;
+            playNav.mode = Navigation.Mode.Explicit;
+            playNav.selectOnDown = settingsBtn;
+            playNav.selectOnUp = exitBtn;
+            playBtn.navigation = playNav;
+
+            var settingsNav = settingsBtn.navigation;
+            settingsNav.mode = Navigation.Mode.Explicit;
+            settingsNav.selectOnUp = playBtn;
+            settingsNav.selectOnDown = langBtn;
+            settingsBtn.navigation = settingsNav;
+
+            var langNav = langBtn.navigation;
+            langNav.mode = Navigation.Mode.Explicit;
+            langNav.selectOnUp = settingsBtn;
+            langNav.selectOnDown = exitBtn;
+            langBtn.navigation = langNav;
+
+            var exitNav = exitBtn.navigation;
+            exitNav.mode = Navigation.Mode.Explicit;
+            exitNav.selectOnUp = langBtn;
+            exitNav.selectOnDown = playBtn;
+            exitBtn.navigation = exitNav;
+
+            // 8. Settings Modal (Functional real modal reusing Design System)
+            var modalRoot = new GameObject("SettingsModal", typeof(RectTransform), typeof(CanvasGroup));
+            modalRoot.transform.SetParent(canvasRect, false);
+            var modalRootRect = modalRoot.GetComponent<RectTransform>();
+            modalRootRect.anchorMin = Vector2.zero;
+            modalRootRect.anchorMax = Vector2.one;
+            modalRootRect.offsetMin = Vector2.zero;
+            modalRootRect.offsetMax = Vector2.zero;
+
+            var modalCg = modalRoot.GetComponent<CanvasGroup>();
+            modalCg.alpha = 0f;
+            modalCg.interactable = false;
+            modalCg.blocksRaycasts = false;
+
+            // Backdrop
+            var backdropObj = new GameObject("Backdrop", typeof(RectTransform), typeof(Image));
+            backdropObj.transform.SetParent(modalRoot.transform, false);
+            var backdropRect = backdropObj.GetComponent<RectTransform>();
+            backdropRect.anchorMin = Vector2.zero;
+            backdropRect.anchorMax = Vector2.one;
+            backdropRect.offsetMin = Vector2.zero;
+            backdropRect.offsetMax = Vector2.zero;
+            var backdropImg = backdropObj.GetComponent<Image>();
+            var backdropColor = config.GetColor(UISemanticColor.Background);
+            backdropColor.a = config.ModalBackdropOpacity;
+            backdropImg.color = backdropColor;
+            backdropImg.raycastTarget = true;
+
+            // Dialog Panel
+            var dialogObj = new GameObject("DialogPanel", typeof(RectTransform), typeof(Image));
+            dialogObj.transform.SetParent(modalRoot.transform, false);
+            var dialogRect = dialogObj.GetComponent<RectTransform>();
+            dialogRect.anchorMin = new Vector2(0.5f, 0.5f);
+            dialogRect.anchorMax = new Vector2(0.5f, 0.5f);
+            dialogRect.pivot = new Vector2(0.5f, 0.5f);
+            dialogRect.sizeDelta = new Vector2(580, 360);
+            dialogRect.anchoredPosition = Vector2.zero;
+
+            var dialogBorder = dialogObj.GetComponent<Image>();
+            dialogBorder.color = config.GetColor(UISemanticColor.ModalBorder);
+
+            var dialogSurfaceObj = new GameObject("Surface", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            dialogSurfaceObj.transform.SetParent(dialogRect, false);
+            var dialogSurfaceRect = dialogSurfaceObj.GetComponent<RectTransform>();
+            dialogSurfaceRect.anchorMin = Vector2.zero;
+            dialogSurfaceRect.anchorMax = Vector2.one;
+            dialogSurfaceRect.offsetMin = new Vector2(2, 2);
+            dialogSurfaceRect.offsetMax = new Vector2(-2, -2);
+            var dialogSurface = dialogSurfaceObj.GetComponent<Image>();
+            dialogSurface.color = config.GetColor(UISemanticColor.Surface);
+            dialogSurfaceObj.GetComponent<LayoutElement>().ignoreLayout = true;
+
+            var dialogAccentObj = new GameObject("TopAccentBar", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            dialogAccentObj.transform.SetParent(dialogRect, false);
+            var dialogAccentRect = dialogAccentObj.GetComponent<RectTransform>();
+            dialogAccentRect.anchorMin = new Vector2(0, 1);
+            dialogAccentRect.anchorMax = new Vector2(1, 1);
+            dialogAccentRect.pivot = new Vector2(0.5f, 1);
+            dialogAccentRect.sizeDelta = new Vector2(0, 3);
+            dialogAccentRect.anchoredPosition = Vector2.zero;
+            var dialogAccent = dialogAccentObj.GetComponent<Image>();
+            dialogAccent.color = config.GetColor(UISemanticColor.Primary);
+            dialogAccentObj.GetComponent<LayoutElement>().ignoreLayout = true;
+
+            if (diamondSprite != null)
+            {
+                CreateCornerAccent("CornerTL", dialogRect, diamondSprite, new Vector2(0, 1), new Vector2(0.5f, 0.5f), new Vector2(2, -2), config.GetColor(UISemanticColor.Primary));
+                CreateCornerAccent("CornerTR", dialogRect, diamondSprite, new Vector2(1, 1), new Vector2(0.5f, 0.5f), new Vector2(-2, -2), config.GetColor(UISemanticColor.Primary));
+                CreateCornerAccent("CornerBL", dialogRect, diamondSprite, new Vector2(0, 0), new Vector2(0.5f, 0.5f), new Vector2(2, 2), config.GetColor(UISemanticColor.Primary));
+                CreateCornerAccent("CornerBR", dialogRect, diamondSprite, new Vector2(1, 0), new Vector2(0.5f, 0.5f), new Vector2(-2, 2), config.GetColor(UISemanticColor.Primary));
+            }
+
+            var dialogPanel = dialogObj.AddComponent<UIPanel>();
+            SetReference(dialogPanel, "_config", config);
+            SetReference(dialogPanel, "_surface", dialogSurface);
+            SetReference(dialogPanel, "_border", dialogBorder);
+            SetReference(dialogPanel, "_accentBar", dialogAccent);
+            SetEnum(dialogPanel, "_style", (int)UIPanelStyle.Elevated);
+            dialogPanel.Apply();
+
+            var dialogLayout = dialogObj.AddComponent<VerticalLayoutGroup>();
+            dialogLayout.padding = new RectOffset(48, 48, 40, 40);
+            dialogLayout.spacing = 22;
+            dialogLayout.childControlWidth = true;
+            dialogLayout.childControlHeight = true;
+            dialogLayout.childForceExpandWidth = true;
+            dialogLayout.childForceExpandHeight = false;
+
+            // Title
+            var modalTitleObj = new GameObject("Header", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
+            modalTitleObj.transform.SetParent(dialogRect, false);
+            var modalTitleText = modalTitleObj.GetComponent<TextMeshProUGUI>();
+            modalTitleText.text = "Settings";
+            modalTitleText.alignment = TextAlignmentOptions.Center;
+            config.ApplyTypography(modalTitleText, TypographyStyle.Title);
+            modalTitleText.color = config.GetColor(UISemanticColor.Primary);
+            var modalTitleElem = modalTitleObj.GetComponent<LayoutElement>();
+            modalTitleElem.preferredHeight = 44;
+            var modalTitleLocalize = modalTitleObj.AddComponent<LocalizeStringEvent>();
+            modalTitleLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.settings.title");
+            UnityEventTools.AddPersistentListener(modalTitleLocalize.OnUpdateString, modalTitleText.SetText);
+
+            // Divider
+            var modalDivObj = new GameObject("ModalDivider", typeof(RectTransform), typeof(Image), typeof(LayoutElement));
+            modalDivObj.transform.SetParent(dialogRect, false);
+            var modalDivImg = modalDivObj.GetComponent<Image>();
+            modalDivImg.color = config.GetColor(UISemanticColor.Primary);
+            modalDivImg.raycastTarget = false;
+            var modalDivElem = modalDivObj.GetComponent<LayoutElement>();
+            modalDivElem.preferredHeight = 1;
+
+            // Language Row
+            var langRowObj = new GameObject("LanguageRow", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
+            langRowObj.transform.SetParent(dialogRect, false);
+            var langRowLayout = langRowObj.GetComponent<HorizontalLayoutGroup>();
+            langRowLayout.childAlignment = TextAnchor.MiddleCenter;
+            langRowLayout.spacing = 20;
+            langRowLayout.childControlWidth = true;
+            langRowLayout.childControlHeight = true;
+            langRowLayout.childForceExpandWidth = false;
+            langRowLayout.childForceExpandHeight = false;
+            var langRowElem = langRowObj.GetComponent<LayoutElement>();
+            langRowElem.preferredHeight = 56;
+
+            var langLabelObj = new GameObject("LanguageLabel", typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
+            langLabelObj.transform.SetParent(langRowObj.transform, false);
+            var langLabelText = langLabelObj.GetComponent<TextMeshProUGUI>();
+            langLabelText.text = "Language";
+            langLabelText.alignment = TextAlignmentOptions.Left;
+            config.ApplyTypography(langLabelText, TypographyStyle.Body);
+            langLabelText.color = config.GetColor(UISemanticColor.TextPrimary);
+            var langLabelElem = langLabelObj.GetComponent<LayoutElement>();
+            langLabelElem.preferredWidth = 180;
+            langLabelElem.flexibleWidth = 1;
+            var langLabelLocalize = langLabelObj.AddComponent<LocalizeStringEvent>();
+            langLabelLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.main_menu.language");
+            UnityEventTools.AddPersistentListener(langLabelLocalize.OnUpdateString, langLabelText.SetText);
+
+            var modalLangBtnObj = (GameObject)PrefabUtility.InstantiatePrefab(
+                AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/SecondaryButton.prefab"), 
+                langRowObj.transform);
+            modalLangBtnObj.name = "LanguageToggle";
+            var modalLangBtnElem = modalLangBtnObj.GetComponent<LayoutElement>();
+            if (modalLangBtnElem == null) modalLangBtnElem = modalLangBtnObj.AddComponent<LayoutElement>();
+            modalLangBtnElem.preferredWidth = 240;
+            modalLangBtnElem.preferredHeight = 48;
+            var modalLangBtn = modalLangBtnObj.GetComponent<UIButton>();
+            var modalLangBtnText = modalLangBtnObj.GetComponentInChildren<TextMeshProUGUI>();
+            modalLangBtnText.text = "Français";
+
+            // Actions row (Close Button)
+            var modalActionsObj = new GameObject("ModalActions", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
+            modalActionsObj.transform.SetParent(dialogRect, false);
+            var modalActionsLayout = modalActionsObj.GetComponent<HorizontalLayoutGroup>();
+            modalActionsLayout.childAlignment = TextAnchor.MiddleCenter;
+            modalActionsLayout.childControlWidth = true;
+            modalActionsLayout.childControlHeight = true;
+            modalActionsLayout.childForceExpandWidth = false;
+            modalActionsLayout.childForceExpandHeight = false;
+            var modalActionsElem = modalActionsObj.GetComponent<LayoutElement>();
+            modalActionsElem.preferredHeight = 56;
+
+            var modalCloseBtnObj = (GameObject)PrefabUtility.InstantiatePrefab(
+                AssetDatabase.LoadAssetAtPath<GameObject>($"{Root}/Components/PrimaryButton.prefab"), 
+                modalActionsObj.transform);
+            modalCloseBtnObj.name = "CloseButton";
+            var modalCloseBtnElem = modalCloseBtnObj.GetComponent<LayoutElement>();
+            if (modalCloseBtnElem == null) modalCloseBtnElem = modalCloseBtnObj.AddComponent<LayoutElement>();
+            modalCloseBtnElem.preferredWidth = 240;
+            modalCloseBtnElem.preferredHeight = 48;
+            var modalCloseBtn = modalCloseBtnObj.GetComponent<UIButton>();
+            var modalCloseBtnText = modalCloseBtnObj.GetComponentInChildren<TextMeshProUGUI>();
+            var modalCloseLocalize = modalCloseBtnText.gameObject.AddComponent<LocalizeStringEvent>();
+            modalCloseLocalize.StringReference = new LocalizedString(strings.SharedData.TableCollectionNameGuid, "ui.common.close");
+            UnityEventTools.AddPersistentListener(modalCloseLocalize.OnUpdateString, modalCloseBtnText.SetText);
+
+            // Modal navigation topology
+            var modalLangNav = modalLangBtn.navigation;
+            modalLangNav.mode = Navigation.Mode.Explicit;
+            modalLangNav.selectOnDown = modalCloseBtn;
+            modalLangNav.selectOnUp = modalCloseBtn;
+            modalLangBtn.navigation = modalLangNav;
+
+            var modalCloseNav = modalCloseBtn.navigation;
+            modalCloseNav.mode = Navigation.Mode.Explicit;
+            modalCloseNav.selectOnDown = modalLangBtn;
+            modalCloseNav.selectOnUp = modalLangBtn;
+            modalCloseBtn.navigation = modalCloseNav;
+
+            // Modal UITransition
+            var modalTrans = modalRoot.AddComponent<UITransition>();
+            SetReference(modalTrans, "_config", config);
+            SetReference(modalTrans, "_group", modalCg);
+            SetReference(modalTrans, "_visual", dialogRect);
+            var modalTransSo = new SerializedObject(modalTrans);
+            modalTransSo.FindProperty("_initiallyVisible").boolValue = false;
+            modalTransSo.FindProperty("_receivesInput").boolValue = true;
+            modalTransSo.ApplyModifiedProperties();
+
+            // UISettingsModal component
+            var settingsModalComponent = modalRoot.AddComponent<UISettingsModal>();
+            SetReference(settingsModalComponent, "_config", config);
+            SetReference(settingsModalComponent, "_transition", modalTrans);
+            SetReference(settingsModalComponent, "_backdrop", backdropImg);
+            SetReference(settingsModalComponent, "_background", mainPanelCg);
+            SetReference(settingsModalComponent, "_titleText", modalTitleText);
+            SetReference(settingsModalComponent, "_languageButton", modalLangBtn);
+            SetReference(settingsModalComponent, "_languageButtonLabel", modalLangBtnText);
+            SetReference(settingsModalComponent, "_closeButton", modalCloseBtn);
+
+            // Wire UICancelRelay on modal buttons
+            var relay1 = modalLangBtnObj.AddComponent<UICancelRelay>();
+            UnityEventTools.AddPersistentListener(relay1.OnCancelEvent, settingsModalComponent.Close);
+            var relay2 = modalCloseBtnObj.AddComponent<UICancelRelay>();
+            UnityEventTools.AddPersistentListener(relay2.OnCancelEvent, settingsModalComponent.Close);
+
+            // 9. Presenter Configuration
             var presenterObj = GameObject.Find("MainMenuPresenter");
             if (presenterObj == null)
             {
@@ -394,11 +661,14 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
             var so = new SerializedObject(presenter);
             so.FindProperty("playButton").objectReferenceValue = playBtn;
+            so.FindProperty("settingsButton").objectReferenceValue = settingsBtn;
             so.FindProperty("languageButton").objectReferenceValue = langBtn;
             so.FindProperty("exitButton").objectReferenceValue = exitBtn;
+            so.FindProperty("settingsModal").objectReferenceValue = settingsModalComponent;
+            so.FindProperty("mainPanelTransition").objectReferenceValue = mainPanelTrans;
             so.ApplyModifiedProperties();
 
-            // 9. Setup EventSystem first selected object
+            // 10. Setup EventSystem first selected object
             var eventSystemObj = GameObject.Find("EventSystem");
             if (eventSystemObj != null)
             {

@@ -41,7 +41,9 @@ namespace OverPower.Tests.Unity
                 "ui.main_menu.play",
                 "ui.main_menu.settings",
                 "ui.main_menu.language",
-                "ui.main_menu.exit"
+                "ui.main_menu.exit",
+                "ui.settings.title",
+                "ui.common.close"
             };
 
             var localeCodes = new string[] { "en", "fr" };

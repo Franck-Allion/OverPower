@@ -8,6 +8,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
     /// Subtle, ambient breathing motion for decorative UI auras and glows.
     /// Manages an unscaled DOTween sequence with safe lifecycle cleanup and reduced-motion readiness.
     /// </summary>
+    [ExecuteAlways]
     public sealed class UIAuraPulse : MonoBehaviour
     {
         [Header("Target References")]
@@ -40,6 +41,31 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public float PeakScale => _peakScale;
         public float HalfCycleDuration => _halfCycleDuration;
         public Sequence ActiveSequence => _sequence;
+        public RectTransform TargetTransform
+        {
+            get
+            {
+                if (_targetTransform == null) ResolveReferences();
+                return _targetTransform;
+            }
+        }
+        public CanvasGroup CanvasGroup
+        {
+            get
+            {
+                if (_canvasGroup == null) ResolveReferences();
+                return _canvasGroup;
+            }
+        }
+        public Graphic TargetGraphic
+        {
+            get
+            {
+                if (_targetGraphic == null) ResolveReferences();
+                return _targetGraphic;
+            }
+        }
+        public bool AutoPlay => _autoPlay;
 
         private void Awake()
         {
@@ -70,7 +96,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             StopAnimation();
         }
 
-        private void ResolveReferences()
+        public void ResolveReferences()
         {
             if (_targetTransform == null) _targetTransform = transform as RectTransform;
             if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
@@ -173,6 +199,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         public void RestoreBaseState()
         {
+            ResolveReferences();
             if (_canvasGroup != null && _animateAlpha)
             {
                 _canvasGroup.alpha = _baseAlpha;

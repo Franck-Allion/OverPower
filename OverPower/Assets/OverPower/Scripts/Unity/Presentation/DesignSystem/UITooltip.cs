@@ -16,8 +16,14 @@ namespace OverPower.Unity.Presentation.DesignSystem
         private object _owner;
         private Vector2 _screenPoint;
         private bool _positioning;
-        public bool IsVisible => _transition.IsVisible;
+        public bool IsVisible => _transition != null && _transition.IsVisible;
         public RectTransform Bounds => _bounds;
+
+        private void Awake()
+        {
+            if (_transition == null) _transition = GetComponent<UITransition>();
+        }
+
         public void BindCanvas(RectTransform bounds, Canvas canvas)
         {
             if (bounds == null || canvas == null || transform.parent != bounds)
@@ -38,19 +44,46 @@ namespace OverPower.Unity.Presentation.DesignSystem
             }
 
             _owner = owner;
-            _title.text = title;
-            _body.text = body;
-            _icon.sprite = icon;
-            _icon.gameObject.SetActive(icon != null);
             _screenPoint = screenPoint;
+            if (_title != null) _title.text = title;
+            _body.text = body;
+            if (_icon != null)
+            {
+                _icon.gameObject.SetActive(icon != null);
+                _icon.sprite = icon;
+            }
+
             PositionInsideCanvas();
-            _transition.Show();
+            if (_transition == null) _transition = GetComponent<UITransition>();
+            if (_transition != null)
+            {
+                if (UnityEngine.Application.isPlaying)
+                {
+                    _transition.Show();
+                }
+                else
+                {
+                    _transition.ShowImmediate();
+                }
+            }
         }
+
         public void Hide(object owner)
         {
             if (!ReferenceEquals(owner, _owner)) return;
             _owner = null;
-            _transition.Hide();
+            if (_transition == null) _transition = GetComponent<UITransition>();
+            if (_transition != null)
+            {
+                if (UnityEngine.Application.isPlaying)
+                {
+                    _transition.Hide();
+                }
+                else
+                {
+                    _transition.HideImmediate();
+                }
+            }
         }
 
         private void PositionInsideCanvas()
