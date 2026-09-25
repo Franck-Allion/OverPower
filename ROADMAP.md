@@ -463,12 +463,12 @@ If final artwork is not available, document replacement PNG requirements.
 
 ## 0.3.3 Loading / scene transition presentation
 
-- [ ] Premium fade/transition baseline
-- [ ] No raw black freeze between scenes
-- [ ] Loading indicator support if required
-- [ ] Cancellation-safe transition flow
-- [ ] Prevent multiple scene transition submissions
-- [ ] Keep transitions visually restrained outside combat
+- [x] Premium fade/transition baseline
+- [x] No raw black freeze between scenes
+- [x] Loading indicator support if required
+- [x] Cancellation-safe transition flow
+- [x] Prevent multiple scene transition submissions
+- [x] Keep transitions visually restrained outside combat
 
 ---
 

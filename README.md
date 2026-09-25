@@ -85,11 +85,11 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Core Domain Foundation complete, Design System bootstrap (0.3.1) complete & Premium Main Menu (0.3.2) complete**
+> **Status: Core Domain Foundation complete, Design System bootstrap (0.3.1), Premium Main Menu (0.3.2) & Scene Transitions (0.3.3) complete**
 >
-> The pure C# Core Domain Foundation (Milestone 0.2), presentation Design System bootstrap (Milestone 0.3.1), and production Premium Main Menu pass (Milestone 0.3.2) are fully complete. This includes shared primitives, deterministic RNG/substreams, authoritative combat/deck aggregates, starting hand rules, persistent DTO schemas, cohesive UI configuration, primary/secondary/icon buttons, reusable panels, badges, resource chips, tooltips, modals, DOTween transitions, and a production Main Menu featuring responsive Play/Settings/Exit action hierarchy, localized modal settings, controller-ready explicit navigation, and centralized UI audio feedback.
+> The pure C# Core Domain Foundation (Milestone 0.2), presentation Design System bootstrap (Milestone 0.3.1), production Premium Main Menu pass (Milestone 0.3.2), and Scene Transition Presentation (Milestone 0.3.3) are fully complete. This includes shared primitives, deterministic RNG/substreams, authoritative combat/deck aggregates, starting hand rules, persistent DTO schemas, cohesive UI configuration, primary/secondary/icon buttons, reusable panels, badges, resource chips, tooltips, modals, centralized UI audio feedback, and a persistent, cancellation-safe fullscreen scene transition overlay providing restrained fades, input blocking, and delayed indeterminate loading indicator animation across all scene transitions.
 >
-> Open `OverPower/Assets/OverPower/Scenes/MainMenu.unity` to inspect the production Main Menu, or `OverPower/Assets/OverPower/Scenes/Development/DesignSystemPreview.unity` for the Design System showcase. The application version is aligned to 0.3.2.
+> Open `OverPower/Assets/OverPower/Scenes/Bootstrap.unity` or `OverPower/Assets/OverPower/Scenes/MainMenu.unity` to inspect the production game startup and menu transitions. The application version is aligned to 0.3.3.
 
 ---
 

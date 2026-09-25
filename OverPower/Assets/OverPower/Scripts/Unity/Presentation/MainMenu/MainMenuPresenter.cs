@@ -77,16 +77,6 @@ namespace OverPower.Unity.Presentation.MainMenu
                 if (settingsButton != null) settingsButton.interactable = false;
                 if (exitButton != null) exitButton.interactable = false;
 
-                if (mainPanelTransition != null)
-                {
-                    mainPanelTransition.Hide();
-                    await System.Threading.Tasks.Task.Delay(200);
-                }
-                else
-                {
-                    await System.Threading.Tasks.Task.Delay(180);
-                }
-
                 try
                 {
                     var systemRandom = new System.Random();
@@ -102,7 +92,6 @@ namespace OverPower.Unity.Presentation.MainMenu
                     if (playButton != null) playButton.interactable = true;
                     if (settingsButton != null) settingsButton.interactable = true;
                     if (exitButton != null) exitButton.interactable = true;
-                    if (mainPanelTransition != null) mainPanelTransition.Show();
                 }
             }
             else

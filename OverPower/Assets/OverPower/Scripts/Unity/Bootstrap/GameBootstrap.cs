@@ -6,6 +6,8 @@ using OverPower.Unity.SceneFlow;
 using OverPower.Unity.Input;
 using OverPower.Unity.Localization;
 using OverPower.Unity.Logging;
+using OverPower.Unity.Presentation.DesignSystem;
+using OverPower.Unity.Presentation.SceneTransition;
 
 namespace OverPower.Unity.Bootstrap
 {
@@ -13,6 +15,8 @@ namespace OverPower.Unity.Bootstrap
     public class GameBootstrap : MonoBehaviour
     {
         [SerializeField] private bool runOnAwake = true;
+        [SerializeField] private UISceneTransitionOverlay _transitionOverlay;
+        [SerializeField] private UIDesignSystemConfig _designSystemConfig;
 
         private static GameBootstrap _instance;
         private UnitySceneNavigator _sceneNavigator;
@@ -33,8 +37,26 @@ namespace OverPower.Unity.Bootstrap
             _instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Compose Global Services
-            _sceneNavigator = new UnitySceneNavigator();
+            // Compose Scene Transition Presentation
+            if (_transitionOverlay == null)
+            {
+                _transitionOverlay = GetComponentInChildren<UISceneTransitionOverlay>();
+            }
+
+            if (_transitionOverlay == null)
+            {
+                if (_designSystemConfig == null)
+                {
+                    _designSystemConfig = Resources.Load<UIDesignSystemConfig>("UIDesignSystemConfig");
+#if UNITY_EDITOR
+                    if (_designSystemConfig == null)
+                    {
+                        _designSystemConfig = UnityEditor.AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>("Assets/OverPower/Data/UI/UIDesignSystemConfig.asset");
+                    }
+#endif
+                }
+                _transitionOverlay = UISceneTransitionOverlay.Create(transform, _designSystemConfig);
+            }
 
             // Set up Logging with Verbosity Filter
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
@@ -46,6 +68,8 @@ namespace OverPower.Unity.Bootstrap
             IGameLogger rawLogger = new UnityGameLogger();
             IGameLogger logger = new VerbosityFilteredLogger(rawLogger, verbosity);
 
+            // Compose Global Services
+            _sceneNavigator = new UnitySceneNavigator(_transitionOverlay, logger);
             _gameFlowController = new GameFlowController(_sceneNavigator, logger);
             _inputReader = gameObject.AddComponent<GameInputReader>();
             _localeService = new UnityLocaleService();
@@ -54,6 +78,11 @@ namespace OverPower.Unity.Bootstrap
             Debug.Log("[GameBootstrap] Global services composed successfully.");
 
             bool isBootstrapScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Bootstrap";
+            if (isBootstrapScene && _transitionOverlay != null)
+            {
+                _transitionOverlay.SetCoveredImmediate();
+            }
+
             if (runOnAwake && isBootstrapScene)
             {
                 _ = StartAppFlowAsync();
@@ -87,6 +116,7 @@ namespace OverPower.Unity.Bootstrap
         public IGameFlowController GameFlow => _gameFlowController;
         public IGameInput Input => _inputReader;
         public UnityLocaleService Locale => _localeService;
+        public UISceneTransitionOverlay TransitionOverlay => _transitionOverlay;
         public static bool IsInitialized => _instance != null;
 
         public static void EnsureInitialized()
@@ -112,6 +142,15 @@ namespace OverPower.Unity.Bootstrap
                 EnsureInitialized();
             }
             return _instance != null ? _instance.GameFlow : null;
+        }
+
+        public static UISceneTransitionOverlay GetTransitionOverlay()
+        {
+            if (_instance == null)
+            {
+                EnsureInitialized();
+            }
+            return _instance != null ? _instance.TransitionOverlay : null;
         }
 
         public static IGameInput GetInput()
