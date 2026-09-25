@@ -26,6 +26,7 @@ namespace OverPower.Unity.Presentation.MainMenu
         private void Awake()
         {
             UnityEngine.Application.runInBackground = true;
+            GameBootstrap.EnsureInitialized();
         }
 
         private void Start()
@@ -79,6 +80,11 @@ namespace OverPower.Unity.Presentation.MainMenu
                 if (mainPanelTransition != null)
                 {
                     mainPanelTransition.Hide();
+                    await System.Threading.Tasks.Task.Delay(200);
+                }
+                else
+                {
+                    await System.Threading.Tasks.Task.Delay(180);
                 }
 
                 try
@@ -105,8 +111,19 @@ namespace OverPower.Unity.Presentation.MainMenu
             }
         }
 
-        private void OnExitClicked()
+        private async void OnExitClicked()
         {
+            if (playButton != null) playButton.interactable = false;
+            if (settingsButton != null) settingsButton.interactable = false;
+            if (exitButton != null) exitButton.interactable = false;
+
+            if (mainPanelTransition != null)
+            {
+                mainPanelTransition.Hide();
+            }
+
+            await System.Threading.Tasks.Task.Delay(200);
+
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

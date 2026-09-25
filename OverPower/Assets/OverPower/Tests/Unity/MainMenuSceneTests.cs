@@ -66,6 +66,7 @@ namespace OverPower.Tests.Unity
             var modalTransition = settingsModalObj.GetComponent<UITransition>();
             Assert.That(modalTransition, Is.Not.Null, "SettingsModal must have UITransition component.");
             Assert.That(settingsModal.LanguageButton, Is.Not.Null, "SettingsModal must reference LanguageButton.");
+            Assert.That(settingsModal.LanguageButton.SubmitInteractionType, Is.EqualTo(UIInteractionType.Toggle), "Language button must use Toggle interaction type.");
             Assert.That(settingsModal.CloseButton, Is.Not.Null, "SettingsModal must reference CloseButton.");
 
             // 5. Verify MainMenuPresenter references
@@ -85,6 +86,10 @@ namespace OverPower.Tests.Unity
             var uiAudio = audioObj.GetComponent<OverPower.Unity.Presentation.Audio.UIAudioFeedback>();
             Assert.That(uiAudio, Is.Not.Null, "UIAudio must have UIAudioFeedback component.");
             Assert.That(uiAudio.AudioSource, Is.EqualTo(audioSource), "UIAudioFeedback must reference the AudioSource.");
+            Assert.That(uiAudio.ConfirmClip, Is.Not.Null, "UIAudioFeedback must have ConfirmClip assigned.");
+            Assert.That(uiAudio.ConfirmClip.name, Is.EqualTo("ui_menu_click"), "ConfirmClip must be ui_menu_click.");
+            Assert.That(uiAudio.ToggleClip, Is.Not.Null, "UIAudioFeedback must have ToggleClip assigned.");
+            Assert.That(uiAudio.ToggleClip.name, Is.EqualTo("ui_language_click"), "ToggleClip must be ui_language_click.");
 
             // 7. Verify no missing scripts on any GameObject in the hierarchy
             foreach (var go in SceneManager.GetActiveScene().GetRootGameObjects())

@@ -67,6 +67,7 @@ namespace OverPower.Tests.Unity
             Assert.DoesNotThrow(() =>
             {
                 feedback.PlayConfirm();
+                feedback.PlayToggle();
                 feedback.PlayHover();
                 feedback.PlayCancel();
             }, "Calling feedback methods with null clips/source must not throw.");
@@ -93,25 +94,59 @@ namespace OverPower.Tests.Unity
             feedback.AudioSource = audioSource;
 
             var confirmClip = AudioClip.Create("confirm_test", 100, 1, 44100, false);
+            var toggleClip = AudioClip.Create("toggle_test", 100, 1, 44100, false);
             var hoverClip = AudioClip.Create("hover_test", 100, 1, 44100, false);
             var cancelClip = AudioClip.Create("cancel_test", 100, 1, 44100, false);
 
             feedback.ConfirmClip = confirmClip;
+            feedback.ToggleClip = toggleClip;
             feedback.HoverClip = hoverClip;
             feedback.CancelClip = cancelClip;
 
             Assert.That(feedback.ConfirmClip, Is.EqualTo(confirmClip));
+            Assert.That(feedback.ToggleClip, Is.EqualTo(toggleClip));
             Assert.That(feedback.HoverClip, Is.EqualTo(hoverClip));
             Assert.That(feedback.CancelClip, Is.EqualTo(cancelClip));
 
             // Verify mapping logic with non-null clips
             Assert.DoesNotThrow(() => feedback.PlayConfirm());
+            Assert.DoesNotThrow(() => feedback.PlayToggle());
             Assert.DoesNotThrow(() => feedback.PlayHover());
             Assert.DoesNotThrow(() => feedback.PlayCancel());
 
+            // Test fallback to ConfirmClip when ToggleClip is null
+            feedback.ToggleClip = null;
+            Assert.DoesNotThrow(() => feedback.PlayToggle());
+
             Object.DestroyImmediate(confirmClip);
+            Object.DestroyImmediate(toggleClip);
             Object.DestroyImmediate(hoverClip);
             Object.DestroyImmediate(cancelClip);
+            Object.DestroyImmediate(go);
+        }
+
+        [Test]
+        public void UIAudioFeedback_ButtonOverrideClip_TakesPrecedence()
+        {
+            var go = new GameObject("AudioRootOverride");
+            var audioSource = go.AddComponent<AudioSource>();
+            var feedback = go.AddComponent<UIAudioFeedback>();
+            feedback.AudioSource = audioSource;
+
+            var overrideClip = AudioClip.Create("override_test", 100, 1, 44100, false);
+
+            var btnGo = new GameObject("OverrideBtn", typeof(RectTransform));
+            var btn = btnGo.AddComponent<UIButton>();
+            btn.OverrideSubmitClip = overrideClip;
+            Assert.That(btn.OverrideSubmitClip, Is.EqualTo(overrideClip));
+
+            Assert.DoesNotThrow(() =>
+            {
+                btn.OnSubmit(new BaseEventData(EventSystem.current));
+            });
+
+            Object.DestroyImmediate(overrideClip);
+            Object.DestroyImmediate(btnGo);
             Object.DestroyImmediate(go);
         }
 

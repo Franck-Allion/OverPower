@@ -16,7 +16,8 @@ namespace OverPower.Unity.Presentation.DesignSystem
         Press,
         Submit,
         Cancel,
-        Close
+        Close,
+        Toggle
     }
 
     /// <summary>Shared uGUI interaction for the three prefab families. Screen composition owns actions and labels.</summary>
@@ -40,6 +41,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private UnityEvent _onPressFeedback = new UnityEvent();
         [SerializeField] private UnityEvent _onSubmitFeedback = new UnityEvent();
         [SerializeField] private UIInteractionType _submitInteractionType = UIInteractionType.Submit;
+        [SerializeField] private AudioClip _overrideSubmitClip;
 
         public static event Action<UIButton, UIInteractionType> OnButtonFeedback;
 
@@ -55,6 +57,11 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             get => _submitInteractionType;
             set => _submitInteractionType = value;
+        }
+        public AudioClip OverrideSubmitClip
+        {
+            get => _overrideSubmitClip;
+            set => _overrideSubmitClip = value;
         }
 
         protected override void OnEnable()
@@ -120,22 +127,22 @@ namespace OverPower.Unity.Presentation.DesignSystem
 
         public override void OnSubmit(BaseEventData eventData)
         {
-            base.OnSubmit(eventData);
             if (IsInteractable())
             {
                 _onSubmitFeedback?.Invoke();
                 OnButtonFeedback?.Invoke(this, _submitInteractionType);
             }
+            base.OnSubmit(eventData);
         }
 
         public override void OnPointerClick(PointerEventData eventData)
         {
-            base.OnPointerClick(eventData);
             if (IsInteractable())
             {
                 _onSubmitFeedback?.Invoke();
                 OnButtonFeedback?.Invoke(this, _submitInteractionType);
             }
+            base.OnPointerClick(eventData);
         }
 
         protected override void OnDisable()

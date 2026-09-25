@@ -10,8 +10,9 @@ OverPower/Assets/OverPower/Audio/UI/
 
 Target filenames:
 
+*   `ui_menu_click.wav` (Primary/secondary main menu action buttons: Play, Settings, Exit)
+*   `ui_language_click.wav` (Settings language switch toggle: Français / English)
 *   `ui_hover.wav` (Hover / focus feedback)
-*   `ui_confirm.wav` (Primary/secondary button activation, submit, click)
 *   `ui_cancel.wav` (Modal dismissal, return, cancel actions)
 
 ---

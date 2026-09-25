@@ -53,7 +53,8 @@ namespace OverPower.Unity.Bootstrap
 
             Debug.Log("[GameBootstrap] Global services composed successfully.");
 
-            if (runOnAwake)
+            bool isBootstrapScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Bootstrap";
+            if (runOnAwake && isBootstrapScene)
             {
                 _ = StartAppFlowAsync();
             }
@@ -88,34 +89,47 @@ namespace OverPower.Unity.Bootstrap
         public UnityLocaleService Locale => _localeService;
         public static bool IsInitialized => _instance != null;
 
+        public static void EnsureInitialized()
+        {
+            if (_instance != null) return;
+
+            var existing = Object.FindFirstObjectByType<GameBootstrap>();
+            if (existing != null)
+            {
+                _instance = existing;
+                return;
+            }
+
+            Debug.Log("[GameBootstrap] Auto-initializing GameBootstrap root for active scene execution.");
+            var bootstrapObj = new GameObject("GameBootstrap");
+            bootstrapObj.AddComponent<GameBootstrap>();
+        }
+
         public static IGameFlowController GetGameFlow()
         {
             if (_instance == null)
             {
-                Debug.LogWarning("[GameBootstrap] No active GameBootstrap instance found! (If testing, load Bootstrap scene first).");
-                return null;
+                EnsureInitialized();
             }
-            return _instance.GameFlow;
+            return _instance != null ? _instance.GameFlow : null;
         }
 
         public static IGameInput GetInput()
         {
             if (_instance == null)
             {
-                Debug.LogWarning("[GameBootstrap] No active GameBootstrap instance found! (If testing, load Bootstrap scene first).");
-                return null;
+                EnsureInitialized();
             }
-            return _instance.Input;
+            return _instance != null ? _instance.Input : null;
         }
 
         public static UnityLocaleService GetLocaleService()
         {
             if (_instance == null)
             {
-                Debug.LogWarning("[GameBootstrap] No active GameBootstrap instance found! (If testing, load Bootstrap scene first).");
-                return null;
+                EnsureInitialized();
             }
-            return _instance.Locale;
+            return _instance != null ? _instance.Locale : null;
         }
     }
 }

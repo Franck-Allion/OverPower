@@ -16,13 +16,17 @@ namespace OverPower.Unity.Presentation.Audio
         [Header("Semantic Feedback Clips")]
         [SerializeField] private AudioClip _hoverClip;
         [SerializeField] private AudioClip _confirmClip;
+        [SerializeField] private AudioClip _toggleClip;
         [SerializeField] private AudioClip _cancelClip;
 
         [Header("Debounce Settings")]
         [SerializeField] private float _hoverDebounceSeconds = 0.04f;
 
+        private static UIAudioFeedback _instance;
         private bool _isSubscribed;
         private float _lastHoverTime = -1f;
+
+        public static UIAudioFeedback Instance => _instance;
 
         public AudioSource AudioSource
         {
@@ -42,6 +46,12 @@ namespace OverPower.Unity.Presentation.Audio
             set => _confirmClip = value;
         }
 
+        public AudioClip ToggleClip
+        {
+            get => _toggleClip;
+            set => _toggleClip = value;
+        }
+
         public AudioClip CancelClip
         {
             get => _cancelClip;
@@ -49,6 +59,20 @@ namespace OverPower.Unity.Presentation.Audio
         }
 
         public bool IsSubscribed => _isSubscribed;
+
+        private void Awake()
+        {
+            if (_instance != null && _instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            _instance = this;
+            if (transform.parent == null && UnityEngine.Application.isPlaying)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
 
         private void OnEnable()
         {
@@ -62,6 +86,10 @@ namespace OverPower.Unity.Presentation.Audio
 
         private void OnDestroy()
         {
+            if (_instance == this)
+            {
+                _instance = null;
+            }
             Unsubscribe();
         }
 
@@ -91,6 +119,15 @@ namespace OverPower.Unity.Presentation.Audio
             }
         }
 
+        public void PlayToggle()
+        {
+            var clip = _toggleClip != null ? _toggleClip : _confirmClip;
+            if (_audioSource != null && clip != null)
+            {
+                _audioSource.PlayOneShot(clip);
+            }
+        }
+
         public void PlayHover()
         {
             if (UnityEngine.Application.isPlaying && Time.unscaledTime - _lastHoverTime < _hoverDebounceSeconds)
@@ -116,8 +153,17 @@ namespace OverPower.Unity.Presentation.Audio
 
         private void HandleButtonFeedback(UIButton button, UIInteractionType type)
         {
-            if (button != null && !button.IsInteractable())
+            if (button != null && !button.interactable)
             {
+                return;
+            }
+
+            if (button != null && button.OverrideSubmitClip != null && (type == UIInteractionType.Submit || type == UIInteractionType.Toggle))
+            {
+                if (_audioSource != null)
+                {
+                    _audioSource.PlayOneShot(button.OverrideSubmitClip);
+                }
                 return;
             }
 
@@ -125,6 +171,10 @@ namespace OverPower.Unity.Presentation.Audio
             {
                 case UIInteractionType.Submit:
                     PlayConfirm();
+                    break;
+
+                case UIInteractionType.Toggle:
+                    PlayToggle();
                     break;
 
                 case UIInteractionType.Hover:

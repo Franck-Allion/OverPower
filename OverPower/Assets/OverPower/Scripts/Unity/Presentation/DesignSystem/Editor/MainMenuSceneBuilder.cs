@@ -562,6 +562,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             modalLangBtnElem.preferredWidth = 240;
             modalLangBtnElem.preferredHeight = 48;
             var modalLangBtn = modalLangBtnObj.GetComponent<UIButton>();
+            modalLangBtn.SubmitInteractionType = UIInteractionType.Toggle;
             var modalLangBtnText = modalLangBtnObj.GetComponentInChildren<TextMeshProUGUI>();
             modalLangBtnText.text = "Français";
 
@@ -683,8 +684,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             {
                 uiAudio = audioObj.AddComponent<UIAudioFeedback>();
             }
+            var confirmClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/OverPower/Audio/UI/ui_menu_click.wav");
+            var toggleClip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/OverPower/Audio/UI/ui_language_click.wav");
             var audioSo = new SerializedObject(uiAudio);
             audioSo.FindProperty("_audioSource").objectReferenceValue = audioSource;
+            audioSo.FindProperty("_confirmClip").objectReferenceValue = confirmClip;
+            audioSo.FindProperty("_toggleClip").objectReferenceValue = toggleClip;
             audioSo.ApplyModifiedProperties();
             EditorUtility.SetDirty(audioObj);
 
