@@ -32,8 +32,34 @@ Suggested spacing scale: 4, 8, 12, 16, 24, 32, 48, 64.
 Suggested motion durations: Fast≈0.12s, Normal≈0.20s, Emphasis≈0.35s.
 
 ## Reusable components
-Create when real screens need them: `PrimaryButton`, `SecondaryButton`, `IconButton`, `Panel`, `Modal`, `Tooltip`, `Badge`, `Counter`, `ResourceChip`, `ProgressBar`, `Tab`, `CardFrame`, `UnitStatLine`, `ConfirmDialog`, `EmptyState`.
-Gameplay components may include `HealthDisplay`, `ManaDisplay`, `ArmorDisplay`, `GoldDisplay`, `TurnBanner`, `PhaseBanner`, `UnitStackBadge`, `AbilityButton`, `BoardTileHighlight`, `CardPlayableState`.
+All reusable UI prefabs reside under `Assets/OverPower/UI/DesignSystem/Components/`.
+
+### General UI Primitives
+*   `PrimaryButton.prefab` (`UIButton`, Family: `Primary`) — High-emphasis action button with hover/press scale and audio feedback hooks.
+*   `SecondaryButton.prefab` (`UIButton`, Family: `Secondary`) — Standard outlined action button.
+*   `IconButton.prefab` (`UIButton`, Family: `Icon`) — 64×64 icon button with full click-target padding.
+*   `Panel.prefab` (`UIPanel`) — Card and container surface supporting `Default`, `Elevated`, and `Sunken` styles with top accent bar and inner borders.
+*   `Badge.prefab` (`UIBadge`) — Compact status indicator.
+*   `ConfirmDialog.prefab` (`UIConfirmDialog`) — Modal dialog with backdrop dimming, input blocking, and primary/secondary actions.
+*   `Tooltip.prefab` (`UITooltip`) — Floating inspection card with bounds-clamping and inline icon support. Triggered via `UITooltipTrigger`.
+
+### Authoritative Gameplay HUD Primitives (Milestone 0.3.4)
+The following components represent the authoritative gameplay HUD primitives. When constructing Exploration (0.4) or Battle (0.5) screens, AI agents MUST reuse these exact components and prefabs rather than creating screen-local variants:
+
+| Need | Prefab | C# Component | Namespace | Primary API & Usage |
+|---|---|---|---|---|
+| **Health** | `HealthResourceOrb.prefab` | `UIVitalResourceOrb` | `OverPower.Unity.Presentation.DesignSystem` | `SetValue(current, max)`<br>Crimson liquid with wave motion, unchanged neutral metallic frame. Displays readable `73 / 100`. |
+| **Mana** | `ManaResourceOrb.prefab` | `UIVitalResourceOrb` | `OverPower.Unity.Presentation.DesignSystem` | `SetValue(current, max)`<br>Mystic blue liquid with wave motion, unchanged neutral metallic frame. Displays readable `3 / 5`. |
+| **Gold** | `ResourceChip.prefab` | `UIResourceChip` | `OverPower.Unity.Presentation.DesignSystem` | `SetValue(gold)`<br>Displays scalar number (e.g. `125`) with `icon_gold.png` and `UISemanticColor.Gold`. |
+| **Action Points (AP)** | `ResourceChip.prefab` | `UIResourceChip` | `OverPower.Unity.Presentation.DesignSystem` | `SetPrefix("AP")`<br>`SetValue(current, max)`<br>Displays tactical `AP 4 / 6` with `UISemanticColor.Interactive`. |
+| **Unit Stack Badge** | `UnitStackBadge.prefab` | `UIUnitStackBadge` | `OverPower.Unity.Presentation.DesignSystem` | `SetValues(quantity, currentMemberHp, hpPerMember)`<br>Displays primary quantity `x8` and secondary member HP `3 / 10` with mini health fill bar. |
+| **Scene Transition** | Persistent under `GameBootstrap` | `UISceneTransitionOverlay` | `OverPower.Unity.Presentation.SceneTransition` | Controlled via `ISceneNavigator.LoadSceneAsync(sceneId)`. Fullscreen `#0D141F` fade, input blocking, and delayed loading indicator. |
+
+### Technical Rules for HUD Primitives
+1.  **No Decoupling Violations:** HUD components receive scalar presentation values only. They must not depend on Domain models (`UnitStack`, `HeroState`, `BattleState`).
+2.  **Vital Resource Orbs:** Both Health and Mana share the exact same `UIVitalResourceOrb` component. Instances instantiate their material at runtime so simultaneous fill/tone changes never collide. The metallic frame remains neutral silver (`Color.white`) and is never tinted.
+3.  **Action Points vs. Vital Orbs:** Action Points are tactical data and must remain compact (`UIResourceChip`), never ornate orbs.
+4.  **Reference Showcase:** Open `Assets/OverPower/Scenes/Development/DesignSystemPreview.unity` and inspect column `05 / GAMEPLAY HUD PRIMITIVES` for canonical layout and typography examples.
 
 ## Reuse rule
 Before creating a new component, inspect `Assets/OverPower/UI/DesignSystem/`. Reuse or cleanly extend an existing component. Do not create local variants merely to finish faster.
