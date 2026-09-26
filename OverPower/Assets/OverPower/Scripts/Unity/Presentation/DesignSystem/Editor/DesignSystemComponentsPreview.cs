@@ -297,7 +297,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             Vertical(page, 0);
             page.GetComponent<VerticalLayoutGroup>().spacing = UISpacing.Md;
             Text(page, "cards.eyebrow", "06  /  GAMEPLAY PRESENTATION", "06  /  PRESENTATION DE JEU", TypographyStyle.Caption, 28, UISemanticColor.Primary);
-            Text(page, "cards.title", "The card foundation", "La fondation des cartes", TypographyStyle.Display, 76);
+            Text(page, "cards.title", "The card foundation", "La fondation des cartes", TypographyStyle.Title, 64);
             Text(page, "cards.intro", "Artwork, resource cost, rarity and rules have one readable, premium hierarchy.", "Illustration, cout, rarete et regles partagent une hierarchie lisible et premium.", TypographyStyle.Body, 36, UISemanticColor.TextSecondary);
             var display = Rect("CardShowcase", page);
             display.gameObject.AddComponent<LayoutElement>().flexibleHeight = 1;
@@ -305,23 +305,27 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             display.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
             display.GetComponent<HorizontalLayoutGroup>().spacing = UISpacing.Xl;
 
-            var guardian = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
-            guardian.name = "GuardianCard";
-            FixedSize((RectTransform)guardian.transform, 380, 590);
-            guardian.SetPresentation(new CardPresentationData
+            var sorcererArtwork = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/OverPower/UI/Cards/Artwork/sorcerer.png");
+            var sorcerer = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
+            sorcerer.name = "SorcererCard";
+            FixedSize((RectTransform)sorcerer.transform, 430, 620);
+            sorcerer.SetPresentation(new CardPresentationData
             {
-                Title = "Guardian", Type = CardVisualType.Unit, Rarity = CardRarityVisual.Rare, Cost = 2,
-                Description = "A steadfast defender. The first ally to take damage gains 4 {health}.",
-                Attack = 8, Armor = 4, Health = 10
+                Title = "Sorcerer", TypeLabel = "UNIT", RarityLabel = "COMMON",
+                Type = CardVisualType.Unit, Rarity = CardRarityVisual.Common, Cost = 2, Artwork = sorcererArtwork,
+                Description = "Move an enemy unit to another lane. Gain 1 {mana}.",
+                Attack = 10, Armor = 4, Health = 10, UnitCount = 8,
+                AttackStatLabel = "ATTACK", ArmorStatLabel = "ARMOR", HealthStatLabel = "HEALTH", UnitCountStatLabel = "UNITS"
             });
-            guardian.SetState(CardPresentationState.Highlighted);
+            sorcerer.SetState(CardPresentationState.Highlighted);
 
             var arcaneBolt = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
             arcaneBolt.name = "ArcaneBoltCard";
-            FixedSize((RectTransform)arcaneBolt.transform, 380, 590);
+            FixedSize((RectTransform)arcaneBolt.transform, 430, 620);
             arcaneBolt.SetPresentation(new CardPresentationData
             {
-                Title = "Arcane Bolt", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Epic, Cost = 3,
+                Title = "Arcane Bolt", TypeLabel = "SPELL", RarityLabel = "COMMON",
+                Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3,
                 Description = "Deal 12 {attack} to an enemy. Restore 1 {mana} after it resolves."
             });
             return page;

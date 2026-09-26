@@ -329,28 +329,52 @@ namespace OverPower.Tests.Unity
             var rarityGem = new GameObject("RarityGem", typeof(Image)).GetComponent<Image>(); rarityGem.transform.SetParent(rarityMedallion.transform);
             var rarityLabel = Text(rarityMedallion.transform, "Rarity");
             var stateOutline = new GameObject("StateOutline", typeof(Image)).GetComponent<Image>(); stateOutline.transform.SetParent(root.transform);
+            var unitBanner = new GameObject("UnitBanner"); unitBanner.transform.SetParent(root.transform);
+            var spellBanner = new GameObject("SpellBanner"); spellBanner.transform.SetParent(root.transform);
+            var costBadge = new GameObject("CostBadge"); costBadge.transform.SetParent(root.transform);
             var title = Text(root.transform, "Title"); var type = Text(root.transform, "Type"); var cost = Text(root.transform, "Cost");
-            var attack = Text(stats.transform, "Attack"); var armor = Text(stats.transform, "Armor"); var health = Text(stats.transform, "Health");
+            var attackSlot = new GameObject("AttackSlot"); attackSlot.transform.SetParent(stats.transform); var attack = Text(attackSlot.transform, "Attack"); var attackCaption = Text(attackSlot.transform, "AttackCaption");
+            var armorSlot = new GameObject("ArmorSlot"); armorSlot.transform.SetParent(stats.transform); var armor = Text(armorSlot.transform, "Armor"); var armorCaption = Text(armorSlot.transform, "ArmorCaption");
+            var healthSlot = new GameObject("HealthSlot"); healthSlot.transform.SetParent(stats.transform); var health = Text(healthSlot.transform, "Health"); var healthCaption = Text(healthSlot.transform, "HealthCaption");
+            var unitCountSlot = new GameObject("UnitCountSlot"); unitCountSlot.transform.SetParent(stats.transform); var unitCount = Text(unitCountSlot.transform, "UnitCount"); var unitCountCaption = Text(unitCountSlot.transform, "UnitCountCaption");
+            var commonSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f));
             var so = new SerializedObject(card);
             so.FindProperty("_config").objectReferenceValue = config; so.FindProperty("_typeLabel").objectReferenceValue = type;
-            so.FindProperty("_costLabel").objectReferenceValue = cost; so.FindProperty("_titleLabel").objectReferenceValue = title;
+            so.FindProperty("_costBadge").objectReferenceValue = costBadge; so.FindProperty("_costLabel").objectReferenceValue = cost; so.FindProperty("_titleLabel").objectReferenceValue = title;
             so.FindProperty("_description").objectReferenceValue = descriptionObject.GetComponent<UIRichText>(); so.FindProperty("_stats").objectReferenceValue = stats;
             so.FindProperty("_artwork").objectReferenceValue = artwork; so.FindProperty("_artworkPlaceholder").objectReferenceValue = artworkPlaceholder;
+            so.FindProperty("_unitBanner").objectReferenceValue = unitBanner; so.FindProperty("_spellBanner").objectReferenceValue = spellBanner;
             so.FindProperty("_rarityMedallion").objectReferenceValue = rarityMedallion; so.FindProperty("_rarityGem").objectReferenceValue = rarityGem;
-            so.FindProperty("_rarityLabel").objectReferenceValue = rarityLabel; so.FindProperty("_stateOutline").objectReferenceValue = stateOutline;
+            so.FindProperty("_rarityLabel").objectReferenceValue = rarityLabel; so.FindProperty("_commonRaritySprite").objectReferenceValue = commonSprite; so.FindProperty("_stateOutline").objectReferenceValue = stateOutline;
+            so.FindProperty("_attackSlot").objectReferenceValue = attackSlot; so.FindProperty("_armorSlot").objectReferenceValue = armorSlot; so.FindProperty("_healthSlot").objectReferenceValue = healthSlot; so.FindProperty("_unitCountSlot").objectReferenceValue = unitCountSlot;
             so.FindProperty("_attackLabel").objectReferenceValue = attack; so.FindProperty("_armorLabel").objectReferenceValue = armor;
-            so.FindProperty("_healthLabel").objectReferenceValue = health; so.FindProperty("_group").objectReferenceValue = root.GetComponent<CanvasGroup>(); so.ApplyModifiedPropertiesWithoutUndo();
-            card.SetPresentation(new CardPresentationData { Title = "Guardian", Description = "Gain {mana}.", Type = CardVisualType.Unit, Rarity = CardRarityVisual.Rare, Attack = 8, Armor = 4, Health = 10 });
-            Assert.That(card.Type, Is.EqualTo(CardVisualType.Unit)); Assert.That(stats.activeSelf, Is.True); Assert.That(cost.gameObject.activeSelf, Is.False);
-            Assert.That(title.text, Is.EqualTo("Guardian")); Assert.That(rarityLabel.text, Is.EqualTo("RARE")); Assert.That(artworkPlaceholder.activeSelf, Is.True);
+            so.FindProperty("_healthLabel").objectReferenceValue = health; so.FindProperty("_unitCountLabel").objectReferenceValue = unitCount;
+            so.FindProperty("_attackCaption").objectReferenceValue = attackCaption; so.FindProperty("_armorCaption").objectReferenceValue = armorCaption; so.FindProperty("_healthCaption").objectReferenceValue = healthCaption; so.FindProperty("_unitCountCaption").objectReferenceValue = unitCountCaption;
+            so.FindProperty("_group").objectReferenceValue = root.GetComponent<CanvasGroup>(); so.ApplyModifiedPropertiesWithoutUndo();
+            card.SetPresentation(new CardPresentationData
+            {
+                Title = "Sorcerer", Description = "Gain {mana}.", TypeLabel = "UNIT", RarityLabel = "COMMON",
+                Type = CardVisualType.Unit, Rarity = CardRarityVisual.Common, Cost = 2,
+                Attack = 10, Health = 10, UnitCount = 8,
+                AttackStatLabel = "ATTACK", ArmorStatLabel = "ARMOR", HealthStatLabel = "HEALTH", UnitCountStatLabel = "UNITS"
+            });
+            Assert.That(card.Type, Is.EqualTo(CardVisualType.Unit)); Assert.That(stats.activeSelf, Is.True); Assert.That(costBadge.activeSelf, Is.True);
+            Assert.That(title.text, Is.EqualTo("Sorcerer")); Assert.That(type.text, Is.EqualTo("UNIT")); Assert.That(rarityLabel.text, Is.EqualTo("COMMON")); Assert.That(artworkPlaceholder.activeSelf, Is.True);
+            Assert.That(unitBanner.activeSelf, Is.True); Assert.That(spellBanner.activeSelf, Is.False); Assert.That(rarityGem.sprite, Is.EqualTo(commonSprite));
+            Assert.That(cost.text, Is.EqualTo("2")); Assert.That(attack.text, Is.EqualTo("10")); Assert.That(health.text, Is.EqualTo("10")); Assert.That(unitCount.text, Is.EqualTo("x8"));
+            Assert.That(armorSlot.activeSelf, Is.False); Assert.That(attackCaption.text, Is.EqualTo("ATTACK")); Assert.That(unitCountCaption.text, Is.EqualTo("UNITS")); Assert.That(card.UnitCount, Is.EqualTo(8));
             Assert.That(descriptionObject.GetComponent<TMP_Text>().text, Does.Contain("sprite name=\"mana\""));
             var artworkSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f));
-            card.SetPresentation(new CardPresentationData { Title = "Arcane Bolt", Description = "Deals 12 {attack}.", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Epic, Cost = 3, Artwork = artworkSprite });
+            card.SetPresentation(new CardPresentationData { Title = "Arcane Bolt", Description = "Deals 12 {attack}.", TypeLabel = "SPELL", RarityLabel = "COMMON", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3, Artwork = artworkSprite });
             Assert.That(card.Type, Is.EqualTo(CardVisualType.Spell)); Assert.That(stats.activeSelf, Is.False); Assert.That(cost.text, Is.EqualTo("3"));
-            Assert.That(card.HasArtwork, Is.True); Assert.That(artworkPlaceholder.activeSelf, Is.False); Assert.That(rarityLabel.text, Is.EqualTo("EPIC"));
+            Assert.That(type.text, Is.EqualTo("SPELL")); Assert.That(unitBanner.activeSelf, Is.False); Assert.That(spellBanner.activeSelf, Is.True);
+            Assert.That(card.HasArtwork, Is.True); Assert.That(artworkPlaceholder.activeSelf, Is.False); Assert.That(card.UnitCount, Is.Null);
+            card.SetState(CardPresentationState.Highlighted); Assert.That(root.transform.localScale.x, Is.GreaterThan(1f)); Assert.That(stateOutline.gameObject.activeSelf, Is.True);
             card.SetState(CardPresentationState.Selected); Assert.That(stateOutline.gameObject.activeSelf, Is.True);
-            card.SetState(CardPresentationState.Disabled); Assert.That(card.State, Is.EqualTo(CardPresentationState.Disabled));
-            Object.DestroyImmediate(root);
+            card.SetState(CardPresentationState.Disabled); Assert.That(card.State, Is.EqualTo(CardPresentationState.Disabled)); Assert.That(root.GetComponent<CanvasGroup>().alpha, Is.EqualTo(.45f));
+            card.SetPresentation(new CardPresentationData { Title = "No Cost", TypeLabel = "SPELL", RarityLabel = "COMMON", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common });
+            Assert.That(costBadge.activeSelf, Is.False);
+            Object.DestroyImmediate(artworkSprite); Object.DestroyImmediate(commonSprite); Object.DestroyImmediate(root);
         }
 
         [Test]

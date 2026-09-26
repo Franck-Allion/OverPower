@@ -399,6 +399,23 @@ MonoBehaviour:
     m_Localized: Target states
     m_Metadata:
       m_Items: []
+  - m_Id: 2327265247166464
+    m_Localized: 06  /  GAMEPLAY PRESENTATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265255555072
+    m_Localized: The card foundation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265255555073
+    m_Localized: Artwork, resource cost, rarity and rules have one readable, premium
+      hierarchy.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265930838016
+    m_Localized: Cards
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

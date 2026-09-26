@@ -54,7 +54,7 @@ The following components represent the authoritative gameplay HUD primitives. Wh
 | **Action Points (AP)** | `ResourceChip.prefab` | `UIResourceChip` | `OverPower.Unity.Presentation.DesignSystem` | `SetPrefix("AP")`<br>`SetValue(current, max)`<br>Displays tactical `AP 4 / 6` with `UISemanticColor.Interactive`. |
 | **Unit Stack Badge** | `UnitStackBadge.prefab` | `UIUnitStackBadge` | `OverPower.Unity.Presentation.DesignSystem` | `SetValues(quantity, currentMemberHp, hpPerMember)`<br>Displays primary quantity `x8` and secondary member HP `3 / 10` with mini health fill bar. |
 | **Scene Transition** | Persistent under `GameBootstrap` | `UISceneTransitionOverlay` | `OverPower.Unity.Presentation.SceneTransition` | Controlled via `ISceneNavigator.LoadSceneAsync(sceneId)`. Fullscreen `#0D141F` fade, input blocking, and delayed loading indicator. |
-| **Card frame** | `CardFrame.prefab` | `UICardFrame` | `OverPower.Unity.Presentation.DesignSystem` | `SetPresentation(CardPresentationData)` and `SetState(...)`. Presentation data only; Unit and Spell share one frame, with optional cost/art/stats. |
+| **Card frame** | `CardFrame.prefab` | `UICardFrame` | `OverPower.Unity.Presentation.DesignSystem` | `SetPresentation(CardPresentationData)` and `SetState(...)`. Presentation data only; Unit and Spell share one textured frame, with optional cost/art/stats/unit count. |
 | **Phase banner** | `PhaseBanner.prefab` | `UIPhaseBanner` | `OverPower.Unity.Presentation.DesignSystem` | `Show(localizedLabel, tone)` / `Hide()`. Short phase message only; it owns no turn rules. |
 | **Target state** | `TargetStateVisual.prefab` | `UITargetStateVisual` | `OverPower.Unity.Presentation.DesignSystem` | `SetState(None/Valid/Invalid/Selected)`. It communicates state with outline and shape cues; it owns no eligibility rules. |
 
@@ -119,16 +119,24 @@ Stable information architecture: artwork, name, cost, type, description, stats w
 `CardPresentationData` belongs to Unity Presentation, never Domain. It accepts only
 resolved display data, so current `RuntimeCard`, `UnitDefinition`, and
 `SpellDefinition` contracts remain unchanged. Its optional fields include cost,
-rarity, artwork and unit stats as resolved display values; it does not imply a Unit
+rarity, artwork, unit stats and unit count as resolved display values; it does not imply a Unit
 cost, AP cost, rarity, level, or element in gameplay. `UICardFrame` keeps a shared
-dark-and-gold frame for Unit and Spell, with a type accent, primary header cost,
-artwork window (and intentional safe placeholder), centered rarity medallion,
-rules body and unit-only bottom stat rail. Cards are inspected on the dedicated
+premium fantasy frame for Unit and Spell, with a textured title header, integrated
+cost, framed artwork window (and intentional safe placeholder), overlapping type
+banner, centered swappable rarity medallion, textured rules body and balanced
+unit-only bottom stat rail. Unit Count is optional and renders as `xN` alongside
+Attack, Armor and Health; absent values collapse without leaving empty slots.
+Cards are inspected on the dedicated
 Cards tab in the Design System preview, rather than a compressed component column.
 Card descriptions use existing `{attack}`,
 `{health}`, `{mana}`, and `{gold}` semantic inline-icon tokens. Current placeholder
-art is intentionally absent; future card art should be a transparent or full-bleed
-portrait asset at 2:1 landscape (recommended 1024×512 px), safe for centre-crop.
+art is intentional for the spell fixture; future card art should be a transparent or
+full-bleed portrait asset at 3:2 landscape (recommended 1200×800 px), safe for centre-crop.
+
+Card-specific visual assets live under `Assets/OverPower/UI/Cards/`: title and body
+textures in `Textures`, type/separator/rarity ornaments in `Decorations`, production
+art in `Artwork`, and non-runtime assembly references in `Reference`. PNGs are UI
+Sprites with transparency preserved, mipmaps disabled and lossless source quality.
 
 ## Interaction states
 Where relevant: Default, Hover, Pressed, Selected, Disabled, Locked, Invalid, Affordable, Unaffordable. Avoid critical color-only communication.

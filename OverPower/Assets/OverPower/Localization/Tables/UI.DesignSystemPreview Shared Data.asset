@@ -387,6 +387,22 @@ MonoBehaviour:
     m_Key: target.heading
     m_Metadata:
       m_Items: []
+  - m_Id: 2327265247166464
+    m_Key: cards.eyebrow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265255555072
+    m_Key: cards.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265255555073
+    m_Key: cards.intro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265930838016
+    m_Key: tabs.cards
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -403,6 +403,23 @@ MonoBehaviour:
     m_Localized: "\xC3\u2030tats de cible"
     m_Metadata:
       m_Items: []
+  - m_Id: 2327265247166464
+    m_Localized: 06  /  PRESENTATION DE JEU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265255555072
+    m_Localized: La fondation des cartes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265255555073
+    m_Localized: Illustration, cout, rarete et regles partagent une hierarchie lisible
+      et premium.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2327265930838016
+    m_Localized: Cartes
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
