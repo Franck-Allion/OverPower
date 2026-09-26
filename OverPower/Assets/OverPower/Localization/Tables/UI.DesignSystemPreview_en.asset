@@ -366,6 +366,23 @@ MonoBehaviour:
     m_Localized: Empowered
     m_Metadata:
       m_Items: []
+  - m_Id: 2170924515917824
+    m_Localized: 05  /  GAMEPLAY HUD PRIMITIVES
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170924591415296
+    m_Localized: Vital orbs & tactical chips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170924599803904
+    m_Localized: Ornate orbs represent vital health & mana. Tactical chips display
+      compact gold & AP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170924729827328
+    m_Localized: Inspect potion
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

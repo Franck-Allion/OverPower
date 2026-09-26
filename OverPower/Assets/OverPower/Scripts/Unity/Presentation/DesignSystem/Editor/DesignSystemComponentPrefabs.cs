@@ -104,6 +104,116 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             return SaveComponent(root);
         }
 
+        private static GameObject CreateVitalResourceOrb(string name, UISemanticColor tone)
+        {
+            var root = Rect(name, null);
+            root.gameObject.SetActive(false);
+            root.sizeDelta = new Vector2(130, 130);
+            var sizing = root.gameObject.AddComponent<LayoutElement>();
+            sizing.preferredWidth = sizing.minWidth = 130;
+            sizing.preferredHeight = sizing.minHeight = 130;
+
+            // 1. Liquid Layer
+            var liquidObj = Rect("Liquid", root);
+            liquidObj.sizeDelta = new Vector2(100, 100);
+            liquidObj.anchoredPosition = new Vector2(0, 0);
+            var liquidImg = liquidObj.gameObject.AddComponent<Image>();
+            liquidImg.raycastTarget = false;
+
+            var lineSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/HealthBar/bars/bar16/line.png");
+            var lineMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/HealthBar/bars/bar16/health16.mat");
+            if (lineSprite != null)
+            {
+                liquidImg.sprite = lineSprite;
+            }
+            if (lineMat != null)
+            {
+                liquidImg.material = lineMat;
+            }
+
+            // 2. Metallic Frame Layer (Front)
+            var frameObj = Rect("Frame", root);
+            frameObj.sizeDelta = new Vector2(126, 163);
+            frameObj.anchoredPosition = new Vector2(0, 8);
+            var frameImg = frameObj.gameObject.AddComponent<Image>();
+            frameImg.raycastTarget = false;
+            var frontSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/HealthBar/bars/bar16/front.png");
+            if (frontSprite != null)
+            {
+                frameImg.sprite = frontSprite;
+            }
+
+            // 3. Exact Numeric Value Label
+            var valueText = PlainText("Value", root, TypographyStyle.Stat, 32);
+            valueText.alignment = TextAlignmentOptions.Center;
+            valueText.rectTransform.anchoredPosition = new Vector2(0, -6);
+            valueText.text = tone == UISemanticColor.Health ? "73 / 100" : "3 / 5";
+
+            var shadow = valueText.gameObject.AddComponent<UnityEngine.UI.Shadow>();
+            shadow.effectColor = new Color(0f, 0f, 0f, 0.85f);
+            shadow.effectDistance = new Vector2(1f, -1f);
+
+            var orb = root.gameObject.AddComponent<UIVitalResourceOrb>();
+            orb.InitializeReferences(_config, liquidImg, frameImg, valueText, tone);
+            SetReference(orb, "_config", _config);
+            SetReference(orb, "_liquidImage", liquidImg);
+            SetReference(orb, "_frameImage", frameImg);
+            SetReference(orb, "_valueLabel", valueText);
+            SetEnum(orb, "_tone", (int)tone);
+
+            return SaveComponent(root);
+        }
+
+        private static GameObject CreateUnitStackBadge()
+        {
+            var root = Rect("UnitStackBadge", null);
+            root.gameObject.SetActive(false);
+            root.sizeDelta = new Vector2(120, 56);
+            PanelSurface(root, UIPanelStyle.Elevated);
+            var sizing = root.gameObject.AddComponent<LayoutElement>();
+            sizing.preferredWidth = sizing.minWidth = 120;
+            sizing.preferredHeight = sizing.minHeight = 56;
+
+            var content = Rect("Content", root);
+            Stretch(content, UISpacing.Sm);
+            Vertical(content, 0);
+            var vlg = content.GetComponent<VerticalLayoutGroup>();
+            vlg.spacing = 2;
+
+            var qtyText = PlainText("Quantity", content, TypographyStyle.Stat, 26);
+            qtyText.alignment = TextAlignmentOptions.MidlineLeft;
+            qtyText.text = "x8";
+
+            var hpRow = Rect("HpRow", content);
+            Height(hpRow, 16);
+            Horizontal(hpRow, 0, 0);
+
+            var hpBarBg = Image("HpBarBg", hpRow, _config.GetColor(UISemanticColor.Surface));
+            FixedSize(hpBarBg.rectTransform, 40, 6);
+            var hpBarFill = Image("HpBarFill", hpBarBg.transform, _config.GetColor(UISemanticColor.Health));
+            hpBarFill.type = UnityEngine.UI.Image.Type.Filled;
+            hpBarFill.fillMethod = UnityEngine.UI.Image.FillMethod.Horizontal;
+            hpBarFill.fillAmount = 0.3f;
+            Stretch(hpBarFill.rectTransform, 0);
+
+            var hpText = PlainText("MemberHp", hpRow, TypographyStyle.Caption, 16);
+            hpText.alignment = TextAlignmentOptions.MidlineLeft;
+            hpText.text = "3 / 10";
+
+            var badge = root.gameObject.AddComponent<UIUnitStackBadge>();
+            var surface = root.Find("Surface")?.GetComponent<UnityEngine.UI.Image>();
+            var border = root.GetComponent<UnityEngine.UI.Image>();
+            badge.InitializeReferences(_config, surface, border, qtyText, hpText, hpBarFill);
+            SetReference(badge, "_config", _config);
+            SetReference(badge, "_background", surface);
+            SetReference(badge, "_border", border);
+            SetReference(badge, "_quantityLabel", qtyText);
+            SetReference(badge, "_memberHpLabel", hpText);
+            SetReference(badge, "_memberHpFill", hpBarFill);
+
+            return SaveComponent(root);
+        }
+
         private static GameObject CreateConfirmDialog(GameObject panelPrefab)
         {
             var root = Rect("ConfirmDialog", null);

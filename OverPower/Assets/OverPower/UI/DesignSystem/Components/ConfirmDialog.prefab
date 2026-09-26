@@ -766,6 +766,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: OverPower.Unity::OverPower.Unity.Presentation.DesignSystem.UICancelRelay
   _dialog: {fileID: 371766624655241128}
+  _onCancel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &7324120657929390963 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5277815668144222684, guid: 8ae43d75e7c600047be1a1ab2e206f26, type: 3}
@@ -929,6 +932,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: OverPower.Unity::OverPower.Unity.Presentation.DesignSystem.UICancelRelay
   _dialog: {fileID: 371766624655241128}
+  _onCancel:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &4924931138445220677 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 584984482440105652, guid: 243dc990a28cc054bb5b5728c475fb1d, type: 3}

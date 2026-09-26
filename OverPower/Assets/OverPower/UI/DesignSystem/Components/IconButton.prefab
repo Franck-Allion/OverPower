@@ -364,6 +364,17 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  _onHoverFeedback:
+    m_PersistentCalls:
+      m_Calls: []
+  _onPressFeedback:
+    m_PersistentCalls:
+      m_Calls: []
+  _onSubmitFeedback:
+    m_PersistentCalls:
+      m_Calls: []
+  _submitInteractionType: 3
+  _overrideSubmitClip: {fileID: 0}
   references:
     version: 2
     RefIds: []

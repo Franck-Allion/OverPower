@@ -19,6 +19,10 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var chipPrefab = CreateResourceChip();
             var tooltipPrefab = CreateTooltip();
             var modalPrefab = CreateConfirmDialog(panelPrefab);
+            var healthOrbPrefab = CreateVitalResourceOrb("HealthResourceOrb", UISemanticColor.Health);
+            var manaOrbPrefab = CreateVitalResourceOrb("ManaResourceOrb", UISemanticColor.Mana);
+            var unitStackBadgePrefab = CreateUnitStackBadge();
+
             var background = Rect("BackgroundContent", canvas.transform);
             Stretch(background, 0);
             var backgroundGroup = background.gameObject.AddComponent<CanvasGroup>();
@@ -35,12 +39,13 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             Height(columns, 650);
             Horizontal(columns, 0, 0);
             var columnsLayout = columns.GetComponent<HorizontalLayoutGroup>();
-            columnsLayout.spacing = UISpacing.Xxl;
+            columnsLayout.spacing = UISpacing.Lg;
             columnsLayout.childForceExpandWidth = columnsLayout.childForceExpandHeight = true;
             var surfaces = Column("Surfaces", columns);
             var details = Column("Details", columns);
             var decisions = Column("Decisions", columns);
-            Text(surfaces, "components.surfaces", "01  /  SURFACES & STATUS", "01  /  SURFACES ET ÉTATS", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            var richText = Column("RichText", columns);
+            var gameplayHud = Column("GameplayHUD", columns);
             var samplePanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, surfaces);
             Height((RectTransform)samplePanel.transform, 170);
             Label(samplePanel.transform.Find("Header").GetComponent<TMP_Text>(), "panel.title", "GUARDIAN", "GARDIEN");
@@ -90,7 +95,6 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             Text(decisions, "components.note", "Presentation only — no gameplay state or scene loading.",
                 "Présentation uniquement — sans état de jeu ni chargement de scène.", TypographyStyle.Caption, 100, UISemanticColor.TextSecondary);
 
-            var richText = Column("RichText", columns);
             Text(richText, "components.richtext", "04  /  INLINE ICONS & RICH TEXT", "04  /  ICÔNES EN LIGNE ET TEXTE ENRICHI", TypographyStyle.Caption, 32, UISemanticColor.Primary);
             Text(richText, "richtext.intro", "A clean inline syntax", "Un texte enrichi fluide", TypographyStyle.Heading, 48);
             Text(richText, "richtext.instructions", "Authors write {health} or {mana}. Rendering converts tokens to high-fidelity icons.",
@@ -116,6 +120,92 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             RichText(cardContent, "richtext.sentence3", "Costs 3 {mana}.", "Coûte 3 {mana}.", TypographyStyle.BodySmall, 40);
             RichText(cardContent, "richtext.sentence4", "Gain 15 {gold} upon victory.", "Gagne 15 {gold} en cas de victoire.", TypographyStyle.BodySmall, 40);
 
+            // 05 / GAMEPLAY HUD PRIMITIVES
+            Text(gameplayHud, "hud.eyebrow", "05  /  GAMEPLAY HUD PRIMITIVES", "05  /  HUD DE JEU", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            Text(gameplayHud, "hud.intro", "Vital orbs & tactical chips", "Orbes vitaux et jetons tactiques", TypographyStyle.Heading, 48);
+            Text(gameplayHud, "hud.instructions", "Ornate orbs represent vital health & mana. Tactical chips display compact gold & AP.",
+                "Les orbes ornés représentent la santé et le mana. Les jetons affichent l'or et les PA.", TypographyStyle.BodySmall, 70, UISemanticColor.TextSecondary);
+
+            // 1. Orbs Row (Health 73/100, Mana 3/5)
+            var orbsRow = Rect("OrbsRow", gameplayHud);
+            Height(orbsRow, 140);
+            Horizontal(orbsRow, 0, 0);
+            var orbsLayout = orbsRow.GetComponent<HorizontalLayoutGroup>();
+            orbsLayout.spacing = UISpacing.Lg;
+            orbsLayout.childAlignment = TextAnchor.MiddleCenter;
+
+            var healthOrbObj = (GameObject)PrefabUtility.InstantiatePrefab(healthOrbPrefab, orbsRow);
+            healthOrbObj.name = "HealthOrb";
+            var healthOrb = healthOrbObj.GetComponent<UIVitalResourceOrb>();
+            var healthSo = new SerializedObject(healthOrb);
+            healthSo.FindProperty("_current").intValue = 73;
+            healthSo.FindProperty("_maximum").intValue = 100;
+            healthSo.ApplyModifiedProperties();
+            healthOrb.SetValue(73, 100);
+
+            var manaOrbObj = (GameObject)PrefabUtility.InstantiatePrefab(manaOrbPrefab, orbsRow);
+            manaOrbObj.name = "ManaOrb";
+            var manaOrb = manaOrbObj.GetComponent<UIVitalResourceOrb>();
+            var manaSo = new SerializedObject(manaOrb);
+            manaSo.FindProperty("_current").intValue = 3;
+            manaSo.FindProperty("_maximum").intValue = 5;
+            manaSo.ApplyModifiedProperties();
+            manaOrb.SetValue(3, 5);
+
+            // 2. Compact Chips Row (Action Points 4/6, Gold 125)
+            var chipsRow = Rect("ChipsRow", gameplayHud);
+            Height(chipsRow, 56);
+            Horizontal(chipsRow, 0, 0);
+            chipsRow.GetComponent<HorizontalLayoutGroup>().spacing = UISpacing.Md;
+
+            var apChipObj = (GameObject)PrefabUtility.InstantiatePrefab(chipPrefab, chipsRow);
+            apChipObj.name = "APChip";
+            var apChip = apChipObj.GetComponent<UIResourceChip>();
+            var apSo = new SerializedObject(apChip);
+            apSo.FindProperty("_labelPrefix").stringValue = "AP";
+            apSo.FindProperty("_value").intValue = 4;
+            apSo.FindProperty("_maximum").intValue = 6;
+            apSo.FindProperty("_hasMaximum").boolValue = true;
+            apSo.FindProperty("_tone").enumValueIndex = (int)UISemanticColor.Interactive;
+            apSo.ApplyModifiedProperties();
+            apChip.SetPrefix("AP");
+            apChip.SetValue(4, 6);
+            apChip.SetTone(UISemanticColor.Interactive);
+
+            var goldIcon = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/OverPower/UI/DesignSystem/Icons/Inline/icon_gold.png");
+            var goldChipObj = (GameObject)PrefabUtility.InstantiatePrefab(chipPrefab, chipsRow);
+            goldChipObj.name = "GoldChip";
+            var goldChip = goldChipObj.GetComponent<UIResourceChip>();
+            var goldSo = new SerializedObject(goldChip);
+            goldSo.FindProperty("_labelPrefix").stringValue = "";
+            goldSo.FindProperty("_value").intValue = 125;
+            goldSo.FindProperty("_hasMaximum").boolValue = false;
+            goldSo.FindProperty("_tone").enumValueIndex = (int)UISemanticColor.Gold;
+            goldSo.ApplyModifiedProperties();
+            goldChip.SetPrefix("");
+            goldChip.SetIcon(goldIcon);
+            goldChip.SetValue(125);
+            goldChip.SetTone(UISemanticColor.Gold);
+
+            // 3. Unit Stack Badge Row (x8 3/10)
+            var stackRow = Rect("StackRow", gameplayHud);
+            Height(stackRow, 60);
+            Horizontal(stackRow, 0, 0);
+            stackRow.GetComponent<HorizontalLayoutGroup>().spacing = UISpacing.Md;
+
+            var stackBadgeObj = (GameObject)PrefabUtility.InstantiatePrefab(unitStackBadgePrefab, stackRow);
+            stackBadgeObj.name = "UnitStackBadge";
+            var stackBadge = stackBadgeObj.GetComponent<UIUnitStackBadge>();
+            var stackSo = new SerializedObject(stackBadge);
+            stackSo.FindProperty("_displayedQuantity").intValue = 8;
+            stackSo.FindProperty("_currentMemberHp").intValue = 3;
+            stackSo.FindProperty("_hpPerMember").intValue = 10;
+            stackSo.ApplyModifiedProperties();
+            stackBadge.SetValues(8, 3, 10);
+
+            // 4. Gameplay Tooltip Sample
+            var potionBtn = ExampleButton(gameplayHud, UIButtonFamily.Secondary, "potion.inspect", "Inspect potion", "Examiner potion");
+
             Text(page, "components.footer", "Inspect the four edge markers • All text uses the EN / FR preview table",
                 "Inspectez les quatre repères de bord • Tous les textes utilisent la table EN / FR", TypographyStyle.Caption, 32, UISemanticColor.TextSecondary);
 
@@ -123,7 +213,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var tooltip = tooltipObject.GetComponent<UITooltip>();
             tooltip.BindCanvas((RectTransform)canvas.transform, canvas);
             PrefabUtility.RecordPrefabInstancePropertyModifications(tooltip);
-            var triggers = new List<UITooltipTrigger> { TooltipTrigger(inspect, tooltip) };
+            var triggers = new List<UITooltipTrigger> { TooltipTrigger(inspect, tooltip), TooltipTrigger(potionBtn, tooltip) };
             var edges = Rect("EdgeControls", page);
             edges.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
             Stretch(edges, -UISpacing.Page);

@@ -606,6 +606,7 @@ MonoBehaviour:
   _icon: {fileID: 1195938692011170914}
   _valueLabel: {fileID: 5389912511047930874}
   _maximumLabel: {fileID: 4997049197935002591}
+  _labelPrefix: 
   _value: 0
   _maximum: 0
   _hasMaximum: 0

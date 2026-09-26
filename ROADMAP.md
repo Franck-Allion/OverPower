@@ -474,15 +474,15 @@ If final artwork is not available, document replacement PNG requirements.
 
 ## 0.3.4 Common gameplay HUD primitives
 
-- [ ] Health display
-- [ ] Mana display
-- [ ] Gold display
-- [ ] Action points display
-- [ ] Unit stack badge
+- [x] Health display
+- [x] Mana display
+- [x] Gold display
+- [x] Action points display
+- [x] Unit stack badge
 - [ ] Card frame baseline
 - [ ] Phase/turn banner baseline
 - [ ] Standard valid/invalid target states
-- [ ] Tooltip visual style
+- [x] Tooltip visual style
 
 ### Acceptance gate
 

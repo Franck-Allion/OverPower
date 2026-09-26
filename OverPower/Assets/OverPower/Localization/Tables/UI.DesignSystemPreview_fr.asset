@@ -370,6 +370,23 @@ MonoBehaviour:
     m_Localized: "Renforc\xE9"
     m_Metadata:
       m_Items: []
+  - m_Id: 2170924515917824
+    m_Localized: 05  /  HUD DE JEU
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170924591415296
+    m_Localized: Orbes vitaux et jetons tactiques
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170924599803904
+    m_Localized: "Les orbes orn\xE9s repr\xE9sentent la sant\xE9 et le mana. Les
+      jetons affichent l'or et les PA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2170924729827328
+    m_Localized: Examiner potion
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
