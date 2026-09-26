@@ -8,6 +8,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Preview
     {
         [SerializeField] private GameObject _foundations;
         [SerializeField] private GameObject _components;
+        [SerializeField] private GameObject _cards;
         [SerializeField] private UIButton[] _buttonSamples;
         [SerializeField] private UIButton _componentFocus;
         [SerializeField] private UITooltip _tooltip;
@@ -24,14 +25,23 @@ namespace OverPower.Unity.Presentation.DesignSystem.Preview
         public void ShowFoundations()
         {
             _components.SetActive(false);
+            if (_cards != null) _cards.SetActive(false);
             _foundations.SetActive(true);
             if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(_buttonSamples[0].gameObject);
         }
         public void ShowComponents()
         {
             _foundations.SetActive(false);
+            if (_cards != null) _cards.SetActive(false);
             _components.SetActive(true);
             if (EventSystem.current != null) EventSystem.current.SetSelectedGameObject(_componentFocus.gameObject);
+        }
+        public void ShowCards()
+        {
+            _foundations.SetActive(false);
+            _components.SetActive(false);
+            if (_cards != null) _cards.SetActive(true);
+            if (EventSystem.current != null && _componentFocus != null) EventSystem.current.SetSelectedGameObject(_componentFocus.gameObject);
         }
         public void ToggleReveal() { if (_reveal.IsVisible) _reveal.Hide(); else _reveal.Show(); }
     }

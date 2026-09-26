@@ -383,6 +383,22 @@ MonoBehaviour:
     m_Localized: Inspect potion
     m_Metadata:
       m_Items: []
+  - m_Id: 2263691925585920
+    m_Localized: 06  /  GAMEPLAY PRESENTATION
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692139495424
+    m_Localized: Card frames
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692357599232
+    m_Localized: Phase banner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692441485312
+    m_Localized: Target states
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -10,6 +10,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 namespace OverPower.Tests.Unity
@@ -242,8 +243,9 @@ namespace OverPower.Tests.Unity
                     var local = tooltip.Bounds.InverseTransformPoint(corner);
                     Assert.That(local.x, Is.InRange(tooltip.Bounds.rect.xMin - 1, tooltip.Bounds.rect.xMax + 1));
                     Assert.That(local.y, Is.InRange(tooltip.Bounds.rect.yMin - 1, tooltip.Bounds.rect.yMax + 1));
-                }
             }
+        }
+
             var secondOwner = new object();
             tooltip.Show(secondOwner, "Other", "Content", null, Vector2.zero);
             tooltip.Hide(owner);
@@ -311,6 +313,68 @@ namespace OverPower.Tests.Unity
             yield return new WaitForSecondsRealtime(0.4f);
             Assert.That((EventSystem.current ?? system).currentSelectedGameObject, Is.EqualTo(originalFocus));
             yield return new ExitPlayMode();
+        }
+
+        [Test]
+        public void CardFrame_UnitAndSpellPresentation_UsesOptionalSlotsAndRichText()
+        {
+            var config = AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>("Assets/OverPower/Data/UI/UIDesignSystemConfig.asset");
+            var root = new GameObject("Card", typeof(CanvasGroup));
+            var card = root.AddComponent<UICardFrame>();
+            var descriptionObject = new GameObject("Description", typeof(TextMeshProUGUI), typeof(UIRichText)); descriptionObject.transform.SetParent(root.transform);
+            var stats = new GameObject("Stats"); stats.transform.SetParent(root.transform);
+            var artwork = new GameObject("Artwork", typeof(Image)).GetComponent<Image>(); artwork.transform.SetParent(root.transform);
+            var artworkPlaceholder = new GameObject("ArtworkPlaceholder"); artworkPlaceholder.transform.SetParent(root.transform);
+            var rarityMedallion = new GameObject("RarityMedallion"); rarityMedallion.transform.SetParent(root.transform);
+            var rarityGem = new GameObject("RarityGem", typeof(Image)).GetComponent<Image>(); rarityGem.transform.SetParent(rarityMedallion.transform);
+            var rarityLabel = Text(rarityMedallion.transform, "Rarity");
+            var stateOutline = new GameObject("StateOutline", typeof(Image)).GetComponent<Image>(); stateOutline.transform.SetParent(root.transform);
+            var title = Text(root.transform, "Title"); var type = Text(root.transform, "Type"); var cost = Text(root.transform, "Cost");
+            var attack = Text(stats.transform, "Attack"); var armor = Text(stats.transform, "Armor"); var health = Text(stats.transform, "Health");
+            var so = new SerializedObject(card);
+            so.FindProperty("_config").objectReferenceValue = config; so.FindProperty("_typeLabel").objectReferenceValue = type;
+            so.FindProperty("_costLabel").objectReferenceValue = cost; so.FindProperty("_titleLabel").objectReferenceValue = title;
+            so.FindProperty("_description").objectReferenceValue = descriptionObject.GetComponent<UIRichText>(); so.FindProperty("_stats").objectReferenceValue = stats;
+            so.FindProperty("_artwork").objectReferenceValue = artwork; so.FindProperty("_artworkPlaceholder").objectReferenceValue = artworkPlaceholder;
+            so.FindProperty("_rarityMedallion").objectReferenceValue = rarityMedallion; so.FindProperty("_rarityGem").objectReferenceValue = rarityGem;
+            so.FindProperty("_rarityLabel").objectReferenceValue = rarityLabel; so.FindProperty("_stateOutline").objectReferenceValue = stateOutline;
+            so.FindProperty("_attackLabel").objectReferenceValue = attack; so.FindProperty("_armorLabel").objectReferenceValue = armor;
+            so.FindProperty("_healthLabel").objectReferenceValue = health; so.FindProperty("_group").objectReferenceValue = root.GetComponent<CanvasGroup>(); so.ApplyModifiedPropertiesWithoutUndo();
+            card.SetPresentation(new CardPresentationData { Title = "Guardian", Description = "Gain {mana}.", Type = CardVisualType.Unit, Rarity = CardRarityVisual.Rare, Attack = 8, Armor = 4, Health = 10 });
+            Assert.That(card.Type, Is.EqualTo(CardVisualType.Unit)); Assert.That(stats.activeSelf, Is.True); Assert.That(cost.gameObject.activeSelf, Is.False);
+            Assert.That(title.text, Is.EqualTo("Guardian")); Assert.That(rarityLabel.text, Is.EqualTo("RARE")); Assert.That(artworkPlaceholder.activeSelf, Is.True);
+            Assert.That(descriptionObject.GetComponent<TMP_Text>().text, Does.Contain("sprite name=\"mana\""));
+            var artworkSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f));
+            card.SetPresentation(new CardPresentationData { Title = "Arcane Bolt", Description = "Deals 12 {attack}.", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Epic, Cost = 3, Artwork = artworkSprite });
+            Assert.That(card.Type, Is.EqualTo(CardVisualType.Spell)); Assert.That(stats.activeSelf, Is.False); Assert.That(cost.text, Is.EqualTo("3"));
+            Assert.That(card.HasArtwork, Is.True); Assert.That(artworkPlaceholder.activeSelf, Is.False); Assert.That(rarityLabel.text, Is.EqualTo("EPIC"));
+            card.SetState(CardPresentationState.Selected); Assert.That(stateOutline.gameObject.activeSelf, Is.True);
+            card.SetState(CardPresentationState.Disabled); Assert.That(card.State, Is.EqualTo(CardPresentationState.Disabled));
+            Object.DestroyImmediate(root);
+        }
+
+        [Test]
+        public void PhaseBannerAndTargetVisuals_ExposePresentationOnlyStates()
+        {
+            var config = AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>("Assets/OverPower/Data/UI/UIDesignSystemConfig.asset");
+            var bannerObject = new GameObject("Banner", typeof(CanvasGroup)); var banner = bannerObject.AddComponent<UIPhaseBanner>();
+            var label = Text(bannerObject.transform, "Label"); var accent = new GameObject("Accent", typeof(UnityEngine.UI.Image)).GetComponent<UnityEngine.UI.Image>(); accent.transform.SetParent(bannerObject.transform);
+            var bannerSo = new SerializedObject(banner); bannerSo.FindProperty("_config").objectReferenceValue = config; bannerSo.FindProperty("_group").objectReferenceValue = bannerObject.GetComponent<CanvasGroup>(); bannerSo.FindProperty("_label").objectReferenceValue = label; bannerSo.FindProperty("_accent").objectReferenceValue = accent; bannerSo.ApplyModifiedPropertiesWithoutUndo();
+            banner.Show("YOUR TURN", UISemanticColor.Gold); banner.Hide(); banner.Show("ENEMY TURN", UISemanticColor.Danger);
+            Assert.That(banner.IsVisible, Is.True); Assert.That(label.text, Is.EqualTo("ENEMY TURN")); Assert.That(accent.color, Is.EqualTo(config.GetColor(UISemanticColor.Danger)));
+            var targetObject = new GameObject("Target"); var target = targetObject.AddComponent<UITargetStateVisual>();
+            var outline = targetObject.AddComponent<UnityEngine.UI.Image>(); var corners = new GameObject("Corners"); corners.transform.SetParent(targetObject.transform); var blocked = new GameObject("Blocked"); blocked.transform.SetParent(targetObject.transform); var glow = new GameObject("Glow", typeof(UnityEngine.UI.Image)).GetComponent<UnityEngine.UI.Image>(); glow.transform.SetParent(targetObject.transform);
+            var targetSo = new SerializedObject(target); targetSo.FindProperty("_config").objectReferenceValue = config; targetSo.FindProperty("_outline").objectReferenceValue = outline; targetSo.FindProperty("_cornerCue").objectReferenceValue = corners; targetSo.FindProperty("_blockedCue").objectReferenceValue = blocked; targetSo.FindProperty("_selectedGlow").objectReferenceValue = glow; targetSo.ApplyModifiedPropertiesWithoutUndo();
+            target.SetState(TargetVisualState.Valid); Assert.That(corners.activeSelf, Is.True); Assert.That(blocked.activeSelf, Is.False);
+            target.SetState(TargetVisualState.Invalid); Assert.That(blocked.activeSelf, Is.True); Assert.That(outline.color, Is.EqualTo(config.GetColor(UISemanticColor.Danger)));
+            target.SetState(TargetVisualState.Selected); Assert.That(glow.gameObject.activeSelf, Is.True);
+            target.SetState(TargetVisualState.None); Assert.That(corners.activeSelf, Is.False); Assert.That(blocked.activeSelf, Is.False);
+            Object.DestroyImmediate(bannerObject); Object.DestroyImmediate(targetObject);
+        }
+
+        private static TMP_Text Text(Transform parent, string name)
+        {
+            var text = new GameObject(name, typeof(TextMeshProUGUI)).GetComponent<TMP_Text>(); text.transform.SetParent(parent); return text;
         }
 
         [UnityTearDown]

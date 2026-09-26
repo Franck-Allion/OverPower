@@ -214,6 +214,115 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             return SaveComponent(root);
         }
 
+        private static GameObject CreateCardFrame()
+        {
+            var root = Rect("CardFrame", null);
+            root.gameObject.SetActive(false);
+            root.sizeDelta = new Vector2(380, 590);
+            PanelSurface(root, UIPanelStyle.Elevated);
+            var group = root.gameObject.AddComponent<CanvasGroup>();
+            var stateOutline = Image("StateOutline", root, Color.clear); Stretch(stateOutline.rectTransform, -7); stateOutline.raycastTarget = false;
+
+            // Header: cost is a primary visual anchor rather than secondary metadata.
+            var header = Rect("Header", root); SetAbsolute(header, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), new Vector2(0, 0), new Vector2(-28, 70));
+            var headerRule = Image("HeaderRule", header, _config.GetColor(UISemanticColor.FloatingBorder));
+            SetAbsolute(headerRule.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(0.5f, 0), new Vector2(0, 2), new Vector2(-16, 2));
+            var costBadge = Image("CostBadge", header, WithAlpha(_config.GetColor(UISemanticColor.Gold), 0.20f));
+            SetAbsolute(costBadge.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(12, 0), new Vector2(58, 48));
+            var cost = PlainText("Cost", costBadge.transform, TypographyStyle.Stat, 48); Stretch(cost.rectTransform, 0); cost.alignment = TextAlignmentOptions.Center;
+            var familyIcon = Image("FamilyIcon", header, _config.GetColor(UISemanticColor.Interactive));
+            SetAbsolute(familyIcon.rectTransform, new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(-12, 0), new Vector2(24, 24));
+            var type = PlainText("Type", header, TypographyStyle.Caption, 32);
+            SetAbsolute(type.rectTransform, new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(1, .5f), new Vector2(-44, 0), new Vector2(116, 32)); type.alignment = TextAlignmentOptions.MidlineRight;
+
+            // Full-width artwork window. The fallback remains deliberate when production art is absent.
+            var artFrame = Image("ArtworkFrame", root, _config.GetColor(UISemanticColor.FloatingBorder));
+            SetAbsolute(artFrame.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -82), new Vector2(-28, 230));
+            var artworkBackground = Image("ArtworkBackdrop", artFrame.transform, WithAlpha(_config.GetColor(UISemanticColor.Background), .94f)); Stretch(artworkBackground.rectTransform, 3);
+            var artwork = Image("Artwork", artworkBackground.transform, Color.white); Stretch(artwork.rectTransform, 5); artwork.preserveAspect = false; artwork.raycastTarget = false;
+            var placeholder = Rect("ArtworkPlaceholder", artworkBackground.transform); Stretch(placeholder, 5);
+            var placeholderSurface = Image("PlaceholderSurface", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Secondary), .22f)); Stretch(placeholderSurface.rectTransform, 0);
+            var placeholderGlow = Image("PlaceholderGlow", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Mana), .24f)); SetAbsolute(placeholderGlow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(0, 10), new Vector2(118, 118));
+            var placeholderLabel = PlainText("PlaceholderLabel", placeholder, TypographyStyle.Caption, 28); Stretch(placeholderLabel.rectTransform, 0); placeholderLabel.alignment = TextAlignmentOptions.Center; placeholderLabel.text = "ARTWORK";
+            var artCaption = PlainText("ArtCaption", artFrame.transform, TypographyStyle.Caption, 22); SetAbsolute(artCaption.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 9), new Vector2(-20, 22)); artCaption.alignment = TextAlignmentOptions.BottomRight; artCaption.text = "OVERPOWER";
+
+            // Central rarity medallion creates a physical transition between art and rules.
+            var medallion = Rect("RarityMedallion", root); SetAbsolute(medallion, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -312), new Vector2(118, 54));
+            var medallionPlate = Image("Plate", medallion, WithAlpha(_config.GetColor(UISemanticColor.Background), .98f)); Stretch(medallionPlate.rectTransform, 0);
+            var rarityGem = Image("Gem", medallion, _config.GetColor(UISemanticColor.TextSecondary)); SetAbsolute(rarityGem.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(15, 0), new Vector2(26, 26));
+            var rarity = PlainText("Rarity", medallion, TypographyStyle.Caption, 28); SetAbsolute(rarity.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(10, 0), new Vector2(-42, 28)); rarity.alignment = TextAlignmentOptions.MidlineRight;
+
+            var title = PlainText("Title", root, TypographyStyle.Heading, 44); SetAbsolute(title.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -345), new Vector2(-42, 44)); title.alignment = TextAlignmentOptions.Center;
+            var bodyRule = Image("BodyRule", root, WithAlpha(_config.GetColor(UISemanticColor.FloatingBorder), .7f)); SetAbsolute(bodyRule.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -392), new Vector2(-56, 1));
+            var description = PlainText("Description", root, TypographyStyle.BodySmall, 112); SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -457), new Vector2(-52, 112)); description.alignment = TextAlignmentOptions.TopLeft; description.textWrappingMode = TextWrappingModes.Normal;
+            var rich = description.gameObject.AddComponent<UIRichText>(); SetReference(rich, "_config", _config);
+
+            var stats = Rect("Stats", root); SetAbsolute(stats, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 30), new Vector2(-34, 64));
+            var statsSurface = Image("StatsSurface", stats, WithAlpha(_config.GetColor(UISemanticColor.Background), .60f)); Stretch(statsSurface.rectTransform, 0);
+            var attack = CreateStatSlot("Attack", "ATK", stats, 0f, .333f);
+            var armor = CreateStatSlot("Armor", "ARM", stats, .333f, .667f);
+            var health = CreateStatSlot("Health", "HP", stats, .667f, 1f);
+            var card = root.gameObject.AddComponent<UICardFrame>();
+            SetReference(card, "_config", _config);
+            SetReference(card, "_surface", root.Find("Surface").GetComponent<Image>());
+            SetReference(card, "_accent", root.Find("TopAccentBar").GetComponent<Image>());
+            SetReference(card, "_artwork", artwork);
+            SetReference(card, "_artworkPlaceholder", placeholder.gameObject); SetReference(card, "_artworkFrame", artFrame);
+            SetReference(card, "_familyIcon", familyIcon); SetReference(card, "_rarityMedallion", medallion.gameObject);
+            SetReference(card, "_rarityGem", rarityGem); SetReference(card, "_rarityLabel", rarity);
+            SetReference(card, "_typeLabel", type); SetReference(card, "_costLabel", cost);
+            SetReference(card, "_titleLabel", title); SetReference(card, "_description", rich);
+            SetReference(card, "_stats", stats.gameObject); SetReference(card, "_attackLabel", attack);
+            SetReference(card, "_armorLabel", armor); SetReference(card, "_healthLabel", health); SetReference(card, "_group", group); SetReference(card, "_stateOutline", stateOutline);
+            return SaveComponent(root);
+        }
+
+        private static void SetAbsolute(RectTransform rect, Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot, Vector2 position, Vector2 size)
+        {
+            rect.anchorMin = anchorMin; rect.anchorMax = anchorMax; rect.pivot = pivot;
+            rect.anchoredPosition = position; rect.sizeDelta = size;
+            var layout = rect.GetComponent<LayoutElement>(); if (layout != null) layout.ignoreLayout = true;
+        }
+
+        private static Color WithAlpha(Color color, float alpha) { color.a = alpha; return color; }
+
+        private static TMP_Text CreateStatSlot(string name, string label, Transform parent, float minX, float maxX)
+        {
+            var value = PlainText(name, parent, TypographyStyle.Stat, 38);
+            SetAbsolute(value.rectTransform, new Vector2(minX, 0), new Vector2(maxX, 1), new Vector2(.5f, .5f), new Vector2(0, -7), new Vector2(0, -20));
+            value.alignment = TextAlignmentOptions.Bottom;
+            var caption = PlainText(name + "Label", parent, TypographyStyle.Caption, 18);
+            SetAbsolute(caption.rectTransform, new Vector2(minX, 1), new Vector2(maxX, 1), new Vector2(.5f, 1), new Vector2(0, -6), new Vector2(0, 16));
+            caption.alignment = TextAlignmentOptions.Top; caption.text = label;
+            return value;
+        }
+
+        private static GameObject CreatePhaseBanner()
+        {
+            var root = Rect("PhaseBanner", null); root.gameObject.SetActive(false); root.sizeDelta = new Vector2(480, 86);
+            PanelSurface(root, UIPanelStyle.Elevated);
+            var group = root.gameObject.AddComponent<CanvasGroup>();
+            var label = PlainText("Label", root, TypographyStyle.Heading, 64); label.alignment = TextAlignmentOptions.Center;
+            var banner = root.gameObject.AddComponent<UIPhaseBanner>();
+            SetReference(banner, "_config", _config); SetReference(banner, "_group", group); SetReference(banner, "_visual", root);
+            SetReference(banner, "_label", label); SetReference(banner, "_accent", root.Find("TopAccentBar").GetComponent<Image>());
+            return SaveComponent(root);
+        }
+
+        private static GameObject CreateTargetStateVisual()
+        {
+            var root = Rect("TargetStateVisual", null); root.gameObject.SetActive(false); root.sizeDelta = new Vector2(150, 100);
+            var outline = root.gameObject.AddComponent<Image>(); outline.color = Color.clear; outline.raycastTarget = false;
+            var corners = Image("CornerCue", root, Color.white); Stretch(corners.rectTransform, 4);
+            var blocked = PlainText("BlockedCue", root, TypographyStyle.Heading, 80); blocked.text = "×"; blocked.alignment = TextAlignmentOptions.Center;
+            var glow = Image("SelectedGlow", root, Color.white); Stretch(glow.rectTransform, 10); glow.raycastTarget = false;
+            var state = root.gameObject.AddComponent<UITargetStateVisual>();
+            SetReference(state, "_config", _config); SetReference(state, "_outline", outline); SetReference(state, "_cornerCue", corners.gameObject);
+            SetReference(state, "_blockedCue", blocked.gameObject); SetReference(state, "_selectedGlow", glow);
+            state.SetState(TargetVisualState.None);
+            return SaveComponent(root);
+        }
+
         private static GameObject CreateConfirmDialog(GameObject panelPrefab)
         {
             var root = Rect("ConfirmDialog", null);

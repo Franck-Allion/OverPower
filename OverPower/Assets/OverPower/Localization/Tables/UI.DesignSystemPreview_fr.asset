@@ -387,6 +387,22 @@ MonoBehaviour:
     m_Localized: Examiner potion
     m_Metadata:
       m_Items: []
+  - m_Id: 2263691925585920
+    m_Localized: "06  /  PR\xC3\u2030SENTATION DE JEU"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692139495424
+    m_Localized: Cadres de cartes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692357599232
+    m_Localized: "Banni\xC3\xA8re de phase"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692441485312
+    m_Localized: "\xC3\u2030tats de cible"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

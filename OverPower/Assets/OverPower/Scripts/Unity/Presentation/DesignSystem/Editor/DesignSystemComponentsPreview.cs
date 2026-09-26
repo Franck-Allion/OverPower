@@ -22,6 +22,9 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var healthOrbPrefab = CreateVitalResourceOrb("HealthResourceOrb", UISemanticColor.Health);
             var manaOrbPrefab = CreateVitalResourceOrb("ManaResourceOrb", UISemanticColor.Mana);
             var unitStackBadgePrefab = CreateUnitStackBadge();
+            var cardFramePrefab = CreateCardFrame();
+            var phaseBannerPrefab = CreatePhaseBanner();
+            var targetStatePrefab = CreateTargetStateVisual();
 
             var background = Rect("BackgroundContent", canvas.transform);
             Stretch(background, 0);
@@ -31,6 +34,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             Stretch(page, UISpacing.Page);
             Vertical(page, 0);
             page.GetComponent<VerticalLayoutGroup>().spacing = UISpacing.Xl;
+            var cardsPage = BuildCardsPreview(background, cardFramePrefab);
             Text(page, "components.eyebrow", "OVERPOWER  /  REUSABLE COMPONENTS", "OVERPOWER  /  COMPOSANTS RÉUTILISABLES", TypographyStyle.Caption, 26, UISemanticColor.Primary);
             Text(page, "components.title", "The component library", "La bibliothèque visuelle", TypographyStyle.Display, 82);
             Text(page, "components.intro", "Small primitives. Shared language. Ready for real screens.",
@@ -206,6 +210,22 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             // 4. Gameplay Tooltip Sample
             var potionBtn = ExampleButton(gameplayHud, UIButtonFamily.Secondary, "potion.inspect", "Inspect potion", "Examiner potion");
 
+            // 06 / CARD, PHASE & TARGET PRESENTATION PRIMITIVES
+            var gameplayPresentation = Column("GameplayPresentation", columns);
+            Text(gameplayPresentation, "gameplay.presentation", "06  /  GAMEPLAY PRESENTATION", "06  /  PRÃ‰SENTATION DE JEU", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            Text(gameplayPresentation, "phase.heading", "Phase banner", "BanniÃ¨re de phase", TypographyStyle.Heading, 36);
+            var phaseRow = Rect("PhaseSamples", gameplayPresentation); Height(phaseRow, 82); Horizontal(phaseRow, 0, 0);
+            var yourTurn = ((GameObject)PrefabUtility.InstantiatePrefab(phaseBannerPrefab, phaseRow)).GetComponent<UIPhaseBanner>(); yourTurn.Show("YOUR TURN", UISemanticColor.Gold);
+            var enemyTurn = ((GameObject)PrefabUtility.InstantiatePrefab(phaseBannerPrefab, phaseRow)).GetComponent<UIPhaseBanner>(); enemyTurn.Show("ENEMY TURN", UISemanticColor.Danger);
+            Text(gameplayPresentation, "target.heading", "Target states", "Ã‰tats de cible", TypographyStyle.Heading, 36);
+            var targetRow = Rect("TargetSamples", gameplayPresentation); Height(targetRow, 74); Horizontal(targetRow, 0, 0);
+            foreach (TargetVisualState visualState in new[] { TargetVisualState.None, TargetVisualState.Valid, TargetVisualState.Invalid, TargetVisualState.Selected })
+            {
+                var sample = ((GameObject)PrefabUtility.InstantiatePrefab(targetStatePrefab, targetRow)).GetComponent<UITargetStateVisual>();
+                sample.name = visualState.ToString(); sample.SetState(visualState);
+                var caption = PlainText("Caption", sample.transform, TypographyStyle.Caption, 20); caption.text = visualState.ToString(); caption.alignment = TextAlignmentOptions.Bottom;
+            }
+
             Text(page, "components.footer", "Inspect the four edge markers • All text uses the EN / FR preview table",
                 "Inspectez les quatre repères de bord • Tous les textes utilisent la table EN / FR", TypographyStyle.Caption, 32, UISemanticColor.TextSecondary);
 
@@ -246,6 +266,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var preview = canvas.gameObject.AddComponent<DesignSystemPreviewView>();
             SetReference(preview, "_foundations", foundations.gameObject);
             SetReference(preview, "_components", page.gameObject);
+            SetReference(preview, "_cards", cardsPage.gameObject);
             SetReference(preview, "_componentFocus", open);
             SetReference(preview, "_tooltip", tooltip);
             SetReference(preview, "_dialog", dialog);
@@ -263,7 +284,47 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var secondTab = ExampleButton(tabs, UIButtonFamily.Secondary, "tabs.components", "Components", "Composants");
             UnityEventTools.AddPersistentListener(firstTab.onClick, preview.ShowFoundations);
             UnityEventTools.AddPersistentListener(secondTab.onClick, preview.ShowComponents);
+            var cardsTab = ExampleButton(tabs, UIButtonFamily.Secondary, "tabs.cards", "Cards", "Cartes");
+            UnityEventTools.AddPersistentListener(cardsTab.onClick, preview.ShowCards);
             page.gameObject.SetActive(false);
+            cardsPage.gameObject.SetActive(false);
+        }
+
+        private static RectTransform BuildCardsPreview(Transform background, GameObject cardFramePrefab)
+        {
+            var page = Rect("Cards", background);
+            Stretch(page, UISpacing.Page);
+            Vertical(page, 0);
+            page.GetComponent<VerticalLayoutGroup>().spacing = UISpacing.Md;
+            Text(page, "cards.eyebrow", "06  /  GAMEPLAY PRESENTATION", "06  /  PRESENTATION DE JEU", TypographyStyle.Caption, 28, UISemanticColor.Primary);
+            Text(page, "cards.title", "The card foundation", "La fondation des cartes", TypographyStyle.Display, 76);
+            Text(page, "cards.intro", "Artwork, resource cost, rarity and rules have one readable, premium hierarchy.", "Illustration, cout, rarete et regles partagent une hierarchie lisible et premium.", TypographyStyle.Body, 36, UISemanticColor.TextSecondary);
+            var display = Rect("CardShowcase", page);
+            display.gameObject.AddComponent<LayoutElement>().flexibleHeight = 1;
+            Horizontal(display, 0, 0);
+            display.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            display.GetComponent<HorizontalLayoutGroup>().spacing = UISpacing.Xl;
+
+            var guardian = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
+            guardian.name = "GuardianCard";
+            FixedSize((RectTransform)guardian.transform, 380, 590);
+            guardian.SetPresentation(new CardPresentationData
+            {
+                Title = "Guardian", Type = CardVisualType.Unit, Rarity = CardRarityVisual.Rare, Cost = 2,
+                Description = "A steadfast defender. The first ally to take damage gains 4 {health}.",
+                Attack = 8, Armor = 4, Health = 10
+            });
+            guardian.SetState(CardPresentationState.Highlighted);
+
+            var arcaneBolt = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
+            arcaneBolt.name = "ArcaneBoltCard";
+            FixedSize((RectTransform)arcaneBolt.transform, 380, 590);
+            arcaneBolt.SetPresentation(new CardPresentationData
+            {
+                Title = "Arcane Bolt", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Epic, Cost = 3,
+                Description = "Deal 12 {attack} to an enemy. Restore 1 {mana} after it resolves."
+            });
+            return page;
         }
 
         private static void BadgeExample(GameObject prefab, Transform parent, UISemanticColor tone, string key, string en, string fr)

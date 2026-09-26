@@ -54,6 +54,9 @@ The following components represent the authoritative gameplay HUD primitives. Wh
 | **Action Points (AP)** | `ResourceChip.prefab` | `UIResourceChip` | `OverPower.Unity.Presentation.DesignSystem` | `SetPrefix("AP")`<br>`SetValue(current, max)`<br>Displays tactical `AP 4 / 6` with `UISemanticColor.Interactive`. |
 | **Unit Stack Badge** | `UnitStackBadge.prefab` | `UIUnitStackBadge` | `OverPower.Unity.Presentation.DesignSystem` | `SetValues(quantity, currentMemberHp, hpPerMember)`<br>Displays primary quantity `x8` and secondary member HP `3 / 10` with mini health fill bar. |
 | **Scene Transition** | Persistent under `GameBootstrap` | `UISceneTransitionOverlay` | `OverPower.Unity.Presentation.SceneTransition` | Controlled via `ISceneNavigator.LoadSceneAsync(sceneId)`. Fullscreen `#0D141F` fade, input blocking, and delayed loading indicator. |
+| **Card frame** | `CardFrame.prefab` | `UICardFrame` | `OverPower.Unity.Presentation.DesignSystem` | `SetPresentation(CardPresentationData)` and `SetState(...)`. Presentation data only; Unit and Spell share one frame, with optional cost/art/stats. |
+| **Phase banner** | `PhaseBanner.prefab` | `UIPhaseBanner` | `OverPower.Unity.Presentation.DesignSystem` | `Show(localizedLabel, tone)` / `Hide()`. Short phase message only; it owns no turn rules. |
+| **Target state** | `TargetStateVisual.prefab` | `UITargetStateVisual` | `OverPower.Unity.Presentation.DesignSystem` | `SetState(None/Valid/Invalid/Selected)`. It communicates state with outline and shape cues; it owns no eligibility rules. |
 
 ### Technical Rules for HUD Primitives
 1.  **No Decoupling Violations:** HUD components receive scalar presentation values only. They must not depend on Domain models (`UnitStack`, `HeroState`, `BattleState`).
@@ -112,6 +115,20 @@ Unknown tokens are left completely untouched and unchanged.
 
 ## Cards
 Stable information architecture: artwork, name, cost, type, description, stats where relevant, abilities/effects, rarity/state if introduced. Theme can evolve while hierarchy stays consistent.
+
+`CardPresentationData` belongs to Unity Presentation, never Domain. It accepts only
+resolved display data, so current `RuntimeCard`, `UnitDefinition`, and
+`SpellDefinition` contracts remain unchanged. Its optional fields include cost,
+rarity, artwork and unit stats as resolved display values; it does not imply a Unit
+cost, AP cost, rarity, level, or element in gameplay. `UICardFrame` keeps a shared
+dark-and-gold frame for Unit and Spell, with a type accent, primary header cost,
+artwork window (and intentional safe placeholder), centered rarity medallion,
+rules body and unit-only bottom stat rail. Cards are inspected on the dedicated
+Cards tab in the Design System preview, rather than a compressed component column.
+Card descriptions use existing `{attack}`,
+`{health}`, `{mana}`, and `{gold}` semantic inline-icon tokens. Current placeholder
+art is intentionally absent; future card art should be a transparent or full-bleed
+portrait asset at 2:1 landscape (recommended 1024×512 px), safe for centre-crop.
 
 ## Interaction states
 Where relevant: Default, Hover, Pressed, Selected, Disabled, Locked, Invalid, Affordable, Unaffordable. Avoid critical color-only communication.

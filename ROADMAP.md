@@ -479,9 +479,9 @@ If final artwork is not available, document replacement PNG requirements.
 - [x] Gold display
 - [x] Action points display
 - [x] Unit stack badge
-- [ ] Card frame baseline
-- [ ] Phase/turn banner baseline
-- [ ] Standard valid/invalid target states
+- [~] Card frame baseline
+- [~] Phase/turn banner baseline
+- [~] Standard valid/invalid target states
 - [x] Tooltip visual style
 
 ### Acceptance gate

@@ -371,6 +371,22 @@ MonoBehaviour:
     m_Key: potion.inspect
     m_Metadata:
       m_Items: []
+  - m_Id: 2263691925585920
+    m_Key: gameplay.presentation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692139495424
+    m_Key: card.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692357599232
+    m_Key: phase.heading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2263692441485312
+    m_Key: target.heading
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
