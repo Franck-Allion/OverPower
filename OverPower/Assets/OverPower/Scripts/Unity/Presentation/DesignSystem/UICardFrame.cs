@@ -165,13 +165,13 @@ namespace OverPower.Unity.Presentation.DesignSystem
             if (_costLabel != null) { _costLabel.fontSize = 28; _costLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_rarityLabel, TypographyStyle.Caption, UISemanticColor.TextPrimary);
             Apply(_attackLabel, TypographyStyle.Stat, UISemanticColor.Danger);
-            if (_attackLabel != null) { _attackLabel.fontSize = 34; _attackLabel.overflowMode = TextOverflowModes.Overflow; }
+            if (_attackLabel != null) { _attackLabel.fontSize = 36; _attackLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_healthLabel, TypographyStyle.Stat, UISemanticColor.Health);
-            if (_healthLabel != null) { _healthLabel.fontSize = 34; _healthLabel.overflowMode = TextOverflowModes.Overflow; }
+            if (_healthLabel != null) { _healthLabel.fontSize = 36; _healthLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_armorLabel, TypographyStyle.Stat, UISemanticColor.Armor);
             if (_armorLabel != null) { _armorLabel.fontSize = 22; _armorLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_unitCountLabel, TypographyStyle.Stat, UISemanticColor.Gold);
-            if (_unitCountLabel != null) { _unitCountLabel.fontSize = 22; _unitCountLabel.overflowMode = TextOverflowModes.Overflow; _unitCountLabel.color = new Color32(245, 228, 190, 255); }
+            if (_unitCountLabel != null) { _unitCountLabel.fontSize = 22; _unitCountLabel.overflowMode = TextOverflowModes.Overflow; _unitCountLabel.color = new Color32(248, 232, 196, 255); }
         }
 
         private void ApplyState()
