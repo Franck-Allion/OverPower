@@ -341,18 +341,14 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
             // Integrated fantasy stat footer
             var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 6), new Vector2(382, 84));
-            var footerSurface = Image("FooterSurface", stats, new Color(.04f, .025f, .015f, .28f)); Stretch(footerSurface.rectTransform, 0);
-            var plinthShadow = footerSurface.gameObject.AddComponent<Shadow>(); plinthShadow.effectColor = new Color(0, 0, 0, .35f); plinthShadow.effectDistance = new Vector2(0, -2);
-            var plinthOutline = footerSurface.gameObject.AddComponent<Outline>(); plinthOutline.effectColor = new Color(.58f, .44f, .26f, .28f); plinthOutline.effectDistance = new Vector2(1, -1);
-            var footerDivider = Image("FooterDivider", stats, new Color(0.72f, 0.55f, 0.32f, 0.45f));
+            var footerSurface = Image("FooterSurface", stats, new Color(.04f, .025f, .015f, .14f)); Stretch(footerSurface.rectTransform, 0);
+            var footerDivider = Image("FooterDivider", stats, new Color(0.68f, 0.52f, 0.30f, 0.40f));
             SetAbsolute(footerDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-16, 1));
-            var centerSpine = Image("CenterCrest", stats, new Color(.10f, .075f, .045f, .26f)); centerSpine.sprite = placeholderGradient; SetAbsolute(centerSpine.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, 0), new Vector2(76, -6));
-            var leftDivider = Image("LeftDivider", stats, new Color(0.60f, 0.48f, 0.30f, 0.20f)); SetAbsolute(leftDivider.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(-54, -3), new Vector2(1, -22));
-            var rightDivider = Image("RightDivider", stats, new Color(0.60f, 0.48f, 0.30f, 0.20f)); SetAbsolute(rightDivider.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(54, -3), new Vector2(1, -22));
+            var centerSpine = Image("CenterCrest", stats, new Color(.10f, .075f, .045f, .12f)); centerSpine.sprite = placeholderGradient; SetAbsolute(centerSpine.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, 0), new Vector2(64, -6));
 
-            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-132, 42), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
-            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(132, 42), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
-            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 52), roundSprite, out var unitCountSlot);
+            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-130, 42), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
+            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(130, 42), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
+            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 50), roundSprite, out var unitCountSlot);
             var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 18), armorIcon, out var armorSlot, out var armorCaption);
             TMP_Text unitCountCaption = null;
 
@@ -414,20 +410,20 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             UISemanticColor tone, out GameObject slot, out TMP_Text caption)
         {
             var root = Rect(name + "Slot", parent); slot = root.gameObject;
-            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(106, 64));
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(108, 64));
             var icon = Image("Icon", root, _config.GetColor(tone)); icon.sprite = iconSprite; icon.preserveAspect = true;
-            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(12, 6), new Vector2(26, 30));
+            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 6), new Vector2(26, 30));
             var iconShadow = icon.gameObject.AddComponent<Shadow>(); iconShadow.effectColor = new Color(0, 0, 0, 0.45f); iconShadow.effectDistance = new Vector2(0, -1);
-            var value = PlainText(name, root, TypographyStyle.Stat, 36, addTypography: false);
-            value.fontSize = 36;
+            var value = PlainText(name, root, TypographyStyle.Stat, 38, addTypography: false);
+            value.fontSize = 38;
             value.overflowMode = TextOverflowModes.Overflow;
-            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(40, 6), new Vector2(58, 42));
+            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(40, 6), new Vector2(60, 42));
             value.alignment = TextAlignmentOptions.Center;
             var valShadow = value.gameObject.AddComponent<Shadow>(); valShadow.effectColor = new Color(0, 0, 0, 0.45f); valShadow.effectDistance = new Vector2(0, -1);
             caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 10, addTypography: false);
             caption.overflowMode = TextOverflowModes.Overflow;
             SetAbsolute(caption.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 5), new Vector2(0, 12));
-            caption.alignment = TextAlignmentOptions.Center; caption.color = new Color32(175, 155, 128, 220);
+            caption.alignment = TextAlignmentOptions.Center; caption.color = new Color32(165, 145, 120, 180);
             caption.enableAutoSizing = true; caption.fontSizeMin = 8; caption.fontSizeMax = 11;
             return value;
         }
@@ -436,19 +432,17 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             out GameObject slot, out TMP_Text caption)
         {
             var root = Rect(name + "Slot", parent); slot = root.gameObject;
-            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(78, 26));
-            var plate = Image("Plate", root, new Color(.07f, .08f, .09f, .35f)); Stretch(plate.rectTransform, 0);
-            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = new Color(.55f, .62f, .68f, .30f); outline.effectDistance = new Vector2(1, -1);
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(56, 22));
             var icon = Image("Icon", root, WithAlpha(_config.GetColor(UISemanticColor.Armor), .95f)); icon.sprite = iconSprite; icon.preserveAspect = true;
-            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(16, 16));
-            var value = PlainText(name, root, TypographyStyle.Stat, 22, addTypography: false);
-            value.fontSize = 22;
+            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(4, 0), new Vector2(14, 15));
+            var iconShadow = icon.gameObject.AddComponent<Shadow>(); iconShadow.effectColor = new Color(0, 0, 0, 0.40f); iconShadow.effectDistance = new Vector2(0, -1);
+            var value = PlainText(name, root, TypographyStyle.Stat, 20, addTypography: false);
+            value.fontSize = 20;
             value.overflowMode = TextOverflowModes.Overflow;
-            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(28, 0), new Vector2(44, 24));
+            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(22, 0), new Vector2(30, 22));
             value.alignment = TextAlignmentOptions.Center;
-            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 9, addTypography: false);
-            caption.gameObject.SetActive(false);
-            caption.color = Color.clear;
+            var valShadow = value.gameObject.AddComponent<Shadow>(); valShadow.effectColor = new Color(0, 0, 0, 0.40f); valShadow.effectDistance = new Vector2(0, -1);
+            caption = null;
             return value;
         }
 
@@ -458,7 +452,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(38, 38));
             var plate = Image("StackBadge", root, new Color(.07f, .05f, .02f, .96f)); plate.sprite = roundSprite; Stretch(plate.rectTransform, 0);
             var shadow = plate.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .65f); shadow.effectDistance = new Vector2(0, -2);
-            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .88f); outline.effectDistance = new Vector2(1, -1);
+            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .85f); outline.effectDistance = new Vector2(1, -1);
             var innerBevel = Image("InnerBevel", root, new Color(0.92f, 0.78f, 0.45f, 0.22f)); innerBevel.sprite = roundSprite; Stretch(innerBevel.rectTransform, 2); innerBevel.raycastTarget = false;
             var value = PlainText("UnitCount", root, TypographyStyle.Stat, 22, addTypography: false);
             value.fontSize = 22;
