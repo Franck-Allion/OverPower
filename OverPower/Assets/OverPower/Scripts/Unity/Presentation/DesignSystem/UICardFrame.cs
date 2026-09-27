@@ -151,7 +151,15 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             if (_config == null) return;
             Apply(_titleLabel, TypographyStyle.Title, UISemanticColor.TextPrimary);
-            if (_titleLabel != null) { _titleLabel.enableAutoSizing = true; _titleLabel.fontSizeMin = 18; _titleLabel.fontSizeMax = 25; _titleLabel.characterSpacing = 3.5f; }
+            if (_titleLabel != null)
+            {
+                _titleLabel.enableWordWrapping = false;
+                _titleLabel.overflowMode = TextOverflowModes.Overflow;
+                _titleLabel.enableAutoSizing = true;
+                _titleLabel.fontSizeMin = 16;
+                _titleLabel.fontSizeMax = 23;
+                _titleLabel.characterSpacing = 3f;
+            }
             Apply(_typeLabel, TypographyStyle.Caption, UISemanticColor.TextSecondary);
             Apply(_costLabel, TypographyStyle.Stat, UISemanticColor.Gold);
             if (_costLabel != null) { _costLabel.fontSize = 28; _costLabel.overflowMode = TextOverflowModes.Overflow; }

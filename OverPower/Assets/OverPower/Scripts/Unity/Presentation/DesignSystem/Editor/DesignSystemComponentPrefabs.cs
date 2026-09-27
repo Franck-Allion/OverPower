@@ -255,11 +255,17 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             headerTexture.texture = titleTexture; headerTexture.uvRect = new Rect(0, 0, 1, 0.333333f); headerTexture.raycastTarget = false;
             var headerShade = Image("HeaderShade", header, new Color(0.03f, 0.06f, 0.10f, .20f)); Stretch(headerShade.rectTransform, 0);
 
-            // Refined, centered card title with elegant proportions and open tracking
+            // Refined, centered card title with elegant proportions and reliable single-line overflow
             var title = PlainText("Title", header, TypographyStyle.Title, 38);
-            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-160, 38));
-            title.alignment = TextAlignmentOptions.Center; title.characterSpacing = 3.5f;
-            title.enableAutoSizing = true; title.fontSizeMin = 18; title.fontSizeMax = 25;
+            title.rectTransform.anchorMin = new Vector2(0, 0);
+            title.rectTransform.anchorMax = new Vector2(1, 1);
+            title.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            title.rectTransform.offsetMin = new Vector2(96, 0);
+            title.rectTransform.offsetMax = new Vector2(-20, 0);
+            title.alignment = TextAlignmentOptions.Center; title.characterSpacing = 3f;
+            title.enableWordWrapping = false;
+            title.overflowMode = TextOverflowModes.Overflow;
+            title.enableAutoSizing = true; title.fontSizeMin = 16; title.fontSizeMax = 23;
 
             // Resource cost: repeated mana icons integrated into header texture (no numeric text widget)
             var costBadge = Rect("CostBadge", header);
@@ -319,15 +325,18 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             SetAbsolute(spellBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -88), new Vector2(368, 42));
             var spellGlow = Image("SpellCrestGlow", spellBanner.transform, new Color(0.25f, 0.75f, 1.0f, 0.40f)); spellGlow.sprite = placeholderGlow; SetAbsolute(spellGlow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(50, 34));
 
-            // Textured rules body with high contrast typography and breathing room
+            // Textured rules body with safe margins, high contrast typography, and non-clipping overflow
             var body = Image("BodyTexture", root, Color.white); body.sprite = bodySprite; body.type = UnityEngine.UI.Image.Type.Simple;
             SetAbsolute(body.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 10), new Vector2(-18, 228));
             var bodyShade = Image("BodyShade", body.transform, new Color(.04f, .025f, .015f, .10f)); Stretch(bodyShade.rectTransform, 0);
-            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 102);
-            SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -34), new Vector2(-56, 104));
+            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 110);
+            SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -32), new Vector2(-70, 110));
+            description.margin = new Vector4(6, 4, 6, 4);
+            description.overflowMode = TextOverflowModes.Overflow;
+            description.enableWordWrapping = true;
             description.alignment = TextAlignmentOptions.TopLeft; description.textWrappingMode = TextWrappingModes.Normal;
-            description.color = new Color32(22, 16, 12, 255); description.lineSpacing = 10;
-            description.enableAutoSizing = true; description.fontSizeMin = 17; description.fontSizeMax = 21;
+            description.color = new Color32(20, 14, 10, 255); description.lineSpacing = 6;
+            description.enableAutoSizing = true; description.fontSizeMin = 14; description.fontSizeMax = 18;
             var rich = description.gameObject.AddComponent<UIRichText>(); SetReference(rich, "_config", _config);
 
             // Integrated fantasy stat footer
