@@ -101,7 +101,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             }
         }
 
-        public void ApplyTypography(TMP_Text text, TypographyStyle role)
+        public void ApplyTypography(TMP_Text text, TypographyStyle role, bool preserveSizeAndAutoSizing = false)
         {
             TMP_FontAsset activeFont = _font;
             if (role == TypographyStyle.Display || role == TypographyStyle.Title)
@@ -119,9 +119,12 @@ namespace OverPower.Unity.Presentation.DesignSystem
             {
                 if (definition.Role != role) continue;
                 text.font = activeFont;
-                text.fontSize = definition.Size;
-                text.fontStyle = definition.Style;
-                text.enableAutoSizing = false;
+                if (!preserveSizeAndAutoSizing)
+                {
+                    text.fontSize = definition.Size;
+                    text.fontStyle = definition.Style;
+                    text.enableAutoSizing = false;
+                }
                 return;
             }
             throw new ArgumentOutOfRangeException(nameof(role), role, "Missing typography role.");

@@ -256,7 +256,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var headerShade = Image("HeaderShade", header, new Color(0.03f, 0.06f, 0.10f, .20f)); Stretch(headerShade.rectTransform, 0);
 
             // Refined, centered card title with elegant proportions and reliable single-line overflow
-            var title = PlainText("Title", header, TypographyStyle.Title, 38);
+            var title = PlainText("Title", header, TypographyStyle.Title, 38, addTypography: false);
             title.rectTransform.anchorMin = new Vector2(0, 0);
             title.rectTransform.anchorMax = new Vector2(1, 1);
             title.rectTransform.pivot = new Vector2(0.5f, 0.5f);
@@ -284,7 +284,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
                 var elem = icon.gameObject.AddComponent<LayoutElement>(); elem.preferredWidth = 22; elem.preferredHeight = 30;
                 var iconShadow = icon.gameObject.AddComponent<Shadow>(); iconShadow.effectColor = new Color(0, 0, 0, 0.40f); iconShadow.effectDistance = new Vector2(0, -1);
             }
-            var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 28);
+            var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 28, addTypography: false);
             cost.gameObject.SetActive(false); // Kept for reference but hidden in favor of repeated icons
             var familyIcon = costBadge.transform.Find("CostIcon_0")?.GetComponent<Image>();
 
@@ -329,7 +329,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var body = Image("BodyTexture", root, Color.white); body.sprite = bodySprite; body.type = UnityEngine.UI.Image.Type.Simple;
             SetAbsolute(body.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 10), new Vector2(-18, 228));
             var bodyShade = Image("BodyShade", body.transform, new Color(.04f, .025f, .015f, .10f)); Stretch(bodyShade.rectTransform, 0);
-            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 114);
+            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 114, addTypography: false);
             SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -32), new Vector2(-46, 114));
             description.margin = new Vector4(6, 2, 6, 2);
             description.overflowMode = TextOverflowModes.Overflow;
@@ -418,12 +418,13 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var icon = Image("Icon", root, _config.GetColor(tone)); icon.sprite = iconSprite; icon.preserveAspect = true;
             SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(12, 6), new Vector2(26, 30));
             var iconShadow = icon.gameObject.AddComponent<Shadow>(); iconShadow.effectColor = new Color(0, 0, 0, 0.45f); iconShadow.effectDistance = new Vector2(0, -1);
-            var value = PlainText(name, root, TypographyStyle.Stat, 36);
+            var value = PlainText(name, root, TypographyStyle.Stat, 36, addTypography: false);
+            value.fontSize = 36;
             value.overflowMode = TextOverflowModes.Overflow;
             SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(40, 6), new Vector2(58, 42));
             value.alignment = TextAlignmentOptions.Center;
             var valShadow = value.gameObject.AddComponent<Shadow>(); valShadow.effectColor = new Color(0, 0, 0, 0.45f); valShadow.effectDistance = new Vector2(0, -1);
-            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 10);
+            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 10, addTypography: false);
             caption.overflowMode = TextOverflowModes.Overflow;
             SetAbsolute(caption.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 5), new Vector2(0, 12));
             caption.alignment = TextAlignmentOptions.Center; caption.color = new Color32(175, 155, 128, 220);
@@ -440,11 +441,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = new Color(.55f, .62f, .68f, .30f); outline.effectDistance = new Vector2(1, -1);
             var icon = Image("Icon", root, WithAlpha(_config.GetColor(UISemanticColor.Armor), .95f)); icon.sprite = iconSprite; icon.preserveAspect = true;
             SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(16, 16));
-            var value = PlainText(name, root, TypographyStyle.Stat, 22);
+            var value = PlainText(name, root, TypographyStyle.Stat, 22, addTypography: false);
+            value.fontSize = 22;
             value.overflowMode = TextOverflowModes.Overflow;
             SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(28, 0), new Vector2(44, 24));
             value.alignment = TextAlignmentOptions.Center;
-            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 9);
+            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 9, addTypography: false);
             caption.gameObject.SetActive(false);
             caption.color = Color.clear;
             return value;
@@ -458,7 +460,8 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var shadow = plate.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .65f); shadow.effectDistance = new Vector2(0, -2);
             var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .88f); outline.effectDistance = new Vector2(1, -1);
             var innerBevel = Image("InnerBevel", root, new Color(0.92f, 0.78f, 0.45f, 0.22f)); innerBevel.sprite = roundSprite; Stretch(innerBevel.rectTransform, 2); innerBevel.raycastTarget = false;
-            var value = PlainText("UnitCount", root, TypographyStyle.Stat, 22);
+            var value = PlainText("UnitCount", root, TypographyStyle.Stat, 22, addTypography: false);
+            value.fontSize = 22;
             value.overflowMode = TextOverflowModes.Overflow;
             Stretch(value.rectTransform, 0); value.alignment = TextAlignmentOptions.Center;
             value.color = new Color32(248, 232, 196, 255);
@@ -578,7 +581,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             return transition;
         }
 
-        private static TMP_Text PlainText(string name, Transform parent, TypographyStyle style, float height)
+        private static TMP_Text PlainText(string name, Transform parent, TypographyStyle style, float height, bool addTypography = true)
         {
             var rect = Rect(name, parent);
             rect.gameObject.SetActive(false);
@@ -590,9 +593,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             text.overflowMode = TextOverflowModes.Ellipsis;
             text.color = _config.GetColor(UISemanticColor.TextPrimary);
             _config.ApplyTypography(text, style);
-            var typography = rect.gameObject.AddComponent<UITypography>();
-            SetReference(typography, "_config", _config);
-            SetEnum(typography, "_style", (int)style);
+            if (addTypography)
+            {
+                var typography = rect.gameObject.AddComponent<UITypography>();
+                SetReference(typography, "_config", _config);
+                SetEnum(typography, "_style", (int)style);
+            }
             rect.gameObject.SetActive(true);
             return text;
         }

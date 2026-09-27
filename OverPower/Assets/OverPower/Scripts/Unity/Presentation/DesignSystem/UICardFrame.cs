@@ -151,27 +151,17 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             if (_config == null) return;
             Apply(_titleLabel, TypographyStyle.Title, UISemanticColor.TextPrimary);
-            if (_titleLabel != null)
-            {
-                _titleLabel.enableWordWrapping = false;
-                _titleLabel.overflowMode = TextOverflowModes.Overflow;
-                _titleLabel.enableAutoSizing = true;
-                _titleLabel.fontSizeMin = 16;
-                _titleLabel.fontSizeMax = 23;
-                _titleLabel.characterSpacing = 3f;
-            }
             Apply(_typeLabel, TypographyStyle.Caption, UISemanticColor.TextSecondary);
             Apply(_costLabel, TypographyStyle.Stat, UISemanticColor.Gold);
-            if (_costLabel != null) { _costLabel.fontSize = 28; _costLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_rarityLabel, TypographyStyle.Caption, UISemanticColor.TextPrimary);
             Apply(_attackLabel, TypographyStyle.Stat, UISemanticColor.Danger);
-            if (_attackLabel != null) { _attackLabel.fontSize = 36; _attackLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_healthLabel, TypographyStyle.Stat, UISemanticColor.Health);
-            if (_healthLabel != null) { _healthLabel.fontSize = 36; _healthLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_armorLabel, TypographyStyle.Stat, UISemanticColor.Armor);
-            if (_armorLabel != null) { _armorLabel.fontSize = 22; _armorLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_unitCountLabel, TypographyStyle.Stat, UISemanticColor.Gold);
-            if (_unitCountLabel != null) { _unitCountLabel.fontSize = 22; _unitCountLabel.overflowMode = TextOverflowModes.Overflow; _unitCountLabel.color = new Color32(248, 232, 196, 255); }
+            if (_unitCountLabel != null)
+            {
+                _unitCountLabel.color = new Color32(248, 232, 196, 255);
+            }
         }
 
         private void ApplyState()
@@ -270,7 +260,9 @@ namespace OverPower.Unity.Presentation.DesignSystem
         private void Apply(TMP_Text text, TypographyStyle style, UISemanticColor color)
         {
             if (text == null) return;
-            _config.ApplyTypography(text, style); text.color = _config.GetColor(color);
+            bool uninitialized = text.fontSize <= 0f;
+            _config.ApplyTypography(text, style, preserveSizeAndAutoSizing: !uninitialized);
+            text.color = _config.GetColor(color);
         }
         private static void SetText(TMP_Text text, string value) { if (text != null) text.text = value ?? string.Empty; }
         private static void SetOptionalSlot(GameObject slot, TMP_Text text, int? value, string prefix = "")

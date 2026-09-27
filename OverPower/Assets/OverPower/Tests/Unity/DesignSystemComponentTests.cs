@@ -433,6 +433,48 @@ namespace OverPower.Tests.Unity
         }
 
         [Test]
+        public void CardFrame_Presentation_PreservesAuthoredVisualSettingsAndIsIdempotent()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/OverPower/UI/DesignSystem/Components/CardFrame.prefab");
+            var instance = Object.Instantiate(prefab);
+            try
+            {
+                var card = instance.GetComponent<UICardFrame>();
+                var attackText = instance.transform.Find("BodyTexture/Stats/AttackSlot/Attack").GetComponent<TMP_Text>();
+                var armorText = instance.transform.Find("BodyTexture/Stats/ArmorSlot/Armor").GetComponent<TMP_Text>();
+                var titleText = instance.transform.Find("Header/Title").GetComponent<TMP_Text>();
+
+                float authoredAttackSize = attackText.fontSize;
+                float authoredArmorSize = armorText.fontSize;
+                Vector2 authoredAttackPos = attackText.rectTransform.anchoredPosition;
+
+                var data = new CardPresentationData
+                {
+                    Title = "Test Sorcerer",
+                    Type = CardVisualType.Unit,
+                    Attack = 10,
+                    Armor = 4,
+                    Health = 10,
+                    UnitCount = 8
+                };
+
+                card.SetPresentation(data);
+                Assert.That(attackText.text, Is.EqualTo("10"));
+                Assert.That(attackText.fontSize, Is.EqualTo(authoredAttackSize), "SetPresentation must preserve authored Attack font size.");
+                Assert.That(armorText.fontSize, Is.EqualTo(authoredArmorSize), "SetPresentation must preserve authored Armor font size.");
+                Assert.That(attackText.rectTransform.anchoredPosition, Is.EqualTo(authoredAttackPos), "SetPresentation must not alter RectTransform position.");
+
+                card.SetPresentation(data);
+                Assert.That(attackText.fontSize, Is.EqualTo(authoredAttackSize), "Repeated SetPresentation must remain idempotent.");
+                Assert.That(attackText.rectTransform.anchoredPosition, Is.EqualTo(authoredAttackPos), "Repeated SetPresentation must preserve RectTransform layout.");
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
+        [Test]
         public void PhaseBannerAndTargetVisuals_ExposePresentationOnlyStates()
         {
             var config = AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>("Assets/OverPower/Data/UI/UIDesignSystemConfig.asset");
