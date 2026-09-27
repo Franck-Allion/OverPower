@@ -329,18 +329,18 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var body = Image("BodyTexture", root, Color.white); body.sprite = bodySprite; body.type = UnityEngine.UI.Image.Type.Simple;
             SetAbsolute(body.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 10), new Vector2(-18, 228));
             var bodyShade = Image("BodyShade", body.transform, new Color(.04f, .025f, .015f, .10f)); Stretch(bodyShade.rectTransform, 0);
-            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 110);
-            SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -32), new Vector2(-70, 110));
-            description.margin = new Vector4(6, 4, 6, 4);
+            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 114);
+            SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -32), new Vector2(-46, 114));
+            description.margin = new Vector4(6, 2, 6, 2);
             description.overflowMode = TextOverflowModes.Overflow;
             description.enableWordWrapping = true;
             description.alignment = TextAlignmentOptions.TopLeft; description.textWrappingMode = TextWrappingModes.Normal;
-            description.color = new Color32(20, 14, 10, 255); description.lineSpacing = 6;
-            description.enableAutoSizing = true; description.fontSizeMin = 14; description.fontSizeMax = 18;
+            description.color = new Color32(18, 10, 6, 255); description.lineSpacing = 8;
+            description.enableAutoSizing = true; description.fontSizeMin = 15; description.fontSizeMax = 18;
             var rich = description.gameObject.AddComponent<UIRichText>(); SetReference(rich, "_config", _config);
 
             // Integrated fantasy stat footer
-            var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(380, 80));
+            var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 6), new Vector2(380, 84));
             var footerSurface = Image("FooterSurface", stats, new Color(.05f, .035f, .02f, .35f)); Stretch(footerSurface.rectTransform, 0);
             var plinthShadow = footerSurface.gameObject.AddComponent<Shadow>(); plinthShadow.effectColor = new Color(0, 0, 0, .35f); plinthShadow.effectDistance = new Vector2(0, -2);
             var plinthOutline = footerSurface.gameObject.AddComponent<Outline>(); plinthOutline.effectColor = new Color(.58f, .44f, .26f, .28f); plinthOutline.effectDistance = new Vector2(1, -1);
@@ -348,26 +348,26 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             SetAbsolute(footerDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-16, 1));
             var centerSpine = Image("CenterCrest", stats, new Color(.10f, .075f, .045f, .26f)); centerSpine.sprite = placeholderGradient; SetAbsolute(centerSpine.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, 0), new Vector2(64, -8));
 
-            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-130, 40), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
-            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(130, 40), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
-            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 48), roundSprite, out var unitCountSlot);
-            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 16), armorIcon, out var armorSlot, out var armorCaption);
+            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-128, 42), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
+            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(128, 42), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
+            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 50), roundSprite, out var unitCountSlot);
+            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 18), armorIcon, out var armorSlot, out var armorCaption);
             TMP_Text unitCountCaption = null;
 
             // Spell footer: balanced ornamental finish maintaining identical footprint and height
-            var spellFooter = Rect("SpellFooter", body.transform); SetAbsolute(spellFooter, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(380, 80));
+            var spellFooter = Rect("SpellFooter", body.transform); SetAbsolute(spellFooter, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 6), new Vector2(380, 84));
             var spellPlinth = Image("FooterSurface", spellFooter, new Color(.05f, .035f, .02f, .35f)); Stretch(spellPlinth.rectTransform, 0);
             var spellPlinthShadow = spellPlinth.gameObject.AddComponent<Shadow>(); spellPlinthShadow.effectColor = new Color(0, 0, 0, .35f); spellPlinthShadow.effectDistance = new Vector2(0, -2);
             var spellPlinthOutline = spellPlinth.gameObject.AddComponent<Outline>(); spellPlinthOutline.effectColor = new Color(.58f, .44f, .26f, .28f); spellPlinthOutline.effectDistance = new Vector2(1, -1);
             var spellFooterDivider = Image("FooterDivider", spellFooter, new Color(0.68f, 0.52f, 0.30f, 0.50f));
             SetAbsolute(spellFooterDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-16, 1));
-            var footerLeft = Image("LeftRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); SetAbsolute(footerLeft.rectTransform, new Vector2(0, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-24, 0), new Vector2(-40, 1));
-            var footerRight = Image("RightRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); SetAbsolute(footerRight.rectTransform, new Vector2(.5f, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-40, 1));
-            var leftFlourish = Image("LeftFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .50f)); leftFlourish.sprite = armorIcon; leftFlourish.preserveAspect = true; SetAbsolute(leftFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-80, 0), new Vector2(10, 10));
-            var rightFlourish = Image("RightFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .50f)); rightFlourish.sprite = armorIcon; rightFlourish.preserveAspect = true; SetAbsolute(rightFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(80, 0), new Vector2(10, 10));
-            var sigilBacking = Image("SigilBacking", spellFooter, new Color(0.04f, 0.08f, 0.14f, 0.85f)); sigilBacking.sprite = roundSprite; SetAbsolute(sigilBacking.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(38, 38));
-            var sigilOutline = sigilBacking.gameObject.AddComponent<Outline>(); sigilOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .75f); sigilOutline.effectDistance = new Vector2(1, -1);
-            var footerSigil = Image("Sigil", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Mana), .90f)); footerSigil.sprite = manaIcon; footerSigil.preserveAspect = true; SetAbsolute(footerSigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(20, 26));
+            var footerLeft = Image("LeftRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); SetAbsolute(footerLeft.rectTransform, new Vector2(0, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-26, 0), new Vector2(-44, 1));
+            var footerRight = Image("RightRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); SetAbsolute(footerRight.rectTransform, new Vector2(.5f, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(26, 0), new Vector2(-44, 1));
+            var leftFlourish = Image("LeftFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); leftFlourish.sprite = armorIcon; leftFlourish.preserveAspect = true; SetAbsolute(leftFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-75, 0), new Vector2(10, 10));
+            var rightFlourish = Image("RightFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); rightFlourish.sprite = armorIcon; rightFlourish.preserveAspect = true; SetAbsolute(rightFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(75, 0), new Vector2(10, 10));
+            var sigilBacking = Image("SigilBacking", spellFooter, new Color(0.03f, 0.07f, 0.14f, 0.95f)); sigilBacking.sprite = roundSprite; SetAbsolute(sigilBacking.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(38, 38));
+            var sigilOutline = sigilBacking.gameObject.AddComponent<Outline>(); sigilOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .80f); sigilOutline.effectDistance = new Vector2(1, -1);
+            var footerSigil = Image("Sigil", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Mana), .95f)); footerSigil.sprite = manaIcon; footerSigil.preserveAspect = true; SetAbsolute(footerSigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(20, 26));
 
             // Ornamental separator and rarity medallion embedded into the center socket
             var separator = Image("MiddleBanner", root, Color.white); separator.sprite = middleBanner; separator.preserveAspect = true;
@@ -431,14 +431,14 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             out GameObject slot, out TMP_Text caption)
         {
             var root = Rect(name + "Slot", parent); slot = root.gameObject;
-            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(76, 26));
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(78, 26));
             var plate = Image("Plate", root, new Color(.08f, .085f, .095f, .30f)); Stretch(plate.rectTransform, 0);
             var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = new Color(.52f, .56f, .60f, .28f); outline.effectDistance = new Vector2(1, -1);
-            var icon = Image("Icon", root, WithAlpha(_config.GetColor(UISemanticColor.Armor), .85f)); icon.sprite = iconSprite; icon.preserveAspect = true;
-            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(14, 14));
-            var value = PlainText(name, root, TypographyStyle.Stat, 20);
+            var icon = Image("Icon", root, WithAlpha(_config.GetColor(UISemanticColor.Armor), .92f)); icon.sprite = iconSprite; icon.preserveAspect = true;
+            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(16, 16));
+            var value = PlainText(name, root, TypographyStyle.Stat, 22);
             value.overflowMode = TextOverflowModes.Overflow;
-            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(28, 0), new Vector2(42, 24));
+            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(28, 0), new Vector2(44, 24));
             value.alignment = TextAlignmentOptions.Center;
             caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 9);
             caption.gameObject.SetActive(false);

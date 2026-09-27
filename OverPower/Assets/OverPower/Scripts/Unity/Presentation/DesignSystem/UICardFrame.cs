@@ -169,7 +169,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             Apply(_healthLabel, TypographyStyle.Stat, UISemanticColor.Health);
             if (_healthLabel != null) { _healthLabel.fontSize = 34; _healthLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_armorLabel, TypographyStyle.Stat, UISemanticColor.Armor);
-            if (_armorLabel != null) { _armorLabel.fontSize = 20; _armorLabel.overflowMode = TextOverflowModes.Overflow; }
+            if (_armorLabel != null) { _armorLabel.fontSize = 22; _armorLabel.overflowMode = TextOverflowModes.Overflow; }
             Apply(_unitCountLabel, TypographyStyle.Stat, UISemanticColor.Gold);
             if (_unitCountLabel != null) { _unitCountLabel.fontSize = 22; _unitCountLabel.overflowMode = TextOverflowModes.Overflow; _unitCountLabel.color = new Color32(245, 228, 190, 255); }
         }
