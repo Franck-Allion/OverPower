@@ -154,13 +154,25 @@ namespace OverPower.Unity.Presentation.DesignSystem
             Apply(_typeLabel, TypographyStyle.Caption, UISemanticColor.TextSecondary);
             Apply(_costLabel, TypographyStyle.Stat, UISemanticColor.Gold);
             Apply(_rarityLabel, TypographyStyle.Caption, UISemanticColor.TextPrimary);
-            Apply(_attackLabel, TypographyStyle.Stat, UISemanticColor.Danger);
-            Apply(_healthLabel, TypographyStyle.Stat, UISemanticColor.Health);
+            Apply(_attackLabel, TypographyStyle.Stat, UISemanticColor.TextPrimary);
+            Apply(_healthLabel, TypographyStyle.Stat, UISemanticColor.TextPrimary);
             Apply(_armorLabel, TypographyStyle.Stat, UISemanticColor.Armor);
             Apply(_unitCountLabel, TypographyStyle.Stat, UISemanticColor.Gold);
+            if (_attackLabel != null)
+            {
+                _attackLabel.color = new Color32(248, 242, 230, 255);
+            }
+            if (_healthLabel != null)
+            {
+                _healthLabel.color = new Color32(248, 242, 230, 255);
+            }
+            if (_armorLabel != null)
+            {
+                _armorLabel.color = new Color32(215, 228, 238, 255);
+            }
             if (_unitCountLabel != null)
             {
-                _unitCountLabel.color = new Color32(248, 232, 196, 255);
+                _unitCountLabel.color = new Color32(235, 218, 185, 240);
             }
         }
 

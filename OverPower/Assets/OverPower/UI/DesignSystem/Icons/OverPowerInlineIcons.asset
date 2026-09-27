@@ -58,6 +58,11 @@ MonoBehaviour:
     m_GlyphIndex: 3
     m_Scale: 1
     m_Name: mana
+  - m_ElementType: 2
+    m_Unicode: 0
+    m_GlyphIndex: 4
+    m_Scale: 1
+    m_Name: armor
   m_GlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -123,6 +128,22 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -4225634055810630605, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
+  - m_Index: 4
+    m_Metrics:
+      m_Width: 256
+      m_Height: 256
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 204.8
+      m_HorizontalAdvance: 256
+    m_GlyphRect:
+      m_X: 512
+      m_Y: 256
+      m_Width: 256
+      m_Height: 256
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: 1217635709, guid: ced3f20bb7cc10d4d9556816495911fd, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
 --- !u!21 &6385425823548970027

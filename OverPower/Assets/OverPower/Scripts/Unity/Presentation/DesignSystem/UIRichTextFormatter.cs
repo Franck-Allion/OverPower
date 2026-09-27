@@ -25,8 +25,8 @@ namespace OverPower.Unity.Presentation.DesignSystem
             {
                 string tokenName = match.Groups[1].Value.ToLower();
 
-                // Only replace the four explicitly supported semantic tokens of the design system.
-                if (tokenName == "attack" || tokenName == "health" || tokenName == "gold" || tokenName == "mana")
+                // Only replace the explicitly supported semantic tokens of the design system.
+                if (tokenName == "attack" || tokenName == "health" || tokenName == "gold" || tokenName == "mana" || tokenName == "armor")
                 {
                     return $"<sprite name=\"{tokenName}\">";
                 }

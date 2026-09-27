@@ -95,6 +95,7 @@ To maintain readability and quick semantic recognition inside localized rich tex
 Content authors and localization tables express resources using semantic braces:
 - `{attack}` - Attack/offensive power
 - `{health}` - Health/HP pool
+- `{armor}`  - Armor/defensive shield
 - `{gold}` - Gold run-currency
 - `{mana}` - Mana resource
 
@@ -102,6 +103,7 @@ Content authors and localization tables express resources using semantic braces:
 At render-time, these brace tokens are dynamically translated into TextMeshPro `<sprite name="...">` tags pointing to the centralized `OverPowerInlineIcons` Sprite Asset:
 - `{attack}` &rarr; `<sprite name="attack">`
 - `{health}` &rarr; `<sprite name="health">`
+- `{armor}`  &rarr; `<sprite name="armor">`
 - `{gold}`   &rarr; `<sprite name="gold">`
 - `{mana}`   &rarr; `<sprite name="mana">`
 
@@ -111,7 +113,7 @@ Unknown tokens are left completely untouched and unchanged.
 - **Format:** Transparent background PNG.
 - **Dimensions:** 256×256 px.
 - **Location:** `Assets/OverPower/UI/DesignSystem/Icons/Inline/`
-- **Public Sprite Names:** `attack`, `health`, `gold`, `mana`.
+- **Public Sprite Names:** `attack`, `health`, `armor`, `gold`, `mana`.
 
 ## Cards
 Stable information architecture: artwork, name, cost, type, description, stats where relevant, abilities/effects, rarity/state if introduced. Theme can evolve while hierarchy stays consistent.

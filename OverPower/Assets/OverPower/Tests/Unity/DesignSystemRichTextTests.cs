@@ -29,7 +29,9 @@ namespace OverPower.Tests.Unity
         [TestCase("{mana}", "<sprite name=\"mana\">")]
         [TestCase("{gold}", "<sprite name=\"gold\">")]
         [TestCase("{attack}", "<sprite name=\"attack\">")]
+        [TestCase("{armor}", "<sprite name=\"armor\">")]
         [TestCase("{HEALTH}", "<sprite name=\"health\">")] // Case insensitivity check
+        [TestCase("{ARMOR}", "<sprite name=\"armor\">")]
         public void Format_KnownTokens_ConvertToSpriteTags(string token, string expected)
         {
             Assert.That(UIRichTextFormatter.Format(token), Is.EqualTo(expected));
@@ -63,7 +65,7 @@ namespace OverPower.Tests.Unity
 
             Assert.That(spriteAsset, Is.Not.Null, "OverPowerInlineIcons.asset must exist at designated location.");
 
-            var requiredNames = new[] { "attack", "health", "gold", "mana" };
+            var requiredNames = new[] { "attack", "health", "gold", "mana", "armor" };
             foreach (var name in requiredNames)
             {
                 // Verify entry exists in lookup/tables

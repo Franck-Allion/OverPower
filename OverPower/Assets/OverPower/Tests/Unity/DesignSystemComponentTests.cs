@@ -414,7 +414,9 @@ namespace OverPower.Tests.Unity
                 Assert.That(unit.transform.Find("BodyTexture/SpellFooter").gameObject.activeSelf, Is.False);
                 Assert.That(spell.transform.Find("BodyTexture/SpellFooter").gameObject.activeSelf, Is.True);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/FooterSurface"), Is.Not.Null);
-                Assert.That(unit.transform.Find("BodyTexture/Stats/CenterCrest"), Is.Not.Null);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/LeftRule"), Is.Not.Null);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/RightRule"), Is.Not.Null);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/CenterCrest"), Is.Null, "Center vertical crest/spine styling must be removed.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/AttackSlot/Icon"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/ArmorSlot/Icon"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/HealthSlot/Icon"), Is.Not.Null);

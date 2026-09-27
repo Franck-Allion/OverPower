@@ -208,11 +208,33 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: armor
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31a3a161347885e4397a313763d4950c
+      internalID: 1217635709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 8746a63b67b61374faced85e2572c92f
     internalID: 0
     vertices: []
     indices: 
@@ -226,6 +248,7 @@ TextureImporter:
       OverPowerInlineIcons_Texture_1: -9035861228331494528
       OverPowerInlineIcons_Texture_2: -3562344266192614559
       OverPowerInlineIcons_Texture_3: -1566289918139168583
+      armor: 1217635709
       attack: 3870244539617078810
       gold: 2317138849345682547
       health: -4209461954710867259
