@@ -350,18 +350,18 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
             // Subtle structural horizontal rule connecting left, center medallion, and right
             var leftOuterRule = Image("LeftOuterRule", stats, WithAlpha(_config.GetColor(UISemanticColor.Gold), 0.24f));
-            SetAbsolute(leftOuterRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(-168, 51), new Vector2(18, 1));
+            SetAbsolute(leftOuterRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(-168, 52), new Vector2(18, 1));
             var leftRule = Image("LeftRule", stats, WithAlpha(_config.GetColor(UISemanticColor.Gold), 0.28f));
-            SetAbsolute(leftRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(-38, 51), new Vector2(26, 1));
+            SetAbsolute(leftRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(-35.5f, 52), new Vector2(25, 1));
             var rightRule = Image("RightRule", stats, WithAlpha(_config.GetColor(UISemanticColor.Gold), 0.28f));
-            SetAbsolute(rightRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(38, 51), new Vector2(26, 1));
+            SetAbsolute(rightRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(35.5f, 52), new Vector2(25, 1));
             var rightOuterRule = Image("RightOuterRule", stats, WithAlpha(_config.GetColor(UISemanticColor.Gold), 0.24f));
-            SetAbsolute(rightOuterRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(168, 51), new Vector2(18, 1));
+            SetAbsolute(rightOuterRule.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), new Vector2(168, 52), new Vector2(18, 1));
 
             var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-106, 50), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
             var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(106, 50), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
-            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 51), roundSprite, out var unitCountSlot);
-            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 16), armorIcon, out var armorSlot, out var armorCaption);
+            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 52), roundSprite, out var unitCountSlot);
+            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 17), armorIcon, out var armorSlot, out var armorCaption);
             TMP_Text unitCountCaption = null;
 
             // Spell footer: balanced ornamental finish maintaining identical footprint and height
@@ -442,14 +442,14 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             out GameObject slot, out TMP_Text caption)
         {
             var root = Rect(name + "Slot", parent); slot = root.gameObject;
-            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(66, 22));
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(52, 18));
             var icon = Image("Icon", root, WithAlpha(_config.GetColor(UISemanticColor.Armor), .95f)); icon.sprite = iconSprite; icon.preserveAspect = true;
-            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(4, 0), new Vector2(22, 22));
+            SetAbsolute(icon.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-12, 0), new Vector2(18, 18));
             var iconShadow = icon.gameObject.AddComponent<Shadow>(); iconShadow.effectColor = new Color(0, 0, 0, 0.65f); iconShadow.effectDistance = new Vector2(1, -1);
-            var value = PlainText(name, root, TypographyStyle.Stat, 25, addTypography: false);
-            value.fontSize = 25;
+            var value = PlainText(name, root, TypographyStyle.Stat, 21, addTypography: false);
+            value.fontSize = 21;
             value.overflowMode = TextOverflowModes.Overflow;
-            SetAbsolute(value.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(28, 0), new Vector2(34, 22));
+            SetAbsolute(value.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(12, 0), new Vector2(24, 18));
             value.alignment = TextAlignmentOptions.Center;
             value.color = new Color32(215, 228, 238, 255);
             var valShadow = value.gameObject.AddComponent<Shadow>(); valShadow.effectColor = new Color(0, 0, 0, 0.70f); valShadow.effectDistance = new Vector2(1, -1);
@@ -460,16 +460,16 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
         private static TMP_Text CreateQuantityBadge(Transform parent, Vector2 position, Sprite roundSprite, out GameObject slot)
         {
             var root = Rect("UnitCountSlot", parent); slot = root.gameObject;
-            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(44, 44));
-            var plate = Image("StackBadge", root, new Color(.05f, .04f, .025f, .95f)); plate.sprite = roundSprite; Stretch(plate.rectTransform, 0);
-            var shadow = plate.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .50f); shadow.effectDistance = new Vector2(0, -2);
-            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .65f); outline.effectDistance = new Vector2(1, -1);
-            var innerBevel = Image("InnerBevel", root, new Color(0.85f, 0.72f, 0.45f, 0.12f)); innerBevel.sprite = roundSprite; Stretch(innerBevel.rectTransform, 2); innerBevel.raycastTarget = false;
-            var value = PlainText("UnitCount", root, TypographyStyle.Stat, 22, addTypography: false);
-            value.fontSize = 22;
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(42, 42));
+            var plate = Image("StackBadge", root, new Color(.045f, .035f, .02f, .96f)); plate.sprite = roundSprite; Stretch(plate.rectTransform, 0);
+            var shadow = plate.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .55f); shadow.effectDistance = new Vector2(0, -2);
+            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .70f); outline.effectDistance = new Vector2(1, -1);
+            var innerBevel = Image("InnerBevel", root, new Color(0.90f, 0.76f, 0.45f, 0.15f)); innerBevel.sprite = roundSprite; Stretch(innerBevel.rectTransform, 2); innerBevel.raycastTarget = false;
+            var value = PlainText("UnitCount", root, TypographyStyle.Stat, 23, addTypography: false);
+            value.fontSize = 23;
             value.overflowMode = TextOverflowModes.Overflow;
             Stretch(value.rectTransform, 0); value.alignment = TextAlignmentOptions.Center;
-            value.color = new Color32(235, 218, 185, 230);
+            value.color = new Color32(238, 222, 192, 245);
             return value;
         }
 
