@@ -151,7 +151,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         {
             if (_config == null) return;
             Apply(_titleLabel, TypographyStyle.Title, UISemanticColor.TextPrimary);
-            if (_titleLabel != null) { _titleLabel.enableAutoSizing = true; _titleLabel.fontSizeMin = 20; _titleLabel.fontSizeMax = 34; }
+            if (_titleLabel != null) { _titleLabel.enableAutoSizing = true; _titleLabel.fontSizeMin = 18; _titleLabel.fontSizeMax = 25; _titleLabel.characterSpacing = 3.5f; }
             Apply(_typeLabel, TypographyStyle.Caption, UISemanticColor.TextSecondary);
             Apply(_costLabel, TypographyStyle.Stat, UISemanticColor.Gold);
             if (_costLabel != null) { _costLabel.fontSize = 28; _costLabel.overflowMode = TextOverflowModes.Overflow; }
@@ -241,11 +241,17 @@ namespace OverPower.Unity.Presentation.DesignSystem
                     icon.preserveAspect = true;
                     icon.raycastTarget = false;
                     var rt = (RectTransform)go.transform;
-                    rt.sizeDelta = new Vector2(16, 22);
+                    rt.sizeDelta = new Vector2(22, 30);
+                    var elem = go.AddComponent<LayoutElement>();
+                    elem.preferredWidth = 22; elem.preferredHeight = 30;
                     icons.Add(icon);
                 }
                 if (icon.sprite == null && _manaIconSprite != null) icon.sprite = _manaIconSprite;
-                icon.color = _config != null ? _config.GetColor(UISemanticColor.Mana) : new Color(0.35f, 0.82f, 0.98f, 0.95f);
+                var iconRt = icon.rectTransform;
+                iconRt.sizeDelta = new Vector2(22, 30);
+                var layoutElem = icon.GetComponent<LayoutElement>();
+                if (layoutElem != null) { layoutElem.preferredWidth = 22; layoutElem.preferredHeight = 30; }
+                icon.color = _config != null ? _config.GetColor(UISemanticColor.Mana) : new Color(0.38f, 0.85f, 1.0f, 0.98f);
             }
             for (int i = count; i < icons.Count; i++)
             {

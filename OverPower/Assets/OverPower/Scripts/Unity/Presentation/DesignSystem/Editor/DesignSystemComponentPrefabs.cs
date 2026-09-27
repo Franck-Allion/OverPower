@@ -255,17 +255,17 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             headerTexture.texture = titleTexture; headerTexture.uvRect = new Rect(0, 0, 1, 0.333333f); headerTexture.raycastTarget = false;
             var headerShade = Image("HeaderShade", header, new Color(0.03f, 0.06f, 0.10f, .20f)); Stretch(headerShade.rectTransform, 0);
 
-            // Strong, centered card title with open tracking for premium fantasy feel
-            var title = PlainText("Title", header, TypographyStyle.Title, 44);
-            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(10, 0), new Vector2(-120, 44));
-            title.alignment = TextAlignmentOptions.Center; title.characterSpacing = 4f;
-            title.enableAutoSizing = true; title.fontSizeMin = 20; title.fontSizeMax = 30;
+            // Refined, centered card title with elegant proportions and open tracking
+            var title = PlainText("Title", header, TypographyStyle.Title, 38);
+            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-160, 38));
+            title.alignment = TextAlignmentOptions.Center; title.characterSpacing = 3.5f;
+            title.enableAutoSizing = true; title.fontSizeMin = 18; title.fontSizeMax = 25;
 
             // Resource cost: repeated mana icons integrated into header texture (no numeric text widget)
             var costBadge = Rect("CostBadge", header);
-            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(18, 0), new Vector2(64, 32));
+            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(16, 0), new Vector2(80, 34));
             var costLayout = costBadge.gameObject.AddComponent<HorizontalLayoutGroup>();
-            costLayout.spacing = 3; costLayout.childAlignment = TextAnchor.MiddleLeft;
+            costLayout.spacing = 5; costLayout.childAlignment = TextAnchor.MiddleLeft;
             costLayout.childControlWidth = false; costLayout.childControlHeight = false;
             costLayout.childForceExpandWidth = false; costLayout.childForceExpandHeight = false;
             var costFitter = costBadge.gameObject.AddComponent<ContentSizeFitter>();
@@ -273,11 +273,12 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             costFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             for (int i = 0; i < 3; i++)
             {
-                var icon = Image($"CostIcon_{i}", costBadge, _config.GetColor(UISemanticColor.Mana));
-                icon.sprite = manaIcon; icon.preserveAspect = true; icon.rectTransform.sizeDelta = new Vector2(16, 22);
-                var elem = icon.gameObject.AddComponent<LayoutElement>(); elem.preferredWidth = 16; elem.preferredHeight = 22;
+                var icon = Image($"CostIcon_{i}", costBadge, new Color(0.38f, 0.85f, 1.0f, 0.98f));
+                icon.sprite = manaIcon; icon.preserveAspect = true; icon.rectTransform.sizeDelta = new Vector2(22, 30);
+                var elem = icon.gameObject.AddComponent<LayoutElement>(); elem.preferredWidth = 22; elem.preferredHeight = 30;
+                var iconShadow = icon.gameObject.AddComponent<Shadow>(); iconShadow.effectColor = new Color(0, 0, 0, 0.40f); iconShadow.effectDistance = new Vector2(0, -1);
             }
-            var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 32);
+            var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 28);
             cost.gameObject.SetActive(false); // Kept for reference but hidden in favor of repeated icons
             var familyIcon = costBadge.transform.Find("CostIcon_0")?.GetComponent<Image>();
 
