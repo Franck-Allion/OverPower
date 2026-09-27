@@ -120,12 +120,15 @@ Stable information architecture: artwork, name, cost, type, description, stats w
 resolved display data, so current `RuntimeCard`, `UnitDefinition`, and
 `SpellDefinition` contracts remain unchanged. Its optional fields include cost,
 rarity, artwork, unit stats and unit count as resolved display values; it does not imply a Unit
-cost, AP cost, rarity, level, or element in gameplay. `UICardFrame` keeps a shared
-premium fantasy frame for Unit and Spell, with a textured title header, integrated
-cost, framed artwork window (and intentional safe placeholder), overlapping type
-banner, centered swappable rarity medallion, textured rules body and balanced
-unit-only bottom stat rail. Unit Count is optional and renders as `xN` alongside
-Attack, Armor and Health; absent values collapse without leaving empty slots.
+cost, AP cost, rarity, level, or element in gameplay. `UICardFrame` keeps Unit and
+Spell at the same fixed 430×620 presentation size. The shared premium fantasy frame
+uses a compact textured title header with integrated cost, an aspect-preserving
+centre-crop artwork window, type-specific ornamentation without a redundant visible
+type label, an embedded swappable rarity medallion and a textured rules body. Unit
+cards reserve their bottom rail for dominant Attack/Health values, secondary Armor
+and a distinct `xN` stack badge; Spell cards retain the same silhouette with a quiet
+decorative footer. Missing Spell artwork uses the polished magical sigil placeholder.
+Absent values collapse without leaving empty slots.
 Cards are inspected on the dedicated
 Cards tab in the Design System preview, rather than a compressed component column.
 Card descriptions use existing `{attack}`,

@@ -36,6 +36,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private Image _surface;
         [SerializeField] private Image _accent;
         [SerializeField] private Image _artwork;
+        [SerializeField] private AspectRatioFitter _artworkAspect;
         [SerializeField] private GameObject _artworkPlaceholder;
         [SerializeField] private Image _artworkFrame;
         [SerializeField] private Image _familyIcon;
@@ -54,6 +55,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private Sprite _epicRaritySprite;
         [SerializeField] private Sprite _legendaryRaritySprite;
         [SerializeField] private GameObject _stats;
+        [SerializeField] private GameObject _spellFooter;
         [SerializeField] private GameObject _attackSlot;
         [SerializeField] private GameObject _armorSlot;
         [SerializeField] private GameObject _healthSlot;
@@ -100,6 +102,8 @@ namespace OverPower.Unity.Presentation.DesignSystem
             {
                 _artwork.sprite = data.Artwork;
                 _artwork.gameObject.SetActive(data.Artwork != null);
+                if (_artworkAspect != null && data.Artwork != null && data.Artwork.rect.height > 0f)
+                    _artworkAspect.aspectRatio = data.Artwork.rect.width / data.Artwork.rect.height;
             }
             if (_artworkPlaceholder != null) _artworkPlaceholder.SetActive(data.Artwork == null);
             SetText(_typeLabel, data.TypeLabel);
@@ -107,6 +111,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             if (_unitBanner != null) _unitBanner.SetActive(isUnit);
             if (_spellBanner != null) _spellBanner.SetActive(!isUnit);
             if (_stats != null) _stats.SetActive(isUnit && (data.Attack.HasValue || data.Armor.HasValue || data.Health.HasValue || data.UnitCount.HasValue));
+            if (_spellFooter != null) _spellFooter.SetActive(!isUnit);
             var typeTone = data.Type == CardVisualType.Unit ? UISemanticColor.Interactive : UISemanticColor.Mana;
             if (_accent != null && _config != null) _accent.color = _config.GetColor(typeTone);
             if (_familyIcon != null && _config != null) _familyIcon.color = _config.GetColor(typeTone);
@@ -165,18 +170,6 @@ namespace OverPower.Unity.Presentation.DesignSystem
                 case CardRarityVisual.Legendary: return _legendaryRaritySprite != null ? _legendaryRaritySprite : _commonRaritySprite;
                 case CardRarityVisual.Common: return _commonRaritySprite;
                 default: return null;
-            }
-        }
-
-        private static string RarityLabel(CardRarityVisual rarity)
-        {
-            switch (rarity)
-            {
-                case CardRarityVisual.Common: return "COMMON";
-                case CardRarityVisual.Rare: return "RARE";
-                case CardRarityVisual.Epic: return "EPIC";
-                case CardRarityVisual.Legendary: return "LEGENDARY";
-                default: return "—";
             }
         }
 

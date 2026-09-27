@@ -224,85 +224,106 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var unitBannerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(cardsRoot + "/Decorations/unit-banner.png");
             var spellBannerSprite = AssetDatabase.LoadAssetAtPath<Sprite>(cardsRoot + "/Decorations/spell-banner.png");
             var manaIcon = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Icons/Inline/icon_mana.png");
+            var attackIcon = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Icons/Inline/icon_attack.png");
+            var healthIcon = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Icons/Inline/icon_health.png");
+            var armorIcon = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_diamond_accent.png");
+            var placeholderGradient = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_vertical_gradient.png");
+            var placeholderGlow = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_soft_glow_box.png");
+            var roundSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
 
             var root = Rect("CardFrame", null);
             root.gameObject.SetActive(false);
             root.sizeDelta = new Vector2(430, 620);
+            var rootLayout = root.gameObject.AddComponent<LayoutElement>();
+            rootLayout.minWidth = rootLayout.preferredWidth = 430;
+            rootLayout.minHeight = rootLayout.preferredHeight = 620;
+            rootLayout.flexibleWidth = rootLayout.flexibleHeight = 0;
             PanelSurface(root, UIPanelStyle.Elevated);
             var group = root.gameObject.AddComponent<CanvasGroup>();
             var stateOutline = Image("StateOutline", root, Color.clear); Stretch(stateOutline.rectTransform, -7); stateOutline.raycastTarget = false;
 
             // Textured title/header zone. The source contains three stacked variants; use the light lower third.
             var header = Rect("Header", root);
-            SetAbsolute(header, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), Vector2.zero, new Vector2(-10, 112));
+            SetAbsolute(header, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), Vector2.zero, new Vector2(-10, 96));
             var headerTexture = header.gameObject.AddComponent<RawImage>();
             headerTexture.texture = titleTexture; headerTexture.uvRect = new Rect(0, 0, 1, 0.333333f); headerTexture.raycastTarget = false;
             var headerShade = Image("HeaderShade", header, new Color(0.04f, 0.07f, 0.12f, .24f)); Stretch(headerShade.rectTransform, 0);
-            var title = PlainText("Title", header, TypographyStyle.Title, 56);
-            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(18, -2), new Vector2(-150, 58));
-            title.alignment = TextAlignmentOptions.Center; title.enableAutoSizing = true; title.fontSizeMin = 22; title.fontSizeMax = 38;
+            var title = PlainText("Title", header, TypographyStyle.Title, 50);
+            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(28, 0), new Vector2(-128, 52));
+            title.alignment = TextAlignmentOptions.Center; title.enableAutoSizing = true; title.fontSizeMin = 22; title.fontSizeMax = 36;
             var costBadge = Rect("CostBadge", header);
-            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(22, -2), new Vector2(92, 66));
-            var costSurface = Image("CostSurface", costBadge, new Color(0.03f, 0.06f, .10f, .86f)); Stretch(costSurface.rectTransform, 0);
-            var costOutline = costSurface.gameObject.AddComponent<Outline>(); costOutline.effectColor = _config.GetColor(UISemanticColor.Mana); costOutline.effectDistance = new Vector2(2, -2);
+            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(18, 0), new Vector2(70, 70));
+            var costSurface = Image("CostSurface", costBadge, new Color(0.03f, 0.06f, .10f, .90f)); costSurface.sprite = roundSprite; Stretch(costSurface.rectTransform, 0);
+            var costShadow = costSurface.gameObject.AddComponent<Shadow>(); costShadow.effectColor = new Color(0, 0, 0, .72f); costShadow.effectDistance = new Vector2(0, -3);
+            var costOutline = costSurface.gameObject.AddComponent<Outline>(); costOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Mana), .9f); costOutline.effectDistance = new Vector2(1, -1);
             var familyIcon = Image("FamilyIcon", costBadge, Color.white); familyIcon.sprite = manaIcon; familyIcon.preserveAspect = true;
-            SetAbsolute(familyIcon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(28, 38));
-            var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 54);
-            SetAbsolute(cost.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(17, 0), new Vector2(-30, 0)); cost.alignment = TextAlignmentOptions.Center;
+            SetAbsolute(familyIcon.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-15, 0), new Vector2(24, 32));
+            var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 44);
+            SetAbsolute(cost.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(14, 0), new Vector2(-28, 0)); cost.alignment = TextAlignmentOptions.Center;
 
             // Framed artwork dominates the middle of the card.
             var artFrame = Image("ArtworkFrame", root, WithAlpha(_config.GetColor(UISemanticColor.FloatingBorder), .96f));
-            SetAbsolute(artFrame.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -116), new Vector2(-28, 266));
+            SetAbsolute(artFrame.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -101), new Vector2(-28, 281));
             var artworkBackground = Image("ArtworkBackdrop", artFrame.transform, _config.GetColor(UISemanticColor.Background)); Stretch(artworkBackground.rectTransform, 4);
-            var artwork = Image("Artwork", artworkBackground.transform, Color.white); Stretch(artwork.rectTransform, 3); artwork.preserveAspect = false; artwork.raycastTarget = false;
+            artworkBackground.gameObject.AddComponent<RectMask2D>();
+            var artwork = Image("Artwork", artworkBackground.transform, Color.white); Stretch(artwork.rectTransform, 0); artwork.preserveAspect = false; artwork.raycastTarget = false;
+            var artworkAspect = artwork.gameObject.AddComponent<AspectRatioFitter>(); artworkAspect.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent; artworkAspect.aspectRatio = 1.5f;
             var placeholder = Rect("ArtworkPlaceholder", artworkBackground.transform); Stretch(placeholder, 5);
-            var placeholderSurface = Image("PlaceholderSurface", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Secondary), .28f)); Stretch(placeholderSurface.rectTransform, 0);
-            var placeholderLabel = PlainText("PlaceholderLabel", placeholder, TypographyStyle.Caption, 28); Stretch(placeholderLabel.rectTransform, 0); placeholderLabel.alignment = TextAlignmentOptions.Center; placeholderLabel.text = "ARTWORK";
+            var placeholderSurface = Image("PlaceholderSurface", placeholder, new Color(.025f, .045f, .075f, 1f)); Stretch(placeholderSurface.rectTransform, 0);
+            var placeholderTexture = Image("MysticGradient", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Mana), .24f)); placeholderTexture.sprite = placeholderGradient; Stretch(placeholderTexture.rectTransform, 0);
+            var glow = Image("MysticGlow", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Mana), .26f)); glow.sprite = placeholderGlow; SetAbsolute(glow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(250, 190));
+            var sigil = Image("ArcaneSigil", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Mana), .64f)); sigil.sprite = manaIcon; sigil.preserveAspect = true; SetAbsolute(sigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(84, 104));
+            var sigilAccent = Image("ArcaneAccent", placeholder, WithAlpha(_config.GetColor(UISemanticColor.Gold), .24f)); sigilAccent.sprite = armorIcon; sigilAccent.preserveAspect = true; SetAbsolute(sigilAccent.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(132, 132));
 
             // Unit/Spell banners overlap the title and art, giving the card its type silhouette.
             var unitBanner = Image("UnitBanner", root, Color.white); unitBanner.sprite = unitBannerSprite; unitBanner.preserveAspect = true;
-            SetAbsolute(unitBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -108), new Vector2(368, 42));
+            SetAbsolute(unitBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -96), new Vector2(368, 42));
             var spellBanner = Image("SpellBanner", root, Color.white); spellBanner.sprite = spellBannerSprite; spellBanner.preserveAspect = true;
-            SetAbsolute(spellBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -108), new Vector2(368, 42));
-            var type = PlainText("Type", root, TypographyStyle.Caption, 26);
-            SetAbsolute(type.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -108), new Vector2(160, 26)); type.alignment = TextAlignmentOptions.Center;
+            SetAbsolute(spellBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -96), new Vector2(368, 42));
 
             // Textured rules body and integrated lower stat rail.
             var body = Image("BodyTexture", root, Color.white); body.sprite = bodySprite; body.type = UnityEngine.UI.Image.Type.Simple;
             SetAbsolute(body.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 10), new Vector2(-18, 228));
             var bodyShade = Image("BodyShade", body.transform, new Color(.04f, .025f, .015f, .12f)); Stretch(bodyShade.rectTransform, 0);
-            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 96);
-            SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -36), new Vector2(-66, 92));
-            description.alignment = TextAlignmentOptions.TopLeft; description.textWrappingMode = TextWrappingModes.Normal; description.color = new Color32(31, 25, 22, 255);
+            var description = PlainText("Description", body.transform, TypographyStyle.BodySmall, 102);
+            SetAbsolute(description.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -42), new Vector2(-76, 102));
+            description.alignment = TextAlignmentOptions.TopLeft; description.textWrappingMode = TextWrappingModes.Normal; description.color = new Color32(31, 25, 22, 255); description.lineSpacing = 5;
             var rich = description.gameObject.AddComponent<UIRichText>(); SetReference(rich, "_config", _config);
 
-            var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 26), new Vector2(-48, 72));
-            Horizontal(stats, 0, 0); var statLayout = stats.GetComponent<HorizontalLayoutGroup>(); statLayout.spacing = UISpacing.Sm; statLayout.childForceExpandWidth = true;
-            var attack = CreateCardStatSlot("Attack", stats, out var attackSlot, out var attackCaption);
-            var armor = CreateCardStatSlot("Armor", stats, out var armorSlot, out var armorCaption);
-            var health = CreateCardStatSlot("Health", stats, out var healthSlot, out var healthCaption);
-            var unitCount = CreateCardStatSlot("UnitCount", stats, out var unitCountSlot, out var unitCountCaption);
+            var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 14), new Vector2(372, 78));
+            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-132, 37), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
+            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(-43, 32), armorIcon, out var armorSlot, out var armorCaption);
+            var unitCount = CreateQuantityBadge(stats, new Vector2(43, 34), roundSprite, out var unitCountSlot);
+            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(132, 37), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
+            TMP_Text unitCountCaption = null;
+
+            var spellFooter = Rect("SpellFooter", body.transform); SetAbsolute(spellFooter, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 16), new Vector2(340, 66));
+            var footerLeft = Image("LeftRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .34f)); SetAbsolute(footerLeft.rectTransform, new Vector2(0, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-24, 0), new Vector2(-38, 1));
+            var footerRight = Image("RightRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .34f)); SetAbsolute(footerRight.rectTransform, new Vector2(.5f, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-38, 1));
+            var footerSigil = Image("Sigil", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Mana), .48f)); footerSigil.sprite = manaIcon; footerSigil.preserveAspect = true; SetAbsolute(footerSigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(28, 38));
 
             // Ornamental separator and rarity medallion sit over the art/body seam.
             var separator = Image("MiddleBanner", root, Color.white); separator.sprite = middleBanner; separator.preserveAspect = true;
             SetAbsolute(separator.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -382), new Vector2(414, 54));
-            var medallion = Rect("RarityMedallion", root); SetAbsolute(medallion, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -382), new Vector2(66, 66));
-            var rarityGem = Image("Gem", medallion, Color.white); rarityGem.sprite = commonRarity; rarityGem.preserveAspect = true; Stretch(rarityGem.rectTransform, 0);
-            var rarity = PlainText("Rarity", root, TypographyStyle.Caption, 22); SetAbsolute(rarity.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -422), new Vector2(140, 22)); rarity.alignment = TextAlignmentOptions.Center; rarity.color = new Color32(72, 55, 38, 255);
+            var medallion = Rect("RarityMedallion", root); SetAbsolute(medallion, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -382), new Vector2(60, 60));
+            var socket = Image("Socket", medallion, new Color(.07f, .06f, .055f, .96f)); socket.sprite = roundSprite; Stretch(socket.rectTransform, 0);
+            var socketShadow = socket.gameObject.AddComponent<Shadow>(); socketShadow.effectColor = new Color(0, 0, 0, .75f); socketShadow.effectDistance = new Vector2(0, -3);
+            var socketOutline = socket.gameObject.AddComponent<Outline>(); socketOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .72f); socketOutline.effectDistance = new Vector2(1, -1);
+            var rarityGem = Image("Gem", medallion, Color.white); rarityGem.sprite = commonRarity; rarityGem.preserveAspect = true; Stretch(rarityGem.rectTransform, 4);
 
             var card = root.gameObject.AddComponent<UICardFrame>();
             SetReference(card, "_config", _config);
             SetReference(card, "_surface", root.Find("Surface").GetComponent<Image>());
             SetReference(card, "_accent", root.Find("TopAccentBar").GetComponent<Image>());
-            SetReference(card, "_artwork", artwork);
+            SetReference(card, "_artwork", artwork); SetReference(card, "_artworkAspect", artworkAspect);
             SetReference(card, "_artworkPlaceholder", placeholder.gameObject); SetReference(card, "_artworkFrame", artFrame);
             SetReference(card, "_unitBanner", unitBanner.gameObject); SetReference(card, "_spellBanner", spellBanner.gameObject); SetReference(card, "_costBadge", costBadge.gameObject);
             SetReference(card, "_familyIcon", familyIcon); SetReference(card, "_rarityMedallion", medallion.gameObject);
-            SetReference(card, "_rarityGem", rarityGem); SetReference(card, "_rarityLabel", rarity);
+            SetReference(card, "_rarityGem", rarityGem);
             SetReference(card, "_commonRaritySprite", commonRarity);
-            SetReference(card, "_typeLabel", type); SetReference(card, "_costLabel", cost);
+            SetReference(card, "_costLabel", cost);
             SetReference(card, "_titleLabel", title); SetReference(card, "_description", rich);
-            SetReference(card, "_stats", stats.gameObject); SetReference(card, "_attackSlot", attackSlot); SetReference(card, "_armorSlot", armorSlot); SetReference(card, "_healthSlot", healthSlot); SetReference(card, "_unitCountSlot", unitCountSlot);
+            SetReference(card, "_stats", stats.gameObject); SetReference(card, "_spellFooter", spellFooter.gameObject); SetReference(card, "_attackSlot", attackSlot); SetReference(card, "_armorSlot", armorSlot); SetReference(card, "_healthSlot", healthSlot); SetReference(card, "_unitCountSlot", unitCountSlot);
             SetReference(card, "_attackLabel", attack); SetReference(card, "_armorLabel", armor); SetReference(card, "_healthLabel", health); SetReference(card, "_unitCountLabel", unitCount);
             SetReference(card, "_attackCaption", attackCaption); SetReference(card, "_armorCaption", armorCaption); SetReference(card, "_healthCaption", healthCaption); SetReference(card, "_unitCountCaption", unitCountCaption);
             SetReference(card, "_group", group); SetReference(card, "_stateOutline", stateOutline);
@@ -318,18 +339,51 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
         private static Color WithAlpha(Color color, float alpha) { color.a = alpha; return color; }
 
-        private static TMP_Text CreateCardStatSlot(string name, Transform parent, out GameObject slot, out TMP_Text caption)
+        private static TMP_Text CreatePrimaryCardStatSlot(string name, Transform parent, Vector2 position, Sprite iconSprite,
+            UISemanticColor tone, out GameObject slot, out TMP_Text caption)
         {
             var root = Rect(name + "Slot", parent); slot = root.gameObject;
-            var size = root.gameObject.AddComponent<LayoutElement>();
-            size.minWidth = 62; size.flexibleWidth = 1; size.minHeight = size.preferredHeight = 72;
-            var plate = Image("Plate", root, new Color(0.07f, .055f, .04f, .72f)); Stretch(plate.rectTransform, 0);
-            var plateOutline = plate.gameObject.AddComponent<Outline>();
-            plateOutline.effectColor = new Color(.72f, .56f, .31f, .58f); plateOutline.effectDistance = new Vector2(1, -1);
-            var value = PlainText(name, root, TypographyStyle.Stat, 38); SetAbsolute(value.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(0, 7), new Vector2(-4, -22)); value.alignment = TextAlignmentOptions.Center;
-            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 18); SetAbsolute(caption.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 6), new Vector2(-6, 18));
-            caption.alignment = TextAlignmentOptions.Center; caption.color = new Color32(215, 198, 169, 255);
-            caption.enableAutoSizing = true; caption.fontSizeMin = 9; caption.fontSizeMax = 13; caption.overflowMode = TextOverflowModes.Ellipsis;
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(104, 70));
+            var plate = Image("Plate", root, new Color(.11f, .075f, .04f, .68f)); Stretch(plate.rectTransform, 0);
+            var plateShadow = plate.gameObject.AddComponent<Shadow>(); plateShadow.effectColor = new Color(0, 0, 0, .55f); plateShadow.effectDistance = new Vector2(0, -2);
+            var plateOutline = plate.gameObject.AddComponent<Outline>(); plateOutline.effectColor = new Color(.72f, .56f, .31f, .52f); plateOutline.effectDistance = new Vector2(1, -1);
+            var icon = Image("Icon", root, _config.GetColor(tone)); icon.sprite = iconSprite; icon.preserveAspect = true;
+            SetAbsolute(icon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(22, 6), new Vector2(28, 34));
+            var value = PlainText(name, root, TypographyStyle.Stat, 42);
+            SetAbsolute(value.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(15, 7), new Vector2(-38, -20)); value.alignment = TextAlignmentOptions.Center;
+            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 14);
+            SetAbsolute(caption.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(10, 6), new Vector2(-24, 14));
+            caption.alignment = TextAlignmentOptions.Center; caption.color = new Color32(174, 157, 130, 220);
+            caption.enableAutoSizing = true; caption.fontSizeMin = 8; caption.fontSizeMax = 10;
+            return value;
+        }
+
+        private static TMP_Text CreateSecondaryCardStatSlot(string name, Transform parent, Vector2 position, Sprite iconSprite,
+            out GameObject slot, out TMP_Text caption)
+        {
+            var root = Rect(name + "Slot", parent); slot = root.gameObject;
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(66, 60));
+            var plate = Image("Plate", root, new Color(.10f, .09f, .075f, .54f)); Stretch(plate.rectTransform, 2);
+            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = new Color(.60f, .63f, .63f, .42f); outline.effectDistance = new Vector2(1, -1);
+            var icon = Image("Icon", root, WithAlpha(_config.GetColor(UISemanticColor.Armor), .76f)); icon.sprite = iconSprite; icon.preserveAspect = true;
+            SetAbsolute(icon.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -2), new Vector2(20, 16));
+            var value = PlainText(name, root, TypographyStyle.Stat, 32);
+            SetAbsolute(value.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(0, 5), new Vector2(-8, -8)); value.alignment = TextAlignmentOptions.Center;
+            caption = PlainText(name + "Caption", root, TypographyStyle.Caption, 12);
+            SetAbsolute(caption.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(.5f, 0), new Vector2(0, 4), new Vector2(-8, 12));
+            caption.alignment = TextAlignmentOptions.Center; caption.color = new Color32(158, 151, 137, 190);
+            caption.enableAutoSizing = true; caption.fontSizeMin = 7; caption.fontSizeMax = 9;
+            return value;
+        }
+
+        private static TMP_Text CreateQuantityBadge(Transform parent, Vector2 position, Sprite roundSprite, out GameObject slot)
+        {
+            var root = Rect("UnitCountSlot", parent); slot = root.gameObject;
+            SetAbsolute(root, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, .5f), position, new Vector2(62, 62));
+            var plate = Image("StackBadge", root, new Color(.10f, .065f, .025f, .88f)); plate.sprite = roundSprite; Stretch(plate.rectTransform, 0);
+            var shadow = plate.gameObject.AddComponent<Shadow>(); shadow.effectColor = new Color(0, 0, 0, .65f); shadow.effectDistance = new Vector2(0, -2);
+            var outline = plate.gameObject.AddComponent<Outline>(); outline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .72f); outline.effectDistance = new Vector2(1, -1);
+            var value = PlainText("UnitCount", root, TypographyStyle.Stat, 40); Stretch(value.rectTransform, 6); value.alignment = TextAlignmentOptions.Center;
             return value;
         }
 

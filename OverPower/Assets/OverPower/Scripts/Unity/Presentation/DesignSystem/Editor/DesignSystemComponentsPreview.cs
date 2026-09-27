@@ -308,23 +308,20 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var sorcererArtwork = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/OverPower/UI/Cards/Artwork/sorcerer.png");
             var sorcerer = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
             sorcerer.name = "SorcererCard";
-            FixedSize((RectTransform)sorcerer.transform, 430, 620);
             sorcerer.SetPresentation(new CardPresentationData
             {
-                Title = "Sorcerer", TypeLabel = "UNIT", RarityLabel = "COMMON",
+                Title = "Sorcerer", RarityLabel = "COMMON",
                 Type = CardVisualType.Unit, Rarity = CardRarityVisual.Common, Cost = 2, Artwork = sorcererArtwork,
                 Description = "Move an enemy unit to another lane. Gain 1 {mana}.",
                 Attack = 10, Armor = 4, Health = 10, UnitCount = 8,
-                AttackStatLabel = "ATTACK", ArmorStatLabel = "ARMOR", HealthStatLabel = "HEALTH", UnitCountStatLabel = "UNITS"
+                AttackStatLabel = "ATTACK", ArmorStatLabel = "ARMOR", HealthStatLabel = "HEALTH"
             });
-            sorcerer.SetState(CardPresentationState.Highlighted);
 
             var arcaneBolt = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
             arcaneBolt.name = "ArcaneBoltCard";
-            FixedSize((RectTransform)arcaneBolt.transform, 430, 620);
             arcaneBolt.SetPresentation(new CardPresentationData
             {
-                Title = "Arcane Bolt", TypeLabel = "SPELL", RarityLabel = "COMMON",
+                Title = "Arcane Bolt", RarityLabel = "COMMON",
                 Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3,
                 Description = "Deal 12 {attack} to an enemy. Restore 1 {mana} after it resolves."
             });
