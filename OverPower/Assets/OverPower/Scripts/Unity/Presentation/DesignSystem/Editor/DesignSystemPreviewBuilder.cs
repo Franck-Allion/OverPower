@@ -27,7 +27,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
         public static void Build()
         {
             if (EditorApplication.isPlaying) throw new InvalidOperationException("Exit Play Mode before authoring.");
-            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            EditorSceneManager.SaveOpenScenes();
             foreach (string path in new[] { Root + "/Tokens", Root + "/Typography", Root + "/Motion",
                 Root + "/Components", "Assets/OverPower/Data/UI", "Assets/OverPower/Scenes/Development" }) Folder(path);
             _config = AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>(ConfigPath);

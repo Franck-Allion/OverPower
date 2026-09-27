@@ -363,12 +363,12 @@ namespace OverPower.Tests.Unity
             Assert.That(card.Type, Is.EqualTo(CardVisualType.Unit)); Assert.That(stats.activeSelf, Is.True); Assert.That(costBadge.activeSelf, Is.True);
             Assert.That(title.text, Is.EqualTo("Sorcerer")); Assert.That(rarityLabel.text, Is.EqualTo("COMMON")); Assert.That(artworkPlaceholder.activeSelf, Is.True);
             Assert.That(unitBanner.activeSelf, Is.True); Assert.That(spellBanner.activeSelf, Is.False); Assert.That(rarityGem.sprite, Is.EqualTo(commonSprite));
-            Assert.That(cost.text, Is.EqualTo("2")); Assert.That(attack.text, Is.EqualTo("10")); Assert.That(armor.text, Is.EqualTo("4")); Assert.That(health.text, Is.EqualTo("10")); Assert.That(unitCount.text, Is.EqualTo("x8"));
+            Assert.That(cost.text, Is.EqualTo("2")); Assert.That(card.CostIconsCount, Is.EqualTo(2)); Assert.That(attack.text, Is.EqualTo("10")); Assert.That(armor.text, Is.EqualTo("4")); Assert.That(health.text, Is.EqualTo("10")); Assert.That(unitCount.text, Is.EqualTo("x8"));
             Assert.That(spellFooter.activeSelf, Is.False); Assert.That(attackCaption.text, Is.EqualTo("ATTACK")); Assert.That(unitCountCaption.text, Is.Empty); Assert.That(card.UnitCount, Is.EqualTo(8));
             Assert.That(descriptionObject.GetComponent<TMP_Text>().text, Does.Contain("sprite name=\"mana\""));
             var artworkSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f));
             card.SetPresentation(new CardPresentationData { Title = "Arcane Bolt", Description = "Deals 12 {attack}.", RarityLabel = "COMMON", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3, Artwork = artworkSprite });
-            Assert.That(card.Type, Is.EqualTo(CardVisualType.Spell)); Assert.That(stats.activeSelf, Is.False); Assert.That(cost.text, Is.EqualTo("3"));
+            Assert.That(card.Type, Is.EqualTo(CardVisualType.Spell)); Assert.That(stats.activeSelf, Is.False); Assert.That(cost.text, Is.EqualTo("3")); Assert.That(card.CostIconsCount, Is.EqualTo(3));
             Assert.That(unitBanner.activeSelf, Is.False); Assert.That(spellBanner.activeSelf, Is.True); Assert.That(spellFooter.activeSelf, Is.True);
             Assert.That(card.HasArtwork, Is.True); Assert.That(artworkPlaceholder.activeSelf, Is.False); Assert.That(artworkAspect.aspectRatio, Is.EqualTo(1f)); Assert.That(card.UnitCount, Is.Null);
             card.SetState(CardPresentationState.Highlighted); Assert.That(root.transform.localScale.x, Is.GreaterThan(1f)); Assert.That(stateOutline.gameObject.activeSelf, Is.True);

@@ -255,22 +255,31 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             headerTexture.texture = titleTexture; headerTexture.uvRect = new Rect(0, 0, 1, 0.333333f); headerTexture.raycastTarget = false;
             var headerShade = Image("HeaderShade", header, new Color(0.03f, 0.06f, 0.10f, .20f)); Stretch(headerShade.rectTransform, 0);
 
-            // Strong, centered card title
-            var title = PlainText("Title", header, TypographyStyle.Title, 46);
-            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-116, 46));
-            title.alignment = TextAlignmentOptions.Center; title.enableAutoSizing = true; title.fontSizeMin = 20; title.fontSizeMax = 34;
+            // Strong, centered card title with open tracking for premium fantasy feel
+            var title = PlainText("Title", header, TypographyStyle.Title, 44);
+            SetAbsolute(title.rectTransform, new Vector2(0, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(10, 0), new Vector2(-120, 44));
+            title.alignment = TextAlignmentOptions.Center; title.characterSpacing = 4f;
+            title.enableAutoSizing = true; title.fontSizeMin = 20; title.fontSizeMax = 30;
 
-            // Resource cost: integrated into title texture, not an isolated button widget
+            // Resource cost: repeated mana icons integrated into header texture (no numeric text widget)
             var costBadge = Rect("CostBadge", header);
-            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(16, 0), new Vector2(56, 40));
-            var costSurface = Image("CostSurface", costBadge, new Color(0.02f, 0.05f, 0.09f, 0.36f)); costSurface.sprite = roundSprite; Stretch(costSurface.rectTransform, 0);
-            var costShadow = costSurface.gameObject.AddComponent<Shadow>(); costShadow.effectColor = new Color(0, 0, 0, 0.40f); costShadow.effectDistance = new Vector2(0, -2);
-            var costOutline = costSurface.gameObject.AddComponent<Outline>(); costOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Mana), 0.38f); costOutline.effectDistance = new Vector2(1, -1);
-            var familyIcon = Image("FamilyIcon", costBadge, Color.white); familyIcon.sprite = manaIcon; familyIcon.preserveAspect = true;
-            SetAbsolute(familyIcon.rectTransform, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(8, 0), new Vector2(18, 24));
+            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(18, 0), new Vector2(64, 32));
+            var costLayout = costBadge.gameObject.AddComponent<HorizontalLayoutGroup>();
+            costLayout.spacing = 3; costLayout.childAlignment = TextAnchor.MiddleLeft;
+            costLayout.childControlWidth = false; costLayout.childControlHeight = false;
+            costLayout.childForceExpandWidth = false; costLayout.childForceExpandHeight = false;
+            var costFitter = costBadge.gameObject.AddComponent<ContentSizeFitter>();
+            costFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            costFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            for (int i = 0; i < 3; i++)
+            {
+                var icon = Image($"CostIcon_{i}", costBadge, _config.GetColor(UISemanticColor.Mana));
+                icon.sprite = manaIcon; icon.preserveAspect = true; icon.rectTransform.sizeDelta = new Vector2(16, 22);
+                var elem = icon.gameObject.AddComponent<LayoutElement>(); elem.preferredWidth = 16; elem.preferredHeight = 22;
+            }
             var cost = PlainText("Cost", costBadge, TypographyStyle.Stat, 32);
-            cost.overflowMode = TextOverflowModes.Overflow;
-            SetAbsolute(cost.rectTransform, new Vector2(0, 0), new Vector2(1, 1), new Vector2(.5f, .5f), new Vector2(14, 0), new Vector2(-16, 0)); cost.alignment = TextAlignmentOptions.Center;
+            cost.gameObject.SetActive(false); // Kept for reference but hidden in favor of repeated icons
+            var familyIcon = costBadge.transform.Find("CostIcon_0")?.GetComponent<Image>();
 
             // Recessed framed artwork dominating the middle (expanded height: 289px)
             var artFrame = Image("ArtworkFrame", root, WithAlpha(_config.GetColor(UISemanticColor.FloatingBorder), .96f));
@@ -295,22 +304,19 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var placeholder = Rect("ArtworkPlaceholder", artworkBackground.transform); Stretch(placeholder, 0);
             var placeholderSurface = Image("PlaceholderSurface", placeholder, new Color(.015f, .035f, .070f, 1f)); Stretch(placeholderSurface.rectTransform, 0);
             var placeholderTexture = Image("MysticGradient", placeholder, new Color(0.04f, 0.11f, 0.24f, 0.75f)); placeholderTexture.sprite = placeholderGradient; Stretch(placeholderTexture.rectTransform, 0);
-            var glow = Image("MysticGlow", placeholder, new Color(0.12f, 0.48f, 0.88f, 0.22f)); glow.sprite = placeholderGlow; SetAbsolute(glow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(280, 210));
-            var sigilAccent = Image("ArcaneAccent", placeholder, new Color(0.28f, 0.68f, 0.95f, 0.10f)); sigilAccent.sprite = armorIcon; sigilAccent.preserveAspect = true; SetAbsolute(sigilAccent.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(210, 210));
-            var sigil = Image("ArcaneSigil", placeholder, new Color(0.40f, 0.80f, 1.0f, 0.22f)); sigil.sprite = manaIcon; sigil.preserveAspect = true; SetAbsolute(sigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(0, -2), new Vector2(152, 190));
-            var upperSpark = Image("UpperSpark", placeholder, new Color(.52f, .82f, 1f, .20f)); upperSpark.sprite = armorIcon; upperSpark.preserveAspect = true; SetAbsolute(upperSpark.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(72, 62), new Vector2(12, 12));
-            var lowerSpark = Image("LowerSpark", placeholder, new Color(.52f, .82f, 1f, .14f)); lowerSpark.sprite = armorIcon; lowerSpark.preserveAspect = true; SetAbsolute(lowerSpark.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-84, -48), new Vector2(8, 8));
+            var glow = Image("MysticGlow", placeholder, new Color(0.12f, 0.48f, 0.88f, 0.25f)); glow.sprite = placeholderGlow; SetAbsolute(glow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(300, 220));
+            var sigilAccent = Image("ArcaneAccent", placeholder, new Color(0.28f, 0.68f, 0.95f, 0.18f)); sigilAccent.sprite = armorIcon; sigilAccent.preserveAspect = true; SetAbsolute(sigilAccent.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(160, 160));
+            var sigil = Image("ArcaneSigil", placeholder, new Color(0.32f, 0.72f, 1.0f, 0.32f)); sigil.sprite = manaIcon; sigil.preserveAspect = true; SetAbsolute(sigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(0, -2), new Vector2(115, 145));
+            var upperSpark = Image("UpperSpark", placeholder, new Color(.52f, .82f, 1f, .35f)); upperSpark.sprite = armorIcon; upperSpark.preserveAspect = true; SetAbsolute(upperSpark.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(24, 24));
 
             // Unit/Spell banners with distinctive non-text visual symbols
             var unitBanner = Image("UnitBanner", root, Color.white); unitBanner.sprite = unitBannerSprite; unitBanner.preserveAspect = true;
             SetAbsolute(unitBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -88), new Vector2(368, 42));
-            var unitGlow = Image("UnitCrestGlow", unitBanner.transform, new Color(0.95f, 0.72f, 0.32f, 0.28f)); unitGlow.sprite = placeholderGlow; SetAbsolute(unitGlow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(46, 32));
-            var unitCrest = Image("UnitCrest", unitBanner.transform, new Color(0.96f, 0.84f, 0.58f, 0.85f)); unitCrest.sprite = attackIcon; unitCrest.preserveAspect = true; SetAbsolute(unitCrest.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(16, 20));
+            var unitGlow = Image("UnitCrestGlow", unitBanner.transform, new Color(0.95f, 0.72f, 0.32f, 0.35f)); unitGlow.sprite = placeholderGlow; SetAbsolute(unitGlow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(50, 34));
 
             var spellBanner = Image("SpellBanner", root, Color.white); spellBanner.sprite = spellBannerSprite; spellBanner.preserveAspect = true;
             SetAbsolute(spellBanner.rectTransform, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, -88), new Vector2(368, 42));
-            var spellGlow = Image("SpellCrestGlow", spellBanner.transform, new Color(0.25f, 0.70f, 0.98f, 0.32f)); spellGlow.sprite = placeholderGlow; SetAbsolute(spellGlow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(46, 32));
-            var spellCrest = Image("SpellCrest", spellBanner.transform, new Color(0.45f, 0.86f, 1.0f, 0.90f)); spellCrest.sprite = manaIcon; spellCrest.preserveAspect = true; SetAbsolute(spellCrest.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(16, 20));
+            var spellGlow = Image("SpellCrestGlow", spellBanner.transform, new Color(0.25f, 0.75f, 1.0f, 0.40f)); spellGlow.sprite = placeholderGlow; SetAbsolute(spellGlow.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(50, 34));
 
             // Textured rules body with high contrast typography and breathing room
             var body = Image("BodyTexture", root, Color.white); body.sprite = bodySprite; body.type = UnityEngine.UI.Image.Type.Simple;
@@ -324,32 +330,34 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var rich = description.gameObject.AddComponent<UIRichText>(); SetReference(rich, "_config", _config);
 
             // Integrated fantasy stat footer
-            var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(376, 82));
-            var footerSurface = Image("FooterSurface", stats, new Color(.075f, .045f, .022f, .15f)); Stretch(footerSurface.rectTransform, 0);
-            var footerInnerShadow = footerSurface.gameObject.AddComponent<Shadow>(); footerInnerShadow.effectColor = new Color(0, 0, 0, .26f); footerInnerShadow.effectDistance = new Vector2(0, 2);
-            var footerDivider = Image("FooterDivider", stats, new Color(0.48f, 0.38f, 0.24f, 0.35f));
-            SetAbsolute(footerDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-20, 1));
+            var stats = Rect("Stats", body.transform); SetAbsolute(stats, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(380, 80));
+            var footerSurface = Image("FooterSurface", stats, new Color(.05f, .035f, .02f, .35f)); Stretch(footerSurface.rectTransform, 0);
+            var plinthShadow = footerSurface.gameObject.AddComponent<Shadow>(); plinthShadow.effectColor = new Color(0, 0, 0, .35f); plinthShadow.effectDistance = new Vector2(0, -2);
+            var plinthOutline = footerSurface.gameObject.AddComponent<Outline>(); plinthOutline.effectColor = new Color(.58f, .44f, .26f, .28f); plinthOutline.effectDistance = new Vector2(1, -1);
+            var footerDivider = Image("FooterDivider", stats, new Color(0.68f, 0.52f, 0.30f, 0.50f));
+            SetAbsolute(footerDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-16, 1));
             var centerSpine = Image("CenterCrest", stats, new Color(.10f, .075f, .045f, .26f)); centerSpine.sprite = placeholderGradient; SetAbsolute(centerSpine.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(0, 0), new Vector2(64, -8));
-            var leftSeparator = Image("LeftSeparator", stats, new Color(.58f, .45f, .26f, .20f)); SetAbsolute(leftSeparator.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(-51, -2), new Vector2(1, -18));
-            var rightSeparator = Image("RightSeparator", stats, new Color(.58f, .45f, .26f, .20f)); SetAbsolute(rightSeparator.rectTransform, new Vector2(.5f, 0), new Vector2(.5f, 1), new Vector2(.5f, .5f), new Vector2(51, -2), new Vector2(1, -18));
 
-            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-128, 40), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
-            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(128, 40), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
-            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 50), roundSprite, out var unitCountSlot);
-            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 18), armorIcon, out var armorSlot, out var armorCaption);
+            var attack = CreatePrimaryCardStatSlot("Attack", stats, new Vector2(-130, 40), attackIcon, UISemanticColor.Danger, out var attackSlot, out var attackCaption);
+            var health = CreatePrimaryCardStatSlot("Health", stats, new Vector2(130, 40), healthIcon, UISemanticColor.Health, out var healthSlot, out var healthCaption);
+            var unitCount = CreateQuantityBadge(stats, new Vector2(0, 48), roundSprite, out var unitCountSlot);
+            var armor = CreateSecondaryCardStatSlot("Armor", stats, new Vector2(0, 16), armorIcon, out var armorSlot, out var armorCaption);
             TMP_Text unitCountCaption = null;
 
             // Spell footer: balanced ornamental finish maintaining identical footprint and height
-            var spellFooter = Rect("SpellFooter", body.transform); SetAbsolute(spellFooter, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(376, 82));
-            var spellFooterDivider = Image("FooterDivider", spellFooter, new Color(0.48f, 0.38f, 0.24f, 0.35f));
-            SetAbsolute(spellFooterDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-20, 1));
-            var footerLeft = Image("LeftRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .45f)); SetAbsolute(footerLeft.rectTransform, new Vector2(0, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-24, 0), new Vector2(-40, 1));
-            var footerRight = Image("RightRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .45f)); SetAbsolute(footerRight.rectTransform, new Vector2(.5f, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-40, 1));
-            var leftFlourish = Image("LeftFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .40f)); leftFlourish.sprite = armorIcon; leftFlourish.preserveAspect = true; SetAbsolute(leftFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-80, 0), new Vector2(8, 8));
-            var rightFlourish = Image("RightFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .40f)); rightFlourish.sprite = armorIcon; rightFlourish.preserveAspect = true; SetAbsolute(rightFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(80, 0), new Vector2(8, 8));
-            var sigilBacking = Image("SigilBacking", spellFooter, new Color(0.04f, 0.08f, 0.14f, 0.70f)); sigilBacking.sprite = roundSprite; SetAbsolute(sigilBacking.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(40, 40));
-            var sigilOutline = sigilBacking.gameObject.AddComponent<Outline>(); sigilOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .65f); sigilOutline.effectDistance = new Vector2(1, -1);
-            var footerSigil = Image("Sigil", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Mana), .80f)); footerSigil.sprite = manaIcon; footerSigil.preserveAspect = true; SetAbsolute(footerSigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(20, 26));
+            var spellFooter = Rect("SpellFooter", body.transform); SetAbsolute(spellFooter, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 8), new Vector2(380, 80));
+            var spellPlinth = Image("FooterSurface", spellFooter, new Color(.05f, .035f, .02f, .35f)); Stretch(spellPlinth.rectTransform, 0);
+            var spellPlinthShadow = spellPlinth.gameObject.AddComponent<Shadow>(); spellPlinthShadow.effectColor = new Color(0, 0, 0, .35f); spellPlinthShadow.effectDistance = new Vector2(0, -2);
+            var spellPlinthOutline = spellPlinth.gameObject.AddComponent<Outline>(); spellPlinthOutline.effectColor = new Color(.58f, .44f, .26f, .28f); spellPlinthOutline.effectDistance = new Vector2(1, -1);
+            var spellFooterDivider = Image("FooterDivider", spellFooter, new Color(0.68f, 0.52f, 0.30f, 0.50f));
+            SetAbsolute(spellFooterDivider.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, 0), new Vector2(-16, 1));
+            var footerLeft = Image("LeftRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); SetAbsolute(footerLeft.rectTransform, new Vector2(0, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-24, 0), new Vector2(-40, 1));
+            var footerRight = Image("RightRule", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .55f)); SetAbsolute(footerRight.rectTransform, new Vector2(.5f, .5f), new Vector2(1, .5f), new Vector2(.5f, .5f), new Vector2(24, 0), new Vector2(-40, 1));
+            var leftFlourish = Image("LeftFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .50f)); leftFlourish.sprite = armorIcon; leftFlourish.preserveAspect = true; SetAbsolute(leftFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(-80, 0), new Vector2(10, 10));
+            var rightFlourish = Image("RightFlourish", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Gold), .50f)); rightFlourish.sprite = armorIcon; rightFlourish.preserveAspect = true; SetAbsolute(rightFlourish.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(80, 0), new Vector2(10, 10));
+            var sigilBacking = Image("SigilBacking", spellFooter, new Color(0.04f, 0.08f, 0.14f, 0.85f)); sigilBacking.sprite = roundSprite; SetAbsolute(sigilBacking.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(38, 38));
+            var sigilOutline = sigilBacking.gameObject.AddComponent<Outline>(); sigilOutline.effectColor = WithAlpha(_config.GetColor(UISemanticColor.Gold), .75f); sigilOutline.effectDistance = new Vector2(1, -1);
+            var footerSigil = Image("Sigil", spellFooter, WithAlpha(_config.GetColor(UISemanticColor.Mana), .90f)); footerSigil.sprite = manaIcon; footerSigil.preserveAspect = true; SetAbsolute(footerSigil.rectTransform, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(.5f, .5f), Vector2.zero, new Vector2(20, 26));
 
             // Ornamental separator and rarity medallion embedded into the center socket
             var separator = Image("MiddleBanner", root, Color.white); separator.sprite = middleBanner; separator.preserveAspect = true;
@@ -368,6 +376,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             SetReference(card, "_artwork", artwork); SetReference(card, "_artworkAspect", artworkAspect);
             SetReference(card, "_artworkPlaceholder", placeholder.gameObject); SetReference(card, "_artworkFrame", artFrame);
             SetReference(card, "_unitBanner", unitBanner.gameObject); SetReference(card, "_spellBanner", spellBanner.gameObject); SetReference(card, "_costBadge", costBadge.gameObject);
+            SetReference(card, "_manaIconSprite", manaIcon);
             SetReference(card, "_familyIcon", familyIcon); SetReference(card, "_rarityMedallion", medallion.gameObject);
             SetReference(card, "_rarityGem", rarityGem);
             SetReference(card, "_commonRaritySprite", commonRarity);

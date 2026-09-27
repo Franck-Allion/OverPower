@@ -43,6 +43,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private GameObject _unitBanner;
         [SerializeField] private GameObject _spellBanner;
         [SerializeField] private GameObject _costBadge;
+        [SerializeField] private Sprite _manaIconSprite;
         [SerializeField] private TMP_Text _typeLabel;
         [SerializeField] private TMP_Text _costLabel;
         [SerializeField] private TMP_Text _titleLabel;
@@ -77,6 +78,19 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public CardRarityVisual Rarity { get; private set; }
         public int? UnitCount { get; private set; }
         public bool HasArtwork => _artwork != null && _artwork.sprite != null;
+        public int CostIconsCount
+        {
+            get
+            {
+                if (_costBadge == null || !_costBadge.activeSelf) return 0;
+                int count = 0;
+                foreach (Transform child in _costBadge.transform)
+                {
+                    if (child.name.StartsWith("CostIcon") && child.gameObject.activeSelf) count++;
+                }
+                return count;
+            }
+        }
 
         private void Awake() { ApplyState(); }
         private void OnEnable() { ApplyState(); }
@@ -93,7 +107,17 @@ namespace OverPower.Unity.Presentation.DesignSystem
             SetText(_healthCaption, data.HealthStatLabel);
             SetText(_unitCountCaption, data.UnitCountStatLabel);
             if (_description != null) _description.SetText(data.Description ?? string.Empty);
-            SetOptionalSlot(_costBadge, _costLabel, data.Cost);
+            if (_costBadge != null)
+            {
+                bool hasCost = data.Cost.HasValue && data.Cost.Value > 0;
+                _costBadge.SetActive(hasCost);
+                if (hasCost) UpdateCostIcons(data.Cost.Value);
+            }
+            if (_costLabel != null)
+            {
+                _costLabel.text = data.Cost.HasValue ? data.Cost.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : string.Empty;
+                _costLabel.gameObject.SetActive(false);
+            }
             SetOptionalSlot(_attackSlot, _attackLabel, data.Attack);
             SetOptionalSlot(_armorSlot, _armorLabel, data.Armor);
             SetOptionalSlot(_healthSlot, _healthLabel, data.Health);
@@ -188,6 +212,47 @@ namespace OverPower.Unity.Presentation.DesignSystem
                 default: return UISemanticColor.TextSecondary;
             }
         }
+        private void UpdateCostIcons(int count)
+        {
+            if (_costBadge == null) return;
+            var icons = new System.Collections.Generic.List<Image>();
+            foreach (Transform child in _costBadge.transform)
+            {
+                if (child.name.StartsWith("CostIcon"))
+                {
+                    var img = child.GetComponent<Image>();
+                    if (img != null) icons.Add(img);
+                }
+            }
+            for (int i = 0; i < count; i++)
+            {
+                Image icon;
+                if (i < icons.Count)
+                {
+                    icon = icons[i];
+                    icon.gameObject.SetActive(true);
+                }
+                else
+                {
+                    var go = new GameObject($"CostIcon_{i}", typeof(RectTransform), typeof(Image));
+                    go.transform.SetParent(_costBadge.transform, false);
+                    icon = go.GetComponent<Image>();
+                    icon.sprite = _manaIconSprite;
+                    icon.preserveAspect = true;
+                    icon.raycastTarget = false;
+                    var rt = (RectTransform)go.transform;
+                    rt.sizeDelta = new Vector2(16, 22);
+                    icons.Add(icon);
+                }
+                if (icon.sprite == null && _manaIconSprite != null) icon.sprite = _manaIconSprite;
+                icon.color = _config != null ? _config.GetColor(UISemanticColor.Mana) : new Color(0.35f, 0.82f, 0.98f, 0.95f);
+            }
+            for (int i = count; i < icons.Count; i++)
+            {
+                icons[i].gameObject.SetActive(false);
+            }
+        }
+
         private void Apply(TMP_Text text, TypographyStyle style, UISemanticColor color)
         {
             if (text == null) return;
