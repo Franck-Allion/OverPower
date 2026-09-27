@@ -256,13 +256,13 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             headerTexture.texture = titleTexture; headerTexture.uvRect = new Rect(0, 0, 1, 0.333333f); headerTexture.raycastTarget = false;
             var headerShade = Image("HeaderShade", header, new Color(0.03f, 0.06f, 0.10f, .20f)); Stretch(headerShade.rectTransform, 0);
 
-            // Refined, centered card title with elegant proportions and reliable single-line overflow
+            // Refined card title with tightened mana spacing and reliable single-line overflow
             var title = PlainText("Title", header, TypographyStyle.Title, 38, addTypography: false);
             title.rectTransform.anchorMin = new Vector2(0, 0);
             title.rectTransform.anchorMax = new Vector2(1, 1);
             title.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            title.rectTransform.offsetMin = new Vector2(96, 0);
-            title.rectTransform.offsetMax = new Vector2(-20, 0);
+            title.rectTransform.offsetMin = new Vector2(64, 0);
+            title.rectTransform.offsetMax = new Vector2(-54, 0);
             title.alignment = TextAlignmentOptions.Center; title.characterSpacing = 3f;
             title.enableWordWrapping = false;
             title.overflowMode = TextOverflowModes.Overflow;
@@ -270,9 +270,9 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
             // Resource cost: repeated mana icons integrated into header texture (no numeric text widget)
             var costBadge = Rect("CostBadge", header);
-            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(16, 0), new Vector2(80, 34));
+            SetAbsolute(costBadge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(18, 0), new Vector2(80, 34));
             var costLayout = costBadge.gameObject.AddComponent<HorizontalLayoutGroup>();
-            costLayout.spacing = 5; costLayout.childAlignment = TextAnchor.MiddleLeft;
+            costLayout.spacing = 3; costLayout.childAlignment = TextAnchor.MiddleLeft;
             costLayout.childControlWidth = false; costLayout.childControlHeight = false;
             costLayout.childForceExpandWidth = false; costLayout.childForceExpandHeight = false;
             var costFitter = costBadge.gameObject.AddComponent<ContentSizeFitter>();
