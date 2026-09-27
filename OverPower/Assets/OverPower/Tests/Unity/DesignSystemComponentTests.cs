@@ -413,9 +413,13 @@ namespace OverPower.Tests.Unity
                 Assert.That(spell.transform.Find("BodyTexture/Stats").gameObject.activeSelf, Is.False);
                 Assert.That(unit.transform.Find("BodyTexture/SpellFooter").gameObject.activeSelf, Is.False);
                 Assert.That(spell.transform.Find("BodyTexture/SpellFooter").gameObject.activeSelf, Is.True);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/FooterSurface"), Is.Not.Null);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/CenterCrest"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/AttackSlot/Icon"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/ArmorSlot/Icon"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/HealthSlot/Icon"), Is.Not.Null);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/AttackSlot/Plate"), Is.Null, "Primary stats should read as part of one footer, not independent boxes.");
+                Assert.That(unit.transform.Find("BodyTexture/Stats/HealthSlot/Plate"), Is.Null, "Primary stats should read as part of one footer, not independent boxes.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/UnitCountSlot/StackBadge"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/UnitCountSlot/UnitCountCaption"), Is.Null);
                 Assert.That(unit.transform.Find("RarityMedallion/Gem").GetComponent<Image>().sprite, Is.Not.Null);

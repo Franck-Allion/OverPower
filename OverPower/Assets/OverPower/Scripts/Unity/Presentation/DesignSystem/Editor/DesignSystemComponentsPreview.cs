@@ -286,8 +286,9 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             UnityEventTools.AddPersistentListener(secondTab.onClick, preview.ShowComponents);
             var cardsTab = ExampleButton(tabs, UIButtonFamily.Secondary, "tabs.cards", "Cards", "Cartes");
             UnityEventTools.AddPersistentListener(cardsTab.onClick, preview.ShowCards);
+            foundations.gameObject.SetActive(false);
             page.gameObject.SetActive(false);
-            cardsPage.gameObject.SetActive(false);
+            cardsPage.gameObject.SetActive(true);
         }
 
         private static RectTransform BuildCardsPreview(Transform background, GameObject cardFramePrefab)
