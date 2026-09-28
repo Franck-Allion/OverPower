@@ -510,6 +510,52 @@ namespace OverPower.Tests.Unity
         }
 
         [Test]
+        public void PhaseBannerPrefab_LoadsWithValidReferences_AndRendersSemanticsSafely()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/OverPower/UI/DesignSystem/Components/PhaseBanner.prefab");
+            Assert.That(prefab, Is.Not.Null, "PhaseBanner.prefab must exist.");
+            var instance = Object.Instantiate(prefab);
+            try
+            {
+                var banner = instance.GetComponent<UIPhaseBanner>();
+                Assert.That(banner, Is.Not.Null, "PhaseBanner must have UIPhaseBanner component.");
+                Assert.That(instance.transform.Find("Label"), Is.Not.Null, "Label must exist.");
+                Assert.That(instance.transform.Find("Backdrop"), Is.Not.Null, "Backdrop must exist.");
+                Assert.That(instance.transform.Find("LeftRule"), Is.Not.Null, "LeftRule must exist.");
+                Assert.That(instance.transform.Find("RightRule"), Is.Not.Null, "RightRule must exist.");
+                Assert.That(instance.transform.Find("LeftOrnament"), Is.Not.Null, "LeftOrnament must exist.");
+                Assert.That(instance.transform.Find("RightOrnament"), Is.Not.Null, "RightOrnament must exist.");
+
+                var group = instance.GetComponent<CanvasGroup>();
+                Assert.That(group.blocksRaycasts, Is.False, "Banner must not block raycasts.");
+                Assert.That(group.interactable, Is.False, "Banner must not capture interaction.");
+
+                // Show positive (Gold)
+                banner.Show("YOUR TURN", UISemanticColor.Gold);
+                Assert.That(banner.IsVisible, Is.True);
+                var labelText = instance.transform.Find("Label").GetComponent<TMP_Text>();
+                var leftRule = instance.transform.Find("LeftRule").GetComponent<Image>();
+                Assert.That(labelText.text, Is.EqualTo("YOUR TURN"));
+                Assert.That(leftRule.color, Is.Not.EqualTo(Color.clear));
+
+                // Rapid Show/Hide/Show safety test
+                banner.Hide();
+                Assert.That(banner.IsVisible, Is.False);
+                banner.Show("ENEMY TURN", UISemanticColor.Danger);
+                Assert.That(banner.IsVisible, Is.True);
+                Assert.That(labelText.text, Is.EqualTo("ENEMY TURN"));
+
+                banner.HideImmediate();
+                Assert.That(banner.IsVisible, Is.False);
+                Assert.That(group.alpha, Is.EqualTo(0f));
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
+        [Test]
         public void PhaseBannerAndTargetVisuals_ExposePresentationOnlyStates()
         {
             var config = AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>("Assets/OverPower/Data/UI/UIDesignSystemConfig.asset");

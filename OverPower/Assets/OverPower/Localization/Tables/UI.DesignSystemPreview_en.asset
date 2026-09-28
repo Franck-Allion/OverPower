@@ -392,7 +392,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2263692357599232
-    m_Localized: Phase banner
+    m_Localized: Phase / turn banners
     m_Metadata:
       m_Items: []
   - m_Id: 2263692441485312
@@ -414,6 +414,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2327265930838016
     m_Localized: Cards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3101770164928512
+    m_Localized: YOUR TURN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3101770181705728
+    m_Localized: ENEMY TURN
     m_Metadata:
       m_Items: []
   references:

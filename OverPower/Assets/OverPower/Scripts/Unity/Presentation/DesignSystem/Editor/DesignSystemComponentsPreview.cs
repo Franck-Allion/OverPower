@@ -213,10 +213,30 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             // 06 / CARD, PHASE & TARGET PRESENTATION PRIMITIVES
             var gameplayPresentation = Column("GameplayPresentation", columns);
             Text(gameplayPresentation, "gameplay.presentation", "06  /  GAMEPLAY PRESENTATION", "06  /  PRÃ‰SENTATION DE JEU", TypographyStyle.Caption, 32, UISemanticColor.Primary);
-            Text(gameplayPresentation, "phase.heading", "Phase banner", "BanniÃ¨re de phase", TypographyStyle.Heading, 36);
-            var phaseRow = Rect("PhaseSamples", gameplayPresentation); Height(phaseRow, 82); Horizontal(phaseRow, 0, 0);
-            var yourTurn = ((GameObject)PrefabUtility.InstantiatePrefab(phaseBannerPrefab, phaseRow)).GetComponent<UIPhaseBanner>(); yourTurn.Show("YOUR TURN", UISemanticColor.Gold);
-            var enemyTurn = ((GameObject)PrefabUtility.InstantiatePrefab(phaseBannerPrefab, phaseRow)).GetComponent<UIPhaseBanner>(); enemyTurn.Show("ENEMY TURN", UISemanticColor.Danger);
+            Text(gameplayPresentation, "phase.heading", "Phase / turn banners", "BanniÃ¨res de phase / tour", TypographyStyle.Heading, 36);
+
+            AddString("phase.player_turn", "YOUR TURN", "VOTRE TOUR");
+            AddString("phase.enemy_turn", "ENEMY TURN", "TOUR ENNEMI");
+
+            var phaseColumn = Rect("PhaseSamples", gameplayPresentation);
+            Height(phaseColumn, 168);
+            Vertical(phaseColumn, 10);
+            var phaseColLayout = phaseColumn.GetComponent<VerticalLayoutGroup>();
+            phaseColLayout.childAlignment = TextAnchor.MiddleCenter;
+            phaseColLayout.childControlWidth = false;
+            phaseColLayout.childControlHeight = false;
+
+            var yourTurn = ((GameObject)PrefabUtility.InstantiatePrefab(phaseBannerPrefab, phaseColumn)).GetComponent<UIPhaseBanner>();
+            yourTurn.name = "PhaseBanner_YourTurn";
+            yourTurn.Show("YOUR TURN", UISemanticColor.Gold);
+            SetBool(yourTurn, "_initiallyVisible", true);
+            Localize(yourTurn.Label, "phase.player_turn", "YOUR TURN");
+
+            var enemyTurn = ((GameObject)PrefabUtility.InstantiatePrefab(phaseBannerPrefab, phaseColumn)).GetComponent<UIPhaseBanner>();
+            enemyTurn.name = "PhaseBanner_EnemyTurn";
+            enemyTurn.Show("ENEMY TURN", UISemanticColor.Danger);
+            SetBool(enemyTurn, "_initiallyVisible", true);
+            Localize(enemyTurn.Label, "phase.enemy_turn", "ENEMY TURN");
             Text(gameplayPresentation, "target.heading", "Target states", "Ã‰tats de cible", TypographyStyle.Heading, 36);
             var targetRow = Rect("TargetSamples", gameplayPresentation); Height(targetRow, 74); Horizontal(targetRow, 0, 0);
             foreach (TargetVisualState visualState in new[] { TargetVisualState.None, TargetVisualState.Valid, TargetVisualState.Invalid, TargetVisualState.Selected })

@@ -43,6 +43,14 @@ MonoBehaviour:
     m_Key: ui.common.close
     m_Metadata:
       m_Items: []
+  - m_Id: 4339131582447616
+    m_Key: ui.phase.player_turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4339131783774208
+    m_Key: ui.phase.enemy_turn
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

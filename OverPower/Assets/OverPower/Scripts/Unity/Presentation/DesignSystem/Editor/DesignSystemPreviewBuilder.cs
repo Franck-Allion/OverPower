@@ -290,6 +290,20 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             so.FindProperty(field).objectReferenceValue = value;
             so.ApplyModifiedPropertiesWithoutUndo();
         }
+        private static void SetArrayReferences(UnityEngine.Object target, string field, UnityEngine.Object[] values)
+        {
+            var so = new SerializedObject(target);
+            var prop = so.FindProperty(field);
+            if (prop != null)
+            {
+                prop.arraySize = values.Length;
+                for (int i = 0; i < values.Length; i++)
+                {
+                    prop.GetArrayElementAtIndex(i).objectReferenceValue = values[i];
+                }
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
         private static void Folder(string path)
         {
             if (AssetDatabase.IsValidFolder(path)) return;

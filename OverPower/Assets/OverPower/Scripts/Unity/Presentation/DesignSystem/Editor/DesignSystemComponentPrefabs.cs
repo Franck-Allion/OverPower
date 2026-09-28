@@ -493,13 +493,89 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
         private static GameObject CreatePhaseBanner()
         {
-            var root = Rect("PhaseBanner", null); root.gameObject.SetActive(false); root.sizeDelta = new Vector2(480, 86);
-            PanelSurface(root, UIPanelStyle.Elevated);
+            var diamondAccent = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_diamond_accent.png");
+            var softGlow = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_soft_glow_box.png");
+
+            var root = Rect("PhaseBanner", null);
+            root.gameObject.SetActive(false);
+            root.sizeDelta = new Vector2(500, 74);
             var group = root.gameObject.AddComponent<CanvasGroup>();
-            var label = PlainText("Label", root, TypographyStyle.Heading, 64); label.alignment = TextAlignmentOptions.Center;
+            group.blocksRaycasts = false;
+            group.interactable = false;
+
+            // Subtle dark translucent backing plate
+            var backdrop = Rect("Backdrop", root);
+            SetAbsolute(backdrop, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(460, 48));
+            var backdropBg = Image("BackdropBg", backdrop, new Color(0.04f, 0.06f, 0.09f, 0.82f));
+            Stretch(backdropBg.rectTransform, 0);
+            var backdropShadow = backdropBg.gameObject.AddComponent<Shadow>();
+            backdropShadow.effectColor = new Color(0, 0, 0, 0.60f);
+            backdropShadow.effectDistance = new Vector2(0, -3);
+
+            // Subtle top/bottom hairline bounds on the backdrop
+            var topHairline = Image("TopHairline", backdrop, new Color(1f, 1f, 1f, 0.09f));
+            SetAbsolute(topHairline.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), Vector2.zero, new Vector2(0, 1));
+            var bottomHairline = Image("BottomHairline", backdrop, new Color(0f, 0f, 0f, 0.50f));
+            SetAbsolute(bottomHairline.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(0, 1));
+
+            // Central ambient glow behind label (tinted with tone)
+            var centerGlow = Image("CenterGlow", root, new Color(1f, 1f, 1f, 0.12f));
+            centerGlow.sprite = softGlow; centerGlow.preserveAspect = false;
+            SetAbsolute(centerGlow.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(260, 44));
+
+            // Flanking horizontal rules (tinted with tone)
+            var leftRule = Image("LeftRule", root, Color.white);
+            SetAbsolute(leftRule.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-165, 0), new Vector2(85, 1.5f));
+            var rightRule = Image("RightRule", root, Color.white);
+            SetAbsolute(rightRule.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(165, 0), new Vector2(85, 1.5f));
+
+            // Flanking outer diamond ornaments (tinted with tone)
+            var leftOrnament = Image("LeftOrnament", root, Color.white);
+            leftOrnament.sprite = diamondAccent; leftOrnament.preserveAspect = true;
+            SetAbsolute(leftOrnament.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-214, 0), new Vector2(11, 11));
+            var leftOrnShadow = leftOrnament.gameObject.AddComponent<Shadow>();
+            leftOrnShadow.effectColor = new Color(0, 0, 0, 0.50f); leftOrnShadow.effectDistance = new Vector2(0, -1);
+
+            var rightOrnament = Image("RightOrnament", root, Color.white);
+            rightOrnament.sprite = diamondAccent; rightOrnament.preserveAspect = true;
+            SetAbsolute(rightOrnament.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(214, 0), new Vector2(11, 11));
+            var rightOrnShadow = rightOrnament.gameObject.AddComponent<Shadow>();
+            rightOrnShadow.effectColor = new Color(0, 0, 0, 0.50f); rightOrnShadow.effectDistance = new Vector2(0, -1);
+
+            // Flanking inner pips near the text (tinted with tone)
+            var leftPip = Image("LeftPip", root, Color.white);
+            leftPip.sprite = diamondAccent; leftPip.preserveAspect = true;
+            SetAbsolute(leftPip.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-118, 0), new Vector2(6, 6));
+
+            var rightPip = Image("RightPip", root, Color.white);
+            rightPip.sprite = diamondAccent; rightPip.preserveAspect = true;
+            SetAbsolute(rightPip.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(118, 0), new Vector2(6, 6));
+
+            // Central underline accent (tinted with tone)
+            var underline = Image("UnderlineAccent", root, Color.white);
+            SetAbsolute(underline.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, -16), new Vector2(64, 1));
+
+            // Centered Heading label
+            var label = PlainText("Label", root, TypographyStyle.Heading, 46, addTypography: false);
+            label.fontSize = 28;
+            label.alignment = TextAlignmentOptions.Center;
+            label.characterSpacing = 4f;
+            label.color = new Color32(250, 246, 238, 255);
+            label.enableWordWrapping = false;
+            label.overflowMode = TextOverflowModes.Overflow;
+            SetAbsolute(label.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(260, 46));
+            var labelShadow = label.gameObject.AddComponent<Shadow>();
+            labelShadow.effectColor = new Color(0, 0, 0, 0.85f);
+            labelShadow.effectDistance = new Vector2(0, -2);
+
             var banner = root.gameObject.AddComponent<UIPhaseBanner>();
-            SetReference(banner, "_config", _config); SetReference(banner, "_group", group); SetReference(banner, "_visual", root);
-            SetReference(banner, "_label", label); SetReference(banner, "_accent", root.Find("TopAccentBar").GetComponent<Image>());
+            SetReference(banner, "_config", _config);
+            SetReference(banner, "_group", group);
+            SetReference(banner, "_visual", root);
+            SetReference(banner, "_label", label);
+            SetReference(banner, "_accent", leftRule);
+            SetArrayReferences(banner, "_accentImages", new Image[] { leftRule, rightRule, leftOrnament, rightOrnament, leftPip, rightPip, underline, centerGlow });
+
             return SaveComponent(root);
         }
 

@@ -480,7 +480,7 @@ If final artwork is not available, document replacement PNG requirements.
 - [x] Action points display
 - [x] Unit stack badge
 - [x] Card frame baseline
-- [~] Phase/turn banner baseline
+- [x] Phase/turn banner baseline
 - [~] Standard valid/invalid target states
 - [x] Tooltip visual style
 

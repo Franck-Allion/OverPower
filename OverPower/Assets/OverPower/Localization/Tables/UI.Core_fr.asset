@@ -46,6 +46,14 @@ MonoBehaviour:
     m_Localized: Fermer
     m_Metadata:
       m_Items: []
+  - m_Id: 4339131582447616
+    m_Localized: VOTRE TOUR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4339131783774208
+    m_Localized: TOUR ENNEMI
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

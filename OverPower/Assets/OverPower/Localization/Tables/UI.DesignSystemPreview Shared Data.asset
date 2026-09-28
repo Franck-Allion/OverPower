@@ -403,6 +403,14 @@ MonoBehaviour:
     m_Key: tabs.cards
     m_Metadata:
       m_Items: []
+  - m_Id: 3101770164928512
+    m_Key: phase.player_turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3101770181705728
+    m_Key: phase.enemy_turn
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
