@@ -410,20 +410,21 @@ namespace OverPower.Tests.Unity
                 Assert.That(unit.transform.Find("Type"), Is.Null, "The banner artwork owns type identity; no UNIT/SPELL label is rendered.");
                 Assert.That(unit.transform.Find("ArtworkFrame/ArtworkBackdrop/ArtworkPlaceholder/PlaceholderLabel"), Is.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats").gameObject.activeSelf, Is.True);
-                Assert.That(spell.transform.Find("BodyTexture/Stats").gameObject.activeSelf, Is.False);
-                Assert.That(unit.transform.Find("BodyTexture/SpellFooter").gameObject.activeSelf, Is.False);
-                Assert.That(spell.transform.Find("BodyTexture/SpellFooter").gameObject.activeSelf, Is.True);
+                Assert.That(spell.transform.Find("BodyTexture/Stats"), Is.Null, "Spell cards have no stat footer.");
+                Assert.That(spell.transform.Find("BodyTexture/SpellFooter"), Is.Null, "Spell cards have no stat footer.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/FooterSurface"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/LeftRule"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/RightRule"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/CenterCrest"), Is.Null, "Center vertical crest/spine styling must be removed.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/AttackSlot/Icon"), Is.Not.Null);
-                Assert.That(unit.transform.Find("BodyTexture/Stats/ArmorSlot/Icon"), Is.Not.Null);
+                Assert.That(unit.transform.Find("BodyTexture/Stats/ArmorSlot"), Is.Null, "Armor stat has been removed.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/HealthSlot/Icon"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/AttackSlot/Plate"), Is.Null, "Primary stats should read as part of one footer, not independent boxes.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/HealthSlot/Plate"), Is.Null, "Primary stats should read as part of one footer, not independent boxes.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/UnitCountSlot/StackBadge"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/UnitCountSlot/UnitCountCaption"), Is.Null);
+                Assert.That(unit.transform.Find("ArtworkFrame/ArtworkBackdrop/LevelBanner"), Is.Not.Null);
+                Assert.That(unit.transform.Find("ArtworkFrame/ArtworkBackdrop/LevelBanner/LevelBannerText"), Is.Not.Null);
                 Assert.That(unit.transform.Find("RarityMedallion/Gem").GetComponent<Image>().sprite, Is.Not.Null);
                 Assert.That(spell.transform.Find("ArtworkFrame/ArtworkBackdrop/ArtworkPlaceholder").gameObject.activeSelf, Is.True);
             }
@@ -431,6 +432,42 @@ namespace OverPower.Tests.Unity
             {
                 Object.DestroyImmediate(unitObject);
                 Object.DestroyImmediate(spellObject);
+            }
+        }
+
+        [Test]
+        public void CardFrame_LevelBanner_AppliesTierColorAccordingToLevelRange()
+        {
+            var blue = UICardFrame.GetLevelBannerColor(1);
+            var green = UICardFrame.GetLevelBannerColor(15);
+            var purple = UICardFrame.GetLevelBannerColor(25);
+            var gold = UICardFrame.GetLevelBannerColor(35);
+            var red = UICardFrame.GetLevelBannerColor(45);
+
+            Assert.That(blue, Is.EqualTo(new Color(0.85f, 0.95f, 1.0f, 1.0f)));
+            Assert.That(green, Is.EqualTo(new Color(0.55f, 1.0f, 0.65f, 1.0f)));
+            Assert.That(purple, Is.EqualTo(new Color(0.88f, 0.60f, 1.0f, 1.0f)));
+            Assert.That(gold, Is.EqualTo(new Color(1.0f, 0.85f, 0.45f, 1.0f)));
+            Assert.That(red, Is.EqualTo(new Color(1.0f, 0.50f, 0.45f, 1.0f)));
+
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/OverPower/UI/DesignSystem/Components/CardFrame.prefab");
+            var instance = Object.Instantiate(prefab);
+            try
+            {
+                var card = instance.GetComponent<UICardFrame>();
+                card.SetPresentation(new CardPresentationData
+                {
+                    Title = "Test Unit",
+                    Type = CardVisualType.Unit,
+                    Level = 15
+                });
+                Assert.That(card.LevelBanner.gameObject.activeSelf, Is.True);
+                Assert.That(card.LevelBanner.color, Is.EqualTo(green));
+                Assert.That(card.LevelBannerText.text, Is.EqualTo("15"));
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
             }
         }
 
@@ -443,11 +480,9 @@ namespace OverPower.Tests.Unity
             {
                 var card = instance.GetComponent<UICardFrame>();
                 var attackText = instance.transform.Find("BodyTexture/Stats/AttackSlot/Attack").GetComponent<TMP_Text>();
-                var armorText = instance.transform.Find("BodyTexture/Stats/ArmorSlot/Armor").GetComponent<TMP_Text>();
                 var titleText = instance.transform.Find("Header/Title").GetComponent<TMP_Text>();
 
                 float authoredAttackSize = attackText.fontSize;
-                float authoredArmorSize = armorText.fontSize;
                 Vector2 authoredAttackPos = attackText.rectTransform.anchoredPosition;
 
                 var data = new CardPresentationData
@@ -455,7 +490,6 @@ namespace OverPower.Tests.Unity
                     Title = "Test Sorcerer",
                     Type = CardVisualType.Unit,
                     Attack = 10,
-                    Armor = 4,
                     Health = 10,
                     UnitCount = 8
                 };
@@ -463,7 +497,6 @@ namespace OverPower.Tests.Unity
                 card.SetPresentation(data);
                 Assert.That(attackText.text, Is.EqualTo("10"));
                 Assert.That(attackText.fontSize, Is.EqualTo(authoredAttackSize), "SetPresentation must preserve authored Attack font size.");
-                Assert.That(armorText.fontSize, Is.EqualTo(authoredArmorSize), "SetPresentation must preserve authored Armor font size.");
                 Assert.That(attackText.rectTransform.anchoredPosition, Is.EqualTo(authoredAttackPos), "SetPresentation must not alter RectTransform position.");
 
                 card.SetPresentation(data);

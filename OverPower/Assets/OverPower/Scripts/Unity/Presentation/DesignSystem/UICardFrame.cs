@@ -23,6 +23,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public CardVisualType Type;
         public CardRarityVisual Rarity;
         public int? Cost;
+        public int? Level;
         public int? Attack;
         public int? Armor;
         public int? Health;
@@ -39,6 +40,8 @@ namespace OverPower.Unity.Presentation.DesignSystem
         [SerializeField] private AspectRatioFitter _artworkAspect;
         [SerializeField] private GameObject _artworkPlaceholder;
         [SerializeField] private Image _artworkFrame;
+        [SerializeField] private Image _levelBanner;
+        [SerializeField] private TMP_Text _levelBannerText;
         [SerializeField] private Image _familyIcon;
         [SerializeField] private GameObject _unitBanner;
         [SerializeField] private GameObject _spellBanner;
@@ -78,6 +81,18 @@ namespace OverPower.Unity.Presentation.DesignSystem
         public CardRarityVisual Rarity { get; private set; }
         public int? UnitCount { get; private set; }
         public bool HasArtwork => _artwork != null && _artwork.sprite != null;
+        public Image LevelBanner => _levelBanner;
+        public TMP_Text LevelBannerText => _levelBannerText;
+
+        /// <summary>Returns the tier color for the card LevelBanner based on level progression range.</summary>
+        public static Color GetLevelBannerColor(int level)
+        {
+            if (level <= 10) return new Color(0.85f, 0.95f, 1.0f, 1.0f); // Level 1–10: Cool Steel Blue
+            if (level <= 20) return new Color(0.55f, 1.0f, 0.65f, 1.0f); // Level 11–20: Emerald Green
+            if (level <= 30) return new Color(0.88f, 0.60f, 1.0f, 1.0f); // Level 21–30: Arcane Purple
+            if (level <= 40) return new Color(1.0f, 0.85f, 0.45f, 1.0f); // Level 31–40: Royal Gold / Amber
+            return new Color(1.0f, 0.50f, 0.45f, 1.0f);                  // Level 41+: Mythic Crimson
+        }
         public int CostIconsCount
         {
             get
@@ -122,6 +137,19 @@ namespace OverPower.Unity.Presentation.DesignSystem
             SetOptionalSlot(_armorSlot, _armorLabel, data.Armor);
             SetOptionalSlot(_healthSlot, _healthLabel, data.Health);
             SetOptionalSlot(_unitCountSlot, _unitCountLabel, data.UnitCount, "x");
+            if (_levelBanner != null)
+            {
+                bool hasLevel = data.Level.HasValue && data.Level.Value > 0;
+                _levelBanner.gameObject.SetActive(hasLevel);
+                if (hasLevel)
+                {
+                    _levelBanner.color = GetLevelBannerColor(data.Level.Value);
+                    if (_levelBannerText != null)
+                    {
+                        _levelBannerText.text = data.Level.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    }
+                }
+            }
             if (_artwork != null)
             {
                 _artwork.sprite = data.Artwork;
@@ -134,8 +162,8 @@ namespace OverPower.Unity.Presentation.DesignSystem
             bool isUnit = data.Type == CardVisualType.Unit;
             if (_unitBanner != null) _unitBanner.SetActive(isUnit);
             if (_spellBanner != null) _spellBanner.SetActive(!isUnit);
-            if (_stats != null) _stats.SetActive(isUnit && (data.Attack.HasValue || data.Armor.HasValue || data.Health.HasValue || data.UnitCount.HasValue));
-            if (_spellFooter != null) _spellFooter.SetActive(!isUnit);
+            if (_stats != null) _stats.SetActive(isUnit && (data.Attack.HasValue || data.Health.HasValue || data.UnitCount.HasValue));
+            if (_spellFooter != null) _spellFooter.SetActive(false);
             var typeTone = data.Type == CardVisualType.Unit ? UISemanticColor.Interactive : UISemanticColor.Mana;
             if (_accent != null && _config != null) _accent.color = _config.GetColor(typeTone);
             if (_familyIcon != null && _config != null) _familyIcon.color = _config.GetColor(typeTone);

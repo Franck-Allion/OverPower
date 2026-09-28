@@ -312,10 +312,9 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             sorcerer.SetPresentation(new CardPresentationData
             {
                 Title = "Sorcerer", RarityLabel = "COMMON",
-                Type = CardVisualType.Unit, Rarity = CardRarityVisual.Common, Cost = 2, Artwork = sorcererArtwork,
+                Type = CardVisualType.Unit, Rarity = CardRarityVisual.Common, Cost = 2, Level = 1, Artwork = sorcererArtwork,
                 Description = "Move an enemy unit to another lane. Gain 1 {mana}.",
-                Attack = 10, Armor = 4, Health = 10, UnitCount = 8,
-                AttackStatLabel = "ATTACK", ArmorStatLabel = "ARMOR", HealthStatLabel = "HEALTH"
+                Attack = 10, Health = 10, UnitCount = 8
             });
 
             var arcaneBolt = ((GameObject)PrefabUtility.InstantiatePrefab(cardFramePrefab, display)).GetComponent<UICardFrame>();
@@ -323,7 +322,7 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             arcaneBolt.SetPresentation(new CardPresentationData
             {
                 Title = "Arcane Bolt", RarityLabel = "COMMON",
-                Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3,
+                Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3, Level = 1,
                 Description = "Deal 12 {attack} to an enemy. Restore 1 {mana} after it resolves."
             });
             return page;
