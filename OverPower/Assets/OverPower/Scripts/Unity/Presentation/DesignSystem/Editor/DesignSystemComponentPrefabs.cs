@@ -250,12 +250,22 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var group = root.gameObject.AddComponent<CanvasGroup>();
             var stateOutline = Image("StateOutline", root, Color.clear); Stretch(stateOutline.rectTransform, -7); stateOutline.raycastTarget = false;
 
-            // Textured title/header zone: reduced vertical footprint (~8.3%, from 96 to 88)
+            // Textured title/header zone: inset 2px below top to preserve the continuous outer card border
             var header = Rect("Header", root);
-            SetAbsolute(header, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), Vector2.zero, new Vector2(-10, 88));
+            SetAbsolute(header, new Vector2(0, 1), new Vector2(1, 1), new Vector2(.5f, 1), new Vector2(0, -2), new Vector2(-10, 88));
             var headerTexture = header.gameObject.AddComponent<RawImage>();
             headerTexture.texture = titleTexture; headerTexture.uvRect = new Rect(0, 0, 1, 0.333333f); headerTexture.raycastTarget = false;
             var headerShade = Image("HeaderShade", header, new Color(0.03f, 0.06f, 0.10f, .20f)); Stretch(headerShade.rectTransform, 0);
+
+            // Ensure the top gold border renders on top of the header texture with exact 2px border thickness
+            var topAccent = root.Find("TopAccentBar");
+            if (topAccent != null)
+            {
+                topAccent.SetSiblingIndex(header.GetSiblingIndex() + 1);
+                var accentRt = (RectTransform)topAccent;
+                accentRt.sizeDelta = new Vector2(0, 2);
+                accentRt.anchoredPosition = new Vector2(0, 0);
+            }
 
             // Refined card title with tightened mana spacing and reliable single-line overflow
             var title = PlainText("Title", header, TypographyStyle.Title, 38, addTypography: false);

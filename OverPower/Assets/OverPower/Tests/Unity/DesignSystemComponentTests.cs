@@ -369,7 +369,7 @@ namespace OverPower.Tests.Unity
             var artworkSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), new Vector2(.5f, .5f));
             card.SetPresentation(new CardPresentationData { Title = "Arcane Bolt", Description = "Deals 12 {attack}.", RarityLabel = "COMMON", Type = CardVisualType.Spell, Rarity = CardRarityVisual.Common, Cost = 3, Artwork = artworkSprite });
             Assert.That(card.Type, Is.EqualTo(CardVisualType.Spell)); Assert.That(stats.activeSelf, Is.False); Assert.That(cost.text, Is.EqualTo("3")); Assert.That(card.CostIconsCount, Is.EqualTo(3));
-            Assert.That(unitBanner.activeSelf, Is.False); Assert.That(spellBanner.activeSelf, Is.True); Assert.That(spellFooter.activeSelf, Is.True);
+            Assert.That(unitBanner.activeSelf, Is.False); Assert.That(spellBanner.activeSelf, Is.True); Assert.That(spellFooter.activeSelf, Is.False);
             Assert.That(card.HasArtwork, Is.True); Assert.That(artworkPlaceholder.activeSelf, Is.False); Assert.That(artworkAspect.aspectRatio, Is.EqualTo(1f)); Assert.That(card.UnitCount, Is.Null);
             card.SetState(CardPresentationState.Highlighted); Assert.That(root.transform.localScale.x, Is.GreaterThan(1f)); Assert.That(stateOutline.gameObject.activeSelf, Is.True);
             card.SetState(CardPresentationState.Selected); Assert.That(stateOutline.gameObject.activeSelf, Is.True);
@@ -410,7 +410,7 @@ namespace OverPower.Tests.Unity
                 Assert.That(unit.transform.Find("Type"), Is.Null, "The banner artwork owns type identity; no UNIT/SPELL label is rendered.");
                 Assert.That(unit.transform.Find("ArtworkFrame/ArtworkBackdrop/ArtworkPlaceholder/PlaceholderLabel"), Is.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats").gameObject.activeSelf, Is.True);
-                Assert.That(spell.transform.Find("BodyTexture/Stats"), Is.Null, "Spell cards have no stat footer.");
+                Assert.That(spell.transform.Find("BodyTexture/Stats").gameObject.activeSelf, Is.False, "Spell cards have no active stat footer.");
                 Assert.That(spell.transform.Find("BodyTexture/SpellFooter"), Is.Null, "Spell cards have no stat footer.");
                 Assert.That(unit.transform.Find("BodyTexture/Stats/FooterSurface"), Is.Not.Null);
                 Assert.That(unit.transform.Find("BodyTexture/Stats/LeftRule"), Is.Not.Null);

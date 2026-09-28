@@ -165,7 +165,7 @@ namespace OverPower.Unity.Presentation.DesignSystem
             if (_stats != null) _stats.SetActive(isUnit && (data.Attack.HasValue || data.Health.HasValue || data.UnitCount.HasValue));
             if (_spellFooter != null) _spellFooter.SetActive(false);
             var typeTone = data.Type == CardVisualType.Unit ? UISemanticColor.Interactive : UISemanticColor.Mana;
-            if (_accent != null && _config != null) _accent.color = _config.GetColor(typeTone);
+            if (_accent != null && _config != null) _accent.color = _config.GetColor(UISemanticColor.Primary);
             if (_familyIcon != null && _config != null) _familyIcon.color = _config.GetColor(typeTone);
             if (_artworkFrame != null && _config != null) _artworkFrame.color = WithAlpha(_config.GetColor(typeTone), 0.78f);
             ApplyRarity(data.Rarity, data.RarityLabel);
