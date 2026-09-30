@@ -211,10 +211,10 @@ namespace OverPower.Tests.Unity
             for (int i = 0; i < 30; i++) { trigger.OnPointerEnter(pointer); trigger.OnPointerExit(pointer); }
             yield return new WaitForSecondsRealtime(0.6f);
             Assert.That(tooltip.IsVisible, Is.False);
-            trigger.OnSelect(new BaseEventData(system));
+            system.SetSelectedGameObject(trigger.gameObject);
             yield return new WaitForSecondsRealtime(0.6f);
             Assert.That(tooltip.IsVisible, Is.True, "Focus can show details without hover.");
-            trigger.OnDeselect(new BaseEventData(system));
+            system.SetSelectedGameObject(null);
             yield return new WaitForSecondsRealtime(0.3f);
             Assert.That(tooltip.IsVisible, Is.False);
             trigger.OpenDetails();

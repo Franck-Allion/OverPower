@@ -127,8 +127,8 @@ Spell at the same fixed 430×620 presentation size. The shared premium fantasy f
 uses a compact textured title header with integrated cost, an aspect-preserving
 centre-crop artwork window, type-specific ornamentation without a redundant visible
 type label, an embedded swappable rarity medallion and a textured rules body. Unit
-cards reserve their bottom rail for dominant Attack/Health values, secondary Armor
-and a distinct `xN` stack crest. These elements share one continuous textured footer
+cards reserve their bottom rail for dominant Attack/Health values and a distinct `xN`
+stack crest. These elements share one continuous textured footer
 surface rather than separate stat cells; Spell cards retain the same silhouette with a quiet
 decorative footer. Missing Spell artwork uses the polished magical sigil placeholder.
 Absent values collapse without leaving empty slots.

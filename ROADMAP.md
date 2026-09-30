@@ -486,9 +486,9 @@ If final artwork is not available, document replacement PNG requirements.
 
 ### Acceptance gate
 
-- [ ] Main Menu demonstrates intended quality direction
-- [ ] No default Unity-looking controls remain in Main Menu
-- [ ] Components are reusable instead of screen-local copies
+- [x] Main Menu demonstrates intended quality direction
+- [x] No default Unity-looking controls remain in Main Menu
+- [x] Components are reusable instead of screen-local copies
 
 ---
 

@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using OverPower.Application;
+using OverPower.Application.Ports.Logging;
 using OverPower.Unity.Bootstrap;
 using OverPower.Unity.Presentation.SceneTransition;
 using OverPower.Unity.SceneFlow;
@@ -53,7 +54,7 @@ namespace OverPower.Tests.Unity
         {
             var fakePresentation = new FakeTransitionPresentation();
             // Injects null loader which throws on scene load attempt, testing guard rejection while transition is active
-            var navigator = new UnitySceneNavigator(fakePresentation);
+            var navigator = new UnitySceneNavigator(fakePresentation, NullGameLogger.Instance);
 
             var cts = new CancellationTokenSource();
 
@@ -73,7 +74,7 @@ namespace OverPower.Tests.Unity
         public void SceneNavigator_CancellationBeforeLoad_ThrowsAndReleasesGuard()
         {
             var fakePresentation = new FakeTransitionPresentation();
-            var navigator = new UnitySceneNavigator(fakePresentation);
+            var navigator = new UnitySceneNavigator(fakePresentation, NullGameLogger.Instance);
 
             var cts = new CancellationTokenSource();
             cts.Cancel();
@@ -91,7 +92,7 @@ namespace OverPower.Tests.Unity
         public void SceneNavigator_CoversScreen_BeforeAttemptingLoad()
         {
             var fakePresentation = new FakeTransitionPresentation();
-            var navigator = new UnitySceneNavigator(fakePresentation);
+            var navigator = new UnitySceneNavigator(fakePresentation, NullGameLogger.Instance);
             var cts = new CancellationTokenSource();
 
             try
@@ -112,7 +113,7 @@ namespace OverPower.Tests.Unity
         {
             // Pass a loader that throws an exception
             var fakePresentation = new FakeTransitionPresentation();
-            var navigator = new UnitySceneNavigator(fakePresentation, null, path => throw new InvalidOperationException("Simulated load failure"));
+            var navigator = new UnitySceneNavigator(fakePresentation, NullGameLogger.Instance, path => throw new InvalidOperationException("Simulated load failure"));
 
             Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
