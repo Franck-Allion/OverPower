@@ -574,6 +574,83 @@ namespace OverPower.Tests.Unity
             Object.DestroyImmediate(bannerObject); Object.DestroyImmediate(targetObject);
         }
 
+        [Test]
+        public void TargetStateVisualPrefab_LoadsWithValidReferences_AndRendersSemanticsSafely()
+        {
+            var config = AssetDatabase.LoadAssetAtPath<UIDesignSystemConfig>("Assets/OverPower/Data/UI/UIDesignSystemConfig.asset");
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/OverPower/UI/DesignSystem/Components/TargetStateVisual.prefab");
+            Assert.That(prefab, Is.Not.Null, "TargetStateVisual.prefab must exist.");
+
+            var instance = Object.Instantiate(prefab);
+            try
+            {
+                var target = instance.GetComponent<UITargetStateVisual>();
+                Assert.That(target, Is.Not.Null, "TargetStateVisual must have UITargetStateVisual component.");
+                Assert.That(target.Outline, Is.Not.Null, "Outline reference must be valid.");
+                Assert.That(target.CornerCue, Is.Not.Null, "CornerCue reference must be valid.");
+                Assert.That(target.BlockedCue, Is.Not.Null, "BlockedCue reference must be valid.");
+                Assert.That(target.SelectedGlow, Is.Not.Null, "SelectedGlow reference must be valid.");
+
+                // None state: all cues inactive, outline transparent
+                target.SetState(TargetVisualState.None);
+                Assert.That(target.State, Is.EqualTo(TargetVisualState.None));
+                Assert.That(target.CornerCue.activeSelf, Is.False, "None state must hide corner cues.");
+                Assert.That(target.BlockedCue.activeSelf, Is.False, "None state must hide blocked cue.");
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.False, "None state must hide selected glow.");
+                Assert.That(target.Outline.color, Is.EqualTo(Color.clear), "None state outline must be clear.");
+
+                // Valid state: corners active, blocked off, glow off, success color
+                target.SetState(TargetVisualState.Valid);
+                Assert.That(target.State, Is.EqualTo(TargetVisualState.Valid));
+                Assert.That(target.CornerCue.activeSelf, Is.True, "Valid state must show corner cues.");
+                Assert.That(target.BlockedCue.activeSelf, Is.False, "Valid state must hide blocked cue.");
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.False, "Valid state must hide selected glow.");
+                Assert.That(target.Outline.color, Is.EqualTo(config.GetColor(UISemanticColor.Success)), "Valid state must apply success tone.");
+
+                // Invalid state: blocked active, corners off, glow off, danger color
+                target.SetState(TargetVisualState.Invalid);
+                Assert.That(target.State, Is.EqualTo(TargetVisualState.Invalid));
+                Assert.That(target.CornerCue.activeSelf, Is.False, "Invalid state must hide corner cues.");
+                Assert.That(target.BlockedCue.activeSelf, Is.True, "Invalid state must show blocked cue.");
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.False, "Invalid state must hide selected glow.");
+                Assert.That(target.Outline.color, Is.EqualTo(config.GetColor(UISemanticColor.Danger)), "Invalid state must apply danger tone.");
+
+                // Selected state: glow active, corners active, blocked off, selected color
+                target.SetState(TargetVisualState.Selected);
+                Assert.That(target.State, Is.EqualTo(TargetVisualState.Selected));
+                Assert.That(target.CornerCue.activeSelf, Is.True, "Selected state must show corner cues.");
+                Assert.That(target.BlockedCue.activeSelf, Is.False, "Selected state must hide blocked cue.");
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.True, "Selected state must show selected glow.");
+                Assert.That(target.Outline.color, Is.EqualTo(config.GetColor(UISemanticColor.Selected)), "Selected state must apply selected tone.");
+
+                // Rapid repeated transitions: Valid -> Invalid -> Selected -> None -> Valid
+                target.SetState(TargetVisualState.Valid);
+                Assert.That(target.CornerCue.activeSelf, Is.True);
+                Assert.That(target.BlockedCue.activeSelf, Is.False);
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.False);
+
+                target.SetState(TargetVisualState.Invalid);
+                Assert.That(target.CornerCue.activeSelf, Is.False);
+                Assert.That(target.BlockedCue.activeSelf, Is.True);
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.False);
+
+                target.SetState(TargetVisualState.Selected);
+                Assert.That(target.CornerCue.activeSelf, Is.True);
+                Assert.That(target.BlockedCue.activeSelf, Is.False);
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.True);
+
+                target.SetState(TargetVisualState.None);
+                Assert.That(target.CornerCue.activeSelf, Is.False);
+                Assert.That(target.BlockedCue.activeSelf, Is.False);
+                Assert.That(target.SelectedGlow.gameObject.activeSelf, Is.False);
+                Assert.That(target.Outline.color, Is.EqualTo(Color.clear));
+            }
+            finally
+            {
+                Object.DestroyImmediate(instance);
+            }
+        }
+
         private static TMP_Text Text(Transform parent, string name)
         {
             var text = new GameObject(name, typeof(TextMeshProUGUI)).GetComponent<TMP_Text>(); text.transform.SetParent(parent); return text;

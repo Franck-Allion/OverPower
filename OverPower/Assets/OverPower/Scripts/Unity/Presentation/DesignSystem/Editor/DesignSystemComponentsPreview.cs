@@ -50,6 +50,10 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             var decisions = Column("Decisions", columns);
             var richText = Column("RichText", columns);
             var gameplayHud = Column("GameplayHUD", columns);
+            var hudLayout = gameplayHud.GetComponent<LayoutElement>();
+            hudLayout.minWidth = 280;
+            hudLayout.preferredWidth = 280;
+            hudLayout.flexibleWidth = 0;
             var samplePanel = (GameObject)PrefabUtility.InstantiatePrefab(panelPrefab, surfaces);
             Height((RectTransform)samplePanel.transform, 170);
             Label(samplePanel.transform.Find("Header").GetComponent<TMP_Text>(), "panel.title", "GUARDIAN", "GARDIEN");
@@ -212,8 +216,13 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
             // 06 / CARD, PHASE & TARGET PRESENTATION PRIMITIVES
             var gameplayPresentation = Column("GameplayPresentation", columns);
-            Text(gameplayPresentation, "gameplay.presentation", "06  /  GAMEPLAY PRESENTATION", "06  /  PRÃ‰SENTATION DE JEU", TypographyStyle.Caption, 32, UISemanticColor.Primary);
-            Text(gameplayPresentation, "phase.heading", "Phase / turn banners", "BanniÃ¨res de phase / tour", TypographyStyle.Heading, 36);
+            var presLayout = gameplayPresentation.GetComponent<LayoutElement>();
+            presLayout.minWidth = 520;
+            presLayout.preferredWidth = 540;
+            presLayout.flexibleWidth = 1;
+
+            Text(gameplayPresentation, "gameplay.presentation", "06  /  GAMEPLAY PRESENTATION", "06  /  PRÉSENTATION DE JEU", TypographyStyle.Caption, 32, UISemanticColor.Primary);
+            Text(gameplayPresentation, "phase.heading", "Phase / turn banners", "Bannières de phase / tour", TypographyStyle.Heading, 36);
 
             AddString("phase.player_turn", "YOUR TURN", "VOTRE TOUR");
             AddString("phase.enemy_turn", "ENEMY TURN", "TOUR ENNEMI");
@@ -237,13 +246,89 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
             enemyTurn.Show("ENEMY TURN", UISemanticColor.Danger);
             SetBool(enemyTurn, "_initiallyVisible", true);
             Localize(enemyTurn.Label, "phase.enemy_turn", "ENEMY TURN");
-            Text(gameplayPresentation, "target.heading", "Target states", "Ã‰tats de cible", TypographyStyle.Heading, 36);
-            var targetRow = Rect("TargetSamples", gameplayPresentation); Height(targetRow, 74); Horizontal(targetRow, 0, 0);
-            foreach (TargetVisualState visualState in new[] { TargetVisualState.None, TargetVisualState.Valid, TargetVisualState.Invalid, TargetVisualState.Selected })
+
+            var targetDiamond = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_diamond_accent.png");
+            Text(gameplayPresentation, "target.heading", "Target states", "États de cible", TypographyStyle.Heading, 36);
+
+            AddString("target.none", "NONE", "AUCUN");
+            AddString("target.valid", "VALID", "VALIDE");
+            AddString("target.invalid", "INVALID", "INVALIDE");
+            AddString("target.selected", "SELECTED", "SÉLECTIONNÉ");
+
+            var targetRow = Rect("TargetSamples", gameplayPresentation);
+            Height(targetRow, 114);
+            Horizontal(targetRow, 0, 0);
+            var targetRowLayout = targetRow.GetComponent<HorizontalLayoutGroup>();
+            targetRowLayout.padding = new RectOffset(110, 0, 0, 0);
+            targetRowLayout.spacing = UISpacing.Md;
+            targetRowLayout.childAlignment = TextAnchor.MiddleCenter;
+            targetRowLayout.childControlWidth = true;
+            targetRowLayout.childControlHeight = true;
+            targetRowLayout.childForceExpandWidth = false;
+            targetRowLayout.childForceExpandHeight = false;
+
+            var targetStates = new[]
             {
-                var sample = ((GameObject)PrefabUtility.InstantiatePrefab(targetStatePrefab, targetRow)).GetComponent<UITargetStateVisual>();
-                sample.name = visualState.ToString(); sample.SetState(visualState);
-                var caption = PlainText("Caption", sample.transform, TypographyStyle.Caption, 20); caption.text = visualState.ToString(); caption.alignment = TextAlignmentOptions.Bottom;
+                (TargetVisualState.None, "target.none", "NONE", "AUCUN", UISemanticColor.TextSecondary),
+                (TargetVisualState.Valid, "target.valid", "VALID", "VALIDE", UISemanticColor.Success),
+                (TargetVisualState.Invalid, "target.invalid", "INVALID", "INVALIDE", UISemanticColor.Danger),
+                (TargetVisualState.Selected, "target.selected", "SELECTED", "SÉLECTIONNÉ", UISemanticColor.Selected)
+            };
+
+            foreach (var (visualState, key, en, fr, tone) in targetStates)
+            {
+                var cell = Rect("Sample_" + visualState, targetRow);
+                var cellSizing = cell.gameObject.AddComponent<LayoutElement>();
+                cellSizing.preferredWidth = cellSizing.minWidth = 116;
+                cellSizing.preferredHeight = cellSizing.minHeight = 110;
+                cellSizing.flexibleWidth = cellSizing.flexibleHeight = 0;
+
+                Vertical(cell, 0);
+                var cellLayout = cell.GetComponent<VerticalLayoutGroup>();
+                cellLayout.spacing = 6;
+                cellLayout.childAlignment = TextAnchor.MiddleCenter;
+                cellLayout.childControlWidth = true;
+                cellLayout.childControlHeight = false;
+                cellLayout.childForceExpandWidth = true;
+                cellLayout.childForceExpandHeight = false;
+
+                // 1. Neutral dark target surface placeholder
+                var placeholder = Rect("PlaceholderSurface", cell);
+                var placeholderLayout = placeholder.gameObject.AddComponent<LayoutElement>();
+                placeholderLayout.preferredHeight = placeholderLayout.minHeight = 76;
+                placeholderLayout.flexibleWidth = 1;
+
+                var bg = Image("Background", placeholder, new Color(0.06f, 0.08f, 0.12f, 0.95f));
+                Stretch(bg.rectTransform, 0);
+                var bgShadow = bg.gameObject.AddComponent<Shadow>();
+                bgShadow.effectColor = new Color(0, 0, 0, 0.50f);
+                bgShadow.effectDistance = new Vector2(0, -2);
+
+                var slotRim = Image("SlotRim", placeholder, new Color(1f, 1f, 1f, 0.05f));
+                Stretch(slotRim.rectTransform, 1);
+
+                if (targetDiamond != null)
+                {
+                    var centerPip = Image("CenterPip", placeholder, new Color(1f, 1f, 1f, 0.08f));
+                    SetAbsolute(centerPip.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(8, 8));
+                    centerPip.sprite = targetDiamond;
+                }
+
+                // 2. TargetStateVisual overlay stretched on top of placeholder surface
+                var sample = ((GameObject)PrefabUtility.InstantiatePrefab(targetStatePrefab, placeholder)).GetComponent<UITargetStateVisual>();
+                sample.name = "TargetStateVisual_" + visualState;
+                Stretch(sample.GetComponent<RectTransform>(), 0);
+                sample.SetState(visualState);
+
+                // 3. Caption below placeholder
+                var caption = PlainText("Caption", cell, TypographyStyle.Caption, 24, addTypography: false);
+                var captionLayout = caption.gameObject.AddComponent<LayoutElement>();
+                captionLayout.preferredHeight = captionLayout.minHeight = 24;
+                caption.fontSize = 18;
+                caption.fontStyle = FontStyles.Bold;
+                caption.alignment = TextAlignmentOptions.Center;
+                caption.color = _config.GetColor(tone);
+                Label(caption, key, en, fr);
             }
 
             Text(page, "components.footer", "Inspect the four edge markers • All text uses the EN / FR preview table",

@@ -388,7 +388,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2263691925585920
-    m_Localized: "06  /  PR\xC3\u2030SENTATION DE JEU"
+    m_Localized: "06  /  PR\xC9SENTATION DE JEU"
     m_Metadata:
       m_Items: []
   - m_Id: 2263692139495424
@@ -396,11 +396,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2263692357599232
-    m_Localized: "Banni\xC3\xA8res de phase / tour"
+    m_Localized: "Banni\xE8res de phase / tour"
     m_Metadata:
       m_Items: []
   - m_Id: 2263692441485312
-    m_Localized: "\xC3\u2030tats de cible"
+    m_Localized: "\xC9tats de cible"
     m_Metadata:
       m_Items: []
   - m_Id: 2327265247166464
@@ -426,6 +426,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3101770181705728
     m_Localized: TOUR ENNEMI
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251013832704
+    m_Localized: AUCUN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221312
+    m_Localized: VALIDE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221313
+    m_Localized: INVALIDE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221314
+    m_Localized: "S\xC9LECTIONN\xC9"
     m_Metadata:
       m_Items: []
   references:

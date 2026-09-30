@@ -581,16 +581,160 @@ namespace OverPower.Unity.Presentation.DesignSystem.Editor
 
         private static GameObject CreateTargetStateVisual()
         {
-            var root = Rect("TargetStateVisual", null); root.gameObject.SetActive(false); root.sizeDelta = new Vector2(150, 100);
-            var outline = root.gameObject.AddComponent<Image>(); outline.color = Color.clear; outline.raycastTarget = false;
-            var corners = Image("CornerCue", root, Color.white); Stretch(corners.rectTransform, 4);
-            var blocked = PlainText("BlockedCue", root, TypographyStyle.Heading, 80); blocked.text = "×"; blocked.alignment = TextAlignmentOptions.Center;
-            var glow = Image("SelectedGlow", root, Color.white); Stretch(glow.rectTransform, 10); glow.raycastTarget = false;
+            var targetFrame = EnsureTargetFrameTexture();
+            var diamondAccent = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_diamond_accent.png");
+            var softGlow = AssetDatabase.LoadAssetAtPath<Sprite>(Root + "/Textures/ui_soft_glow_box.png");
+            var knobSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+
+            var root = Rect("TargetStateVisual", null);
+            root.gameObject.SetActive(false);
+            root.sizeDelta = new Vector2(150, 100);
+
+            // 1. Selected Glow (outer soft aura)
+            var glow = Image("SelectedGlow", root, Color.white);
+            glow.sprite = softGlow;
+            glow.type = UnityEngine.UI.Image.Type.Sliced;
+            glow.raycastTarget = false;
+            Stretch(glow.rectTransform, 10);
+            glow.gameObject.SetActive(false);
+
+            // 2. Outline (Image on root with 9-sliced border and transparent center)
+            var outline = root.gameObject.AddComponent<UnityEngine.UI.Image>();
+            outline.sprite = targetFrame;
+            outline.type = UnityEngine.UI.Image.Type.Sliced;
+            outline.fillCenter = false;
+            outline.raycastTarget = false;
+            outline.color = Color.clear;
+
+            // 3. Corner Cue (4 tactical fantasy corner brackets with diamond accents)
+            var cornerCue = Rect("CornerCue", root);
+            Stretch(cornerCue, 0);
+            cornerCue.gameObject.SetActive(false);
+
+            var cornerImages = new System.Collections.Generic.List<UnityEngine.UI.Image>();
+            CreateCornerBracket("TopLeft", cornerCue, new Vector2(0, 1), new Vector2(0, 1), new Vector2(1, -1), diamondAccent, cornerImages);
+            CreateCornerBracket("TopRight", cornerCue, new Vector2(1, 1), new Vector2(1, 1), new Vector2(-1, -1), diamondAccent, cornerImages);
+            CreateCornerBracket("BottomLeft", cornerCue, new Vector2(0, 0), new Vector2(0, 0), new Vector2(1, 1), diamondAccent, cornerImages);
+            CreateCornerBracket("BottomRight", cornerCue, new Vector2(1, 0), new Vector2(1, 0), new Vector2(-1, 1), diamondAccent, cornerImages);
+
+            // 4. Blocked Cue (centered tactical cross emblem on dark disc)
+            var blockedCue = Rect("BlockedCue", root);
+            SetAbsolute(blockedCue, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(36, 36));
+            blockedCue.gameObject.SetActive(false);
+
+            var disc = Image("BlockedBackplate", blockedCue, new Color(0.04f, 0.06f, 0.09f, 0.88f));
+            disc.sprite = knobSprite;
+            Stretch(disc.rectTransform, 0);
+            disc.raycastTarget = false;
+            var discShadow = disc.gameObject.AddComponent<Shadow>();
+            discShadow.effectColor = new Color(0, 0, 0, 0.65f);
+            discShadow.effectDistance = new Vector2(0, -2);
+
+            var discRim = Image("BlockedRim", blockedCue, new Color(1f, 1f, 1f, 0.35f));
+            discRim.sprite = knobSprite;
+            Stretch(discRim.rectTransform, 1);
+            discRim.raycastTarget = false;
+
+            var blockedImages = new System.Collections.Generic.List<UnityEngine.UI.Image> { discRim };
+
+            var crossArm1 = Image("CrossArm1", blockedCue, Color.white);
+            crossArm1.rectTransform.sizeDelta = new Vector2(20, 2.5f);
+            crossArm1.rectTransform.localEulerAngles = new Vector3(0, 0, 45);
+            crossArm1.raycastTarget = false;
+            var arm1Shadow = crossArm1.gameObject.AddComponent<Shadow>();
+            arm1Shadow.effectColor = new Color(0, 0, 0, 0.70f);
+            arm1Shadow.effectDistance = new Vector2(0, -1);
+            blockedImages.Add(crossArm1);
+
+            var crossArm2 = Image("CrossArm2", blockedCue, Color.white);
+            crossArm2.rectTransform.sizeDelta = new Vector2(20, 2.5f);
+            crossArm2.rectTransform.localEulerAngles = new Vector3(0, 0, -45);
+            crossArm2.raycastTarget = false;
+            var arm2Shadow = crossArm2.gameObject.AddComponent<Shadow>();
+            arm2Shadow.effectColor = new Color(0, 0, 0, 0.70f);
+            arm2Shadow.effectDistance = new Vector2(0, -1);
+            blockedImages.Add(crossArm2);
+
             var state = root.gameObject.AddComponent<UITargetStateVisual>();
-            SetReference(state, "_config", _config); SetReference(state, "_outline", outline); SetReference(state, "_cornerCue", corners.gameObject);
-            SetReference(state, "_blockedCue", blocked.gameObject); SetReference(state, "_selectedGlow", glow);
+            SetReference(state, "_config", _config);
+            SetReference(state, "_outline", outline);
+            SetReference(state, "_cornerCue", cornerCue.gameObject);
+            SetReference(state, "_blockedCue", blockedCue.gameObject);
+            SetReference(state, "_selectedGlow", glow);
+            SetArrayReferences(state, "_cornerImages", cornerImages.ToArray());
+            SetArrayReferences(state, "_blockedImages", blockedImages.ToArray());
+
             state.SetState(TargetVisualState.None);
             return SaveComponent(root);
+        }
+
+        private static void CreateCornerBracket(string name, RectTransform parent, Vector2 anchor, Vector2 pivot, Vector2 dir, Sprite diamond, System.Collections.Generic.List<UnityEngine.UI.Image> images)
+        {
+            var bracket = Rect(name, parent);
+            bracket.anchorMin = bracket.anchorMax = anchor;
+            bracket.pivot = pivot;
+            bracket.anchoredPosition = Vector2.zero;
+            bracket.sizeDelta = new Vector2(16, 16);
+
+            var hArm = Image("HorizontalArm", bracket, Color.white);
+            hArm.raycastTarget = false;
+            hArm.rectTransform.anchorMin = hArm.rectTransform.anchorMax = pivot;
+            hArm.rectTransform.pivot = pivot;
+            hArm.rectTransform.sizeDelta = new Vector2(14, 2.5f);
+            hArm.rectTransform.anchoredPosition = Vector2.zero;
+            images.Add(hArm);
+
+            var vArm = Image("VerticalArm", bracket, Color.white);
+            vArm.raycastTarget = false;
+            vArm.rectTransform.anchorMin = vArm.rectTransform.anchorMax = pivot;
+            vArm.rectTransform.pivot = pivot;
+            vArm.rectTransform.sizeDelta = new Vector2(2.5f, 14);
+            vArm.rectTransform.anchoredPosition = Vector2.zero;
+            images.Add(vArm);
+
+            if (diamond != null)
+            {
+                var pip = Image("DiamondPip", bracket, Color.white);
+                pip.sprite = diamond;
+                pip.preserveAspect = true;
+                pip.raycastTarget = false;
+                pip.rectTransform.anchorMin = pip.rectTransform.anchorMax = pivot;
+                pip.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+                pip.rectTransform.sizeDelta = new Vector2(6, 6);
+                pip.rectTransform.anchoredPosition = new Vector2(dir.x * 2.5f, dir.y * 2.5f);
+                images.Add(pip);
+            }
+        }
+
+        private static Sprite EnsureTargetFrameTexture()
+        {
+            string path = Root + "/Textures/ui_target_frame.png";
+            var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            if (sprite != null) return sprite;
+
+            int size = 16;
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    bool isBorder = (x < 2 || x >= size - 2 || y < 2 || y >= size - 2);
+                    tex.SetPixel(x, y, isBorder ? Color.white : Color.clear);
+                }
+            }
+            tex.Apply();
+            System.IO.File.WriteAllBytes(path, tex.EncodeToPNG());
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+
+            var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spriteBorder = new Vector4(3, 3, 3, 3);
+            importer.alphaIsTransparency = true;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.SaveAndReimport();
+
+            return AssetDatabase.LoadAssetAtPath<Sprite>(path);
         }
 
         private static GameObject CreateConfirmDialog(GameObject panelPrefab)

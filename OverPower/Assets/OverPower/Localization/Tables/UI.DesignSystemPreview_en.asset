@@ -424,6 +424,22 @@ MonoBehaviour:
     m_Localized: ENEMY TURN
     m_Metadata:
       m_Items: []
+  - m_Id: 3806251013832704
+    m_Localized: NONE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221312
+    m_Localized: VALID
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221313
+    m_Localized: INVALID
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221314
+    m_Localized: SELECTED
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

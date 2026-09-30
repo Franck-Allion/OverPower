@@ -411,6 +411,22 @@ MonoBehaviour:
     m_Key: phase.enemy_turn
     m_Metadata:
       m_Items: []
+  - m_Id: 3806251013832704
+    m_Key: target.none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221312
+    m_Key: target.valid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221313
+    m_Key: target.invalid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3806251022221314
+    m_Key: target.selected
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
