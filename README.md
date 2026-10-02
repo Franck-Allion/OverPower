@@ -85,11 +85,11 @@ The repository contains project governance and documentation at the root. The ac
 
 ## Current State
 
-> **Status: Core Domain Foundation complete; Premium UI Foundation milestone 0.3 complete through 0.3.4**
+> **Status: Core Domain Foundation and Premium UI Foundation complete; 0.4.1 Exploration Domain model complete**
 >
-> Milestone 0.3 now includes the reusable Design System, Premium Main Menu, fullscreen Scene Transitions, and common gameplay HUD primitives: Health/Mana, Gold/AP, unit stack badge, premium card frame, phase/turn banner, target-state visuals, and tooltip baseline.
+> Milestone 0.4 starts with the completed 0.4.1 Exploration Domain model: deterministic exploration grid generation via an isolated named RNG substream, authoritative player position and action-point management, orthogonal 4-neighbor legal movement rules, and explicit session completion semantics. Unity presentation and exploration room gameplay remain in progress for subsequent 0.4 increments.
 >
-> Open `OverPower/Assets/OverPower/Scenes/Bootstrap.unity` for the production startup flow or `OverPower/Assets/OverPower/Scenes/Development/DesignSystemPreview.unity` for the reusable UI catalog. The application version is aligned to 0.3.4.
+> Open `OverPower/Assets/OverPower/Scenes/Bootstrap.unity` for the production startup flow or `OverPower/Assets/OverPower/Scenes/Development/DesignSystemPreview.unity` for the reusable UI catalog. The application version is aligned to 0.4.1.
 
 ---
 

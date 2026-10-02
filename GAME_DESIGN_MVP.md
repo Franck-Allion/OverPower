@@ -22,6 +22,7 @@ Minimum: 3 unit types, 3 spells, 2 artifacts. Artifacts can be unlocked through 
 - Apothecary sells spells for gold.
 - Barracks sells units for gold.
 - When AP is exhausted or the player ends exploration, guardian battle begins.
+- Exploration layout generation uses a named deterministic RNG substream, so the same run seed and generation configuration reproduce the same room.
 
 ## Battle board
 Static 2D top-down board. Each side owns 2 rows × 6 columns:

@@ -507,8 +507,8 @@ Goal: create a small, attractive, playable exploration room before implementing 
 - [x] Cannot move when no action point remains
 - [x] Explicit end-exploration action
 - [x] Exploration completion state
-- [ ] Deterministic layout/content generation contract
-- [~] Tests
+- [x] Deterministic layout/content generation contract
+- [x] Tests
 
 ---
 
