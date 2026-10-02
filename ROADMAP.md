@@ -498,17 +498,17 @@ Goal: create a small, attractive, playable exploration room before implementing 
 
 ## 0.4.1 Exploration Domain model
 
-- [ ] Exploration grid coordinates
-- [ ] Walkable/non-walkable cells
-- [ ] Player position
-- [ ] Action points
-- [ ] Movement validation
-- [ ] Spend one action point per legal move
-- [ ] Cannot move when no action point remains
-- [ ] Explicit end-exploration action
-- [ ] Exploration completion state
+- [x] Exploration grid coordinates
+- [x] Walkable/non-walkable cells
+- [x] Player position
+- [x] Action points
+- [x] Movement validation
+- [x] Spend one action point per legal move
+- [x] Cannot move when no action point remains
+- [x] Explicit end-exploration action
+- [x] Exploration completion state
 - [ ] Deterministic layout/content generation contract
-- [ ] Tests
+- [~] Tests
 
 ---
 

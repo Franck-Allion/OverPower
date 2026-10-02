@@ -16,7 +16,7 @@ Minimum: 3 unit types, 3 spells, 2 artifacts. Artifacts can be unlocked through 
 ## Exploration
 - 2D top-down.
 - HeroEditor4D/Character4D representation.
-- Grid/cell movement.
+- Grid/cell movement: MVP baseline uses orthogonal one-cell movement (4-neighbor: up, down, left, right; no diagonal movement).
 - Moving one cell consumes one action point.
 - Possible content: gold, mana-max resource, health-max resource, spells, units/recruits, apothecaries, barracks.
 - Apothecary sells spells for gold.
