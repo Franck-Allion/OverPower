@@ -7,6 +7,8 @@
         "OverPower.Domain",
         "OverPower.Application",
         "OverPower.Unity",
+        "OverPower.Unity.Integration.HeroEditor4D",
+        "HeroEditor4D",
         "Unity.TextMeshPro",
         "Unity.ugui",
         "Unity.Localization",

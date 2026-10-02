@@ -1,0 +1,23 @@
+{
+    "name": "OverPower.Unity.Exploration.Editor",
+    "rootNamespace": "OverPower.Unity.Presentation.Exploration.Editor",
+    "references": [
+        "OverPower.Domain",
+        "OverPower.Unity",
+        "OverPower.Unity.Integration.HeroEditor4D",
+        "HeroEditor4D",
+        "Unity.InputSystem",
+        "Unity.ugui"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

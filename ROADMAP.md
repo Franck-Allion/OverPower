@@ -514,17 +514,17 @@ Goal: create a small, attractive, playable exploration room before implementing 
 
 ## 0.4.2 Exploration room presentation
 
-- [ ] Static top-down room prototype
-- [ ] Grid/cell representation
-- [ ] HeroEditor4D hero prefab
-- [ ] SortingGroup
-- [ ] Correct top-down sorting
-- [ ] Camera composition
-- [ ] Visual boundaries/walls
-- [ ] Hero idle animation
+- [x] Static top-down room prototype
+- [x] Grid/cell representation
+- [x] HeroEditor4D hero prefab
+- [x] SortingGroup
+- [x] Correct top-down sorting
+- [x] Camera composition
+- [x] Visual boundaries/walls
+- [x] Hero idle animation
 - [ ] Hero directional movement animation
 - [ ] Movement feels responsive and premium
-- [ ] No debug grid required in final presentation
+- [~] No debug grid required in final presentation
 
 ---
 
